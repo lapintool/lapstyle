@@ -1,0 +1,55 @@
+.ls-btn-dropdown {
+  position: relative;
+  display: inline-flex;
+  vertical-align: middle;
+}
+
+.ls-btn-dropdown .arrow {
+  display: block;
+  flex: 0 0 auto;
+  width: 1.715em;
+  height: 1.715em;
+  background-color: currentColor;
+  clip-path: polygon(29.17% 41.67%, 70.83% 41.67%, 50% 62.5%);
+  transition: transform var(--ls-hover);
+}
+
+.ls-btn-dropdown.is-open .arrow {
+  transform: rotate(180deg);
+}
+
+.ls-btn-dropdown.simple > .ls-btn {
+  gap: 0.286em;
+  padding-right: 0.286em;
+}
+
+.ls-btn-dropdown.split .arrow-btn {
+  min-width: 0;
+  padding-left: 0.286em;
+  padding-right: 0.286em;
+}
+
+/* Split 分隔线只画一条。lapstyle 按钮的描边都在 ::before 上（本体 border: 0），
+   之前把 border-left 画在 <button> 本体上，会与描边风格的 ::before 右描边、
+   push 的 inset 高光在交界处叠成双线/粗线。现在统一为：
+   - 描边外观（默认 / outline）：主按钮 ::before 自带 1px 右描边充当分隔线，
+     箭头按钮 ::before 左线去掉，交界处只有 1px；
+   - fill / push（无描边）：由箭头按钮 ::before 的左边框补一条混合色分隔线。 */
+.ls-btn-dropdown.split > .ls-btn:first-of-type {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.ls-btn-dropdown.split > .ls-btn + .arrow-btn {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.ls-btn-dropdown.split > .ls-btn + .arrow-btn::before {
+  border-left: 0;
+}
+
+.ls-btn-dropdown.split > .ls-btn + .arrow-btn.ls-btn.fill::before,
+.ls-btn-dropdown.split > .ls-btn + .arrow-btn.ls-btn.push:not(.outline)::before {
+  border-left: 1px solid color-mix(in srgb, var(--ls-btn-on) 32%, var(--ls-btn-fill));
+}

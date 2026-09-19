@@ -1,0 +1,65 @@
+/* 表格：外壳负责圆角、描边与滚动；内部用原生 table / thead / th / td。
+   默认斑马纹；.dense 收紧单元格；.kv 键值表（首列作 key）。
+   描边用 inset box-shadow，避免 overflow + border-radius 裁切外框。 */
+
+.ls-table {
+  box-sizing: border-box;
+  overflow: auto;
+  border: 0;
+  border-radius: 8px;
+  box-shadow: inset 0 0 0 1px var(--ls-border);
+  background: var(--ls-bg-elevated);
+  color: var(--ls-text);
+}
+
+.ls-table > table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  table-layout: fixed;
+  font-size: 0.8125rem;
+}
+
+.ls-table th,
+.ls-table td {
+  box-sizing: border-box;
+  padding: 8px 10px;
+  border: 0;
+  border-right: 1px solid var(--ls-border);
+  border-bottom: 1px solid var(--ls-border);
+  vertical-align: top;
+  word-wrap: break-word;
+  line-height: 1.45;
+  text-align: left;
+}
+
+.ls-table tr > :last-child {
+  border-right: 0;
+}
+
+.ls-table tr:last-child > * {
+  border-bottom: 0;
+}
+
+.ls-table th {
+  background: color-mix(in srgb, var(--ls-text) 8%, var(--ls-bg-elevated));
+  font-weight: 600;
+}
+
+.ls-table tbody tr:nth-child(even) td {
+  background: color-mix(in srgb, var(--ls-text) 3%, transparent);
+}
+
+.ls-table.dense th,
+.ls-table.dense td {
+  padding: 4px 8px;
+}
+
+.ls-table.square {
+  border-radius: 0;
+}
+
+.ls-table.kv th {
+  width: 20%;
+  white-space: nowrap;
+}

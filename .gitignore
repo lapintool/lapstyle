@@ -1,0 +1,20 @@
+node_modules/
+dist/
+*.tsbuildinfo
+.DS_Store
+Thumbs.db
+Desktop.ini
+*.log
+
+# 本地 IDE / 编辑器，不进库
+.idea/
+*.iml
+.vscode/
+*.swp
+*~
+
+# 本包无依赖；本地 pnpm 生成的 lock 不要误提交
+pnpm-lock.yaml
+
+# 一次性本地脚本
+scripts/

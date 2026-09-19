@@ -1,0 +1,636 @@
+/* 展开面板（对�?Lapin cmd-sidebar）：
+ * 外框 .ls-expand = 裁切窗口，仅 WAAPI �?width/height（边停靠还会�?top/left）；描边/圆角画在外框上�?
+ * 内层 .frame = 始终展开像素尺寸，钉在停靠角，内容不随窗�?reflow�?
+ * data-collapse / data-expand：tl|tr|bl|br|t|r|b|l|float（缺�?tr�?
+ *   �?浮动收起 28×28；边停靠收起为贴边小方钮�?-ls-expand-edge-offset，缺�?50% 居中），展开满高/满宽�?
+ * data-duration：如 0.5s / 500 / 500ms（缺�?--ls-expand-duration�?
+ */
+
+.ls-expand {
+  --ls-expand-collapsed-w: 28px;
+  --ls-expand-collapsed-h: 28px;
+  --ls-expand-open-w: 216px;
+  --ls-expand-open-h: 208px;
+  --ls-expand-duration: 0.5s;
+  --ls-expand-ease: var(--ls-ease);
+  --ls-expand-radius: 0.5rem;
+  --ls-expand-edge-offset: 50%;
+  --ls-expand-handle-x: 0px;
+  --ls-expand-handle-y: 0px;
+  --ls-expand-bt: 0px;
+  --ls-expand-br: 0px;
+  --ls-expand-bb: 0px;
+  --ls-expand-bl: 0px;
+  --ls-expand-rtl: 0px;
+  --ls-expand-rtr: 0px;
+  --ls-expand-rbr: 0px;
+  --ls-expand-rbl: 0px;
+  box-sizing: border-box;
+  position: absolute;
+  z-index: var(--ls-z-expand);
+  width: var(--ls-expand-collapsed-w);
+  height: var(--ls-expand-collapsed-h);
+  overflow: hidden;
+  overflow-clip-margin: 1px;
+  background: transparent;
+  pointer-events: none;
+  /* 圆角裁切内容；描边由 ::after 画在 aperture 上（收起 28×28 也看得见�?*/
+  border-radius: var(--ls-expand-rtl) var(--ls-expand-rtr) var(--ls-expand-rbr) var(--ls-expand-rbl);
+  /* filter 会把 overflow 裁切盒收紧，上下描边会被切掉；阴影用 box-shadow */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.22);
+  transition:
+    box-shadow var(--ls-expand-duration) var(--ls-expand-ease),
+    border-radius var(--ls-expand-duration) var(--ls-expand-ease);
+}
+
+.ls-expand.is-expanded {
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.32);
+}
+
+/* 描边�?aperture 同大，避免画在大 frame 上被裁切窗「切没�?*/
+.ls-expand::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  box-sizing: border-box;
+  pointer-events: none;
+  border-style: solid;
+  border-color: var(--ls-border);
+  border-width: var(--ls-expand-bt) var(--ls-expand-br) var(--ls-expand-bb) var(--ls-expand-bl);
+  border-radius: inherit;
+  transition:
+    border-radius var(--ls-expand-duration) var(--ls-expand-ease),
+    border-width var(--ls-expand-duration) var(--ls-expand-ease);
+}
+
+/* 内层：固定展开尺寸，随停靠角钉死；无描边（描边在外框） */
+.ls-expand .frame {
+  pointer-events: auto;
+  position: absolute;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  width: var(--ls-expand-open-w);
+  height: var(--ls-expand-open-h);
+  min-width: var(--ls-expand-collapsed-w);
+  min-height: var(--ls-expand-collapsed-h);
+  overflow: hidden;
+  color: var(--ls-text);
+  font-size: 0.8125rem;
+  background: var(--ls-expand-bg, var(--ls-bg-elevated));
+  border: 0;
+  border-radius: 0;
+}
+
+/* ---- 外框钉位：永远跟 data-collapse（按钮所在处），展开只改宽高 ---- */
+.ls-expand:not([data-collapse]),
+.ls-expand[data-collapse="tr"] {
+  top: 0;
+  right: 0;
+  bottom: auto;
+  left: auto;
+}
+
+.ls-expand[data-collapse="tl"] {
+  top: 0;
+  left: 0;
+  right: auto;
+  bottom: auto;
+}
+
+.ls-expand[data-collapse="br"] {
+  top: auto;
+  right: 0;
+  bottom: 0;
+  left: auto;
+}
+
+.ls-expand[data-collapse="bl"] {
+  top: auto;
+  right: auto;
+  bottom: 0;
+  left: 0;
+}
+
+.ls-expand[data-collapse="r"] {
+  right: 0;
+  left: auto;
+  bottom: auto;
+}
+
+.ls-expand[data-collapse="l"] {
+  left: 0;
+  right: auto;
+  bottom: auto;
+}
+
+.ls-expand[data-collapse="t"] {
+  top: 0;
+  bottom: auto;
+  right: auto;
+}
+
+.ls-expand[data-collapse="b"] {
+  bottom: 0;
+  top: auto;
+  right: auto;
+}
+
+.ls-expand[data-collapse="r"]:not(.is-expanded),
+.ls-expand[data-collapse="l"]:not(.is-expanded) {
+  top: var(--ls-expand-edge-offset);
+}
+
+.ls-expand[data-collapse="t"]:not(.is-expanded),
+.ls-expand[data-collapse="b"]:not(.is-expanded) {
+  left: var(--ls-expand-edge-offset);
+}
+
+.ls-expand[data-collapse="float"]:not(.is-expanded),
+.ls-expand[data-collapse="float"]:not(.is-expanded)[data-ls-float-anchor="br"] {
+  top: auto;
+  right: 16px;
+  bottom: 16px;
+  left: auto;
+}
+
+.ls-expand[data-collapse="float"]:not(.is-expanded)[data-ls-float-anchor="tr"] {
+  top: 16px;
+  right: 16px;
+  bottom: auto;
+  left: auto;
+}
+
+.ls-expand[data-collapse="float"]:not(.is-expanded)[data-ls-float-anchor="tl"] {
+  top: 16px;
+  left: 16px;
+  right: auto;
+  bottom: auto;
+}
+
+.ls-expand[data-collapse="float"]:not(.is-expanded)[data-ls-float-anchor="bl"] {
+  top: auto;
+  left: 16px;
+  right: auto;
+  bottom: 16px;
+}
+
+/* ---- frame 钉位：跟收起按钮同一角，从该处揭开 ---- */
+.ls-expand:not([data-collapse]) .frame,
+.ls-expand[data-collapse="tr"] .frame {
+  top: 0;
+  right: 0;
+  bottom: auto;
+  left: auto;
+}
+
+.ls-expand[data-collapse="tl"] .frame {
+  top: 0;
+  left: 0;
+  right: auto;
+  bottom: auto;
+}
+
+.ls-expand[data-collapse="br"] .frame {
+  top: auto;
+  right: 0;
+  bottom: 0;
+  left: auto;
+  flex-direction: column-reverse;
+}
+
+.ls-expand[data-collapse="bl"] .frame {
+  top: auto;
+  right: auto;
+  bottom: 0;
+  left: 0;
+  flex-direction: column-reverse;
+}
+
+.ls-expand[data-collapse="r"] .frame {
+  right: 0;
+  left: auto;
+  bottom: auto;
+  flex-direction: row-reverse;
+}
+
+.ls-expand[data-collapse="l"] .frame {
+  left: 0;
+  right: auto;
+  bottom: auto;
+  flex-direction: row;
+}
+
+.ls-expand[data-collapse="t"] .frame {
+  top: 0;
+  bottom: auto;
+  right: auto;
+}
+
+.ls-expand[data-collapse="b"] .frame {
+  bottom: 0;
+  top: auto;
+  right: auto;
+  flex-direction: column-reverse;
+}
+
+/* 浮动：默认右下角（与收起�?bottom/right:16px 一致），头栏贴固定�?*/
+.ls-expand[data-collapse="float"]:not([data-ls-float-anchor]) .frame,
+.ls-expand[data-ls-float-anchor="br"] .frame {
+  top: auto;
+  right: 0;
+  bottom: 0;
+  left: auto;
+  flex-direction: column-reverse;
+}
+
+.ls-expand[data-ls-float-anchor="tr"] .frame {
+  top: 0;
+  right: 0;
+  bottom: auto;
+  left: auto;
+  flex-direction: column;
+}
+
+.ls-expand[data-ls-float-anchor="tl"] .frame {
+  top: 0;
+  left: 0;
+  right: auto;
+  bottom: auto;
+  flex-direction: column;
+}
+
+.ls-expand[data-ls-float-anchor="bl"] .frame {
+  top: auto;
+  left: 0;
+  right: auto;
+  bottom: 0;
+  flex-direction: column-reverse;
+}
+
+/* ---- 描边/圆角（变量作用在外框 + ::after�?---- */
+.ls-expand:not([data-collapse]):not(.is-expanded),
+.ls-expand[data-collapse="tr"]:not(.is-expanded) {
+  --ls-expand-bt: 0px;
+  --ls-expand-br: 0px;
+  --ls-expand-bb: 1px;
+  --ls-expand-bl: 1px;
+  --ls-expand-rtl: 0px;
+  --ls-expand-rtr: 0px;
+  --ls-expand-rbr: 0px;
+  --ls-expand-rbl: var(--ls-expand-radius);
+}
+
+.ls-expand[data-collapse="tl"]:not(.is-expanded) {
+  --ls-expand-bt: 0px;
+  --ls-expand-br: 1px;
+  --ls-expand-bb: 1px;
+  --ls-expand-bl: 0px;
+  --ls-expand-rtl: 0px;
+  --ls-expand-rtr: 0px;
+  --ls-expand-rbr: var(--ls-expand-radius);
+  --ls-expand-rbl: 0px;
+}
+
+.ls-expand[data-collapse="br"]:not(.is-expanded) {
+  --ls-expand-bt: 1px;
+  --ls-expand-br: 0px;
+  --ls-expand-bb: 0px;
+  --ls-expand-bl: 1px;
+  --ls-expand-rtl: var(--ls-expand-radius);
+  --ls-expand-rtr: 0px;
+  --ls-expand-rbr: 0px;
+  --ls-expand-rbl: 0px;
+}
+
+.ls-expand[data-collapse="bl"]:not(.is-expanded) {
+  --ls-expand-bt: 1px;
+  --ls-expand-br: 1px;
+  --ls-expand-bb: 0px;
+  --ls-expand-bl: 0px;
+  --ls-expand-rtl: 0px;
+  --ls-expand-rtr: var(--ls-expand-radius);
+  --ls-expand-rbr: 0px;
+  --ls-expand-rbl: 0px;
+}
+
+.ls-expand[data-collapse="t"]:not(.is-expanded) {
+  --ls-expand-bt: 0px;
+  --ls-expand-br: 0px;
+  --ls-expand-bb: 1px;
+  --ls-expand-bl: 0px;
+  --ls-expand-rtl: 0px;
+  --ls-expand-rtr: 0px;
+  --ls-expand-rbr: var(--ls-expand-radius);
+  --ls-expand-rbl: var(--ls-expand-radius);
+}
+
+.ls-expand[data-collapse="b"]:not(.is-expanded) {
+  --ls-expand-bt: 1px;
+  --ls-expand-br: 0px;
+  --ls-expand-bb: 0px;
+  --ls-expand-bl: 0px;
+  --ls-expand-rtl: var(--ls-expand-radius);
+  --ls-expand-rtr: var(--ls-expand-radius);
+  --ls-expand-rbr: 0px;
+  --ls-expand-rbl: 0px;
+}
+
+.ls-expand[data-collapse="l"]:not(.is-expanded) {
+  --ls-expand-bt: 1px;
+  --ls-expand-br: 1px;
+  --ls-expand-bb: 1px;
+  --ls-expand-bl: 0px;
+  --ls-expand-rtl: 0px;
+  --ls-expand-rtr: var(--ls-expand-radius);
+  --ls-expand-rbr: var(--ls-expand-radius);
+  --ls-expand-rbl: 0px;
+}
+
+.ls-expand[data-collapse="r"]:not(.is-expanded) {
+  --ls-expand-bt: 1px;
+  --ls-expand-br: 0px;
+  --ls-expand-bb: 1px;
+  --ls-expand-bl: 1px;
+  --ls-expand-rtl: var(--ls-expand-radius);
+  --ls-expand-rtr: 0px;
+  --ls-expand-rbr: 0px;
+  --ls-expand-rbl: var(--ls-expand-radius);
+}
+
+.ls-expand[data-collapse="float"]:not(.is-expanded) {
+  --ls-expand-bt: 1px;
+  --ls-expand-br: 1px;
+  --ls-expand-bb: 1px;
+  --ls-expand-bl: 1px;
+  --ls-expand-rtl: var(--ls-expand-radius);
+  --ls-expand-rtr: var(--ls-expand-radius);
+  --ls-expand-rbr: var(--ls-expand-radius);
+  --ls-expand-rbl: var(--ls-expand-radius);
+}
+
+.ls-expand:not([data-expand]).is-expanded,
+.ls-expand.is-expanded[data-expand="tr"] {
+  --ls-expand-bt: 0px;
+  --ls-expand-br: 0px;
+  --ls-expand-bb: 1px;
+  --ls-expand-bl: 1px;
+  --ls-expand-rtl: 0px;
+  --ls-expand-rtr: 0px;
+  --ls-expand-rbr: 0px;
+  --ls-expand-rbl: var(--ls-expand-radius);
+}
+
+.ls-expand.is-expanded[data-expand="tl"] {
+  --ls-expand-bt: 0px;
+  --ls-expand-br: 1px;
+  --ls-expand-bb: 1px;
+  --ls-expand-bl: 0px;
+  --ls-expand-rtl: 0px;
+  --ls-expand-rtr: 0px;
+  --ls-expand-rbr: var(--ls-expand-radius);
+  --ls-expand-rbl: 0px;
+}
+
+.ls-expand.is-expanded[data-expand="br"] {
+  --ls-expand-bt: 1px;
+  --ls-expand-br: 0px;
+  --ls-expand-bb: 0px;
+  --ls-expand-bl: 1px;
+  --ls-expand-rtl: var(--ls-expand-radius);
+  --ls-expand-rtr: 0px;
+  --ls-expand-rbr: 0px;
+  --ls-expand-rbl: 0px;
+}
+
+.ls-expand.is-expanded[data-expand="bl"] {
+  --ls-expand-bt: 1px;
+  --ls-expand-br: 1px;
+  --ls-expand-bb: 0px;
+  --ls-expand-bl: 0px;
+  --ls-expand-rtl: 0px;
+  --ls-expand-rtr: var(--ls-expand-radius);
+  --ls-expand-rbr: 0px;
+  --ls-expand-rbl: 0px;
+}
+
+.ls-expand.is-expanded[data-expand="t"] {
+  --ls-expand-bt: 0px;
+  --ls-expand-br: 0px;
+  --ls-expand-bb: 1px;
+  --ls-expand-bl: 0px;
+  --ls-expand-rtl: 0px;
+  --ls-expand-rtr: 0px;
+  --ls-expand-rbr: 0px;
+  --ls-expand-rbl: 0px;
+}
+
+.ls-expand.is-expanded[data-expand="b"] {
+  --ls-expand-bt: 1px;
+  --ls-expand-br: 0px;
+  --ls-expand-bb: 0px;
+  --ls-expand-bl: 0px;
+  --ls-expand-rtl: 0px;
+  --ls-expand-rtr: 0px;
+  --ls-expand-rbr: 0px;
+  --ls-expand-rbl: 0px;
+}
+
+.ls-expand.is-expanded[data-expand="l"] {
+  --ls-expand-bt: 0px;
+  --ls-expand-br: 1px;
+  --ls-expand-bb: 0px;
+  --ls-expand-bl: 0px;
+  --ls-expand-rtl: 0px;
+  --ls-expand-rtr: 0px;
+  --ls-expand-rbr: 0px;
+  --ls-expand-rbl: 0px;
+}
+
+.ls-expand.is-expanded[data-expand="r"] {
+  --ls-expand-bt: 0px;
+  --ls-expand-br: 0px;
+  --ls-expand-bb: 0px;
+  --ls-expand-bl: 1px;
+  --ls-expand-rtl: 0px;
+  --ls-expand-rtr: 0px;
+  --ls-expand-rbr: 0px;
+  --ls-expand-rbl: 0px;
+}
+
+.ls-expand.is-expanded[data-expand="float"] {
+  --ls-expand-bt: 1px;
+  --ls-expand-br: 1px;
+  --ls-expand-bb: 1px;
+  --ls-expand-bl: 1px;
+  --ls-expand-rtl: var(--ls-expand-radius);
+  --ls-expand-rtr: var(--ls-expand-radius);
+  --ls-expand-rbr: var(--ls-expand-radius);
+  --ls-expand-rbl: var(--ls-expand-radius);
+}
+
+/* ---- �?/ 图标钉在停靠角（收起窗口正好框住图标�?---- */
+.ls-expand .head {
+  position: relative;
+  box-sizing: border-box;
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  min-width: 0;
+  height: var(--ls-expand-collapsed-h);
+  margin: 0;
+  padding: 0 var(--ls-expand-collapsed-w) 0 12px;
+  border: 0;
+  border-radius: 0;
+  background: var(--ls-expand-header-bg, color-mix(in srgb, var(--ls-bg-elevated) 88%, #000));
+  color: inherit;
+  font: inherit;
+  font-weight: 500;
+  cursor: pointer;
+  user-select: none;
+}
+
+.ls-expand .title {
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+  min-width: 0;
+  white-space: nowrap;
+}
+
+.ls-expand .icon {
+  position: absolute;
+  top: 0;
+  z-index: 1;
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--ls-expand-collapsed-w);
+  height: var(--ls-expand-collapsed-h);
+  color: inherit;
+}
+
+/* 图标钉在外框揭开的那一�?*/
+.ls-expand:not([data-collapse]) .icon,
+.ls-expand[data-collapse="tr"] .icon,
+.ls-expand[data-collapse="br"] .icon,
+.ls-expand[data-collapse="float"] .icon,
+.ls-expand[data-ls-float-anchor="tr"] .icon,
+.ls-expand[data-ls-float-anchor="br"] .icon {
+  right: 0;
+  left: auto;
+}
+
+.ls-expand[data-collapse="tl"] .icon,
+.ls-expand[data-collapse="bl"] .icon,
+.ls-expand[data-ls-float-anchor="tl"] .icon,
+.ls-expand[data-ls-float-anchor="bl"] .icon {
+  left: 0;
+  right: auto;
+}
+
+/* 左右边钮：标题栏改成贴边竖条（仅 collapse=r|l，角钮按 t/r 展开仍用顶栏�?*/
+.ls-expand[data-collapse="r"] .head,
+.ls-expand[data-collapse="l"] .head {
+  position: relative;
+  flex: 0 0 var(--ls-expand-collapsed-w);
+  align-self: stretch;
+  width: var(--ls-expand-collapsed-w);
+  height: auto;
+  min-height: 0;
+  padding: 0;
+  justify-content: center;
+  align-items: center;
+}
+
+.ls-expand[data-collapse="r"] .title,
+.ls-expand[data-collapse="l"] .title {
+  display: none;
+}
+
+.ls-expand[data-collapse="t"] .head,
+.ls-expand[data-collapse="b"] .head {
+  position: static;
+  padding: 0 12px;
+}
+
+.ls-expand[data-collapse="r"] .icon {
+  top: var(--ls-expand-handle-y);
+  right: 0;
+  left: auto;
+  z-index: 3;
+  background: transparent;
+}
+
+.ls-expand[data-collapse="l"] .icon {
+  top: var(--ls-expand-handle-y);
+  left: 0;
+  right: auto;
+  z-index: 3;
+  background: transparent;
+}
+
+.ls-expand[data-collapse="t"] .icon {
+  top: 0;
+  left: var(--ls-expand-handle-x);
+  right: auto;
+  z-index: 3;
+  background: var(--ls-expand-header-bg, color-mix(in srgb, var(--ls-bg-elevated) 88%, #000));
+}
+
+.ls-expand[data-collapse="b"] .icon {
+  top: auto;
+  bottom: 0;
+  left: var(--ls-expand-handle-x);
+  right: auto;
+  z-index: 3;
+  background: var(--ls-expand-header-bg, color-mix(in srgb, var(--ls-bg-elevated) 88%, #000));
+}
+
+.ls-expand[data-collapse="tl"] .head,
+.ls-expand[data-collapse="bl"] .head,
+.ls-expand[data-ls-float-anchor="tl"] .head,
+.ls-expand[data-ls-float-anchor="bl"] .head {
+  padding: 0 12px 0 var(--ls-expand-collapsed-w);
+}
+
+.ls-expand[data-ls-float-anchor="tr"] .head,
+.ls-expand[data-ls-float-anchor="br"] .head,
+.ls-expand[data-collapse="float"]:not([data-ls-float-anchor]) .head {
+  padding: 0 var(--ls-expand-collapsed-w) 0 12px;
+}
+
+.ls-expand .icon .ls-icon,
+.ls-expand .icon svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+.ls-expand .body {
+  box-sizing: border-box;
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+  padding: 10px 12px;
+  overflow: auto;
+}
+
+.ls-expand[data-collapse="r"] .body,
+.ls-expand[data-collapse="l"] .body {
+  height: auto;
+  align-self: stretch;
+}
+
+.ls-expand[data-collapse="t"] .body,
+.ls-expand.is-expanded[data-expand="t"] .body {
+  padding-top: 10px;
+}
+
+.ls-expand[data-collapse="b"] .body,
+.ls-expand.is-expanded[data-expand="b"] .body {
+  padding-bottom: 10px;
+}

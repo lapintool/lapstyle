@@ -1,0 +1,67 @@
+@keyframes ls-pop-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes ls-dialog-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes ls-panel-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.97);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Respect the OS "reduce motion" preference: collapse library transitions
+   and animations to near-zero duration without changing end states.
+   Scoped to .ls-* components so consumer motion is untouched. */
+@media (prefers-reduced-motion: reduce) {
+  .ls-btn,
+  .ls-btn::before,
+  .ls-btn::after,
+  .ls-btn-dropdown .arrow,
+  .ls-menu .item,
+  .ls-menu .caret,
+  .ls-menu .label,
+  .ls-menu .sub,
+  .ls-tabs .tab,
+  .ls-tabs .close,
+  .ls-dropdown .trigger,
+  .ls-dropdown .caret,
+  .ls-radio,
+  .ls-radio::before,
+  .ls-radio::after,
+  .ls-icon,
+  .ls-input,
+  .ls-dialog:not([hidden]),
+  .ls-dialog:not([hidden]) .panel,
+  .ls-tooltip,
+  .ls-scroll,
+  .ls-progress,
+  .ls-progress::before,
+  .ls-progress::after {
+    transition-duration: 0.01ms !important;
+    transition-delay: 0s !important;
+    animation-duration: 0.01ms !important;
+  }
+}

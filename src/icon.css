@@ -1,0 +1,143 @@
+/* Icon shell: size + currentColor. Built-ins use CSS mask; custom SVGs go inside. */
+
+.ls-icon {
+  --ls-icon-size: var(--ls-size-md-icon);
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--ls-icon-size);
+  height: var(--ls-icon-size);
+  flex: 0 0 auto;
+  color: inherit;
+  line-height: 0;
+  vertical-align: middle;
+  transition: color var(--ls-hover);
+}
+
+.ls-icon.sm {
+  --ls-icon-size: var(--ls-size-sm-icon);
+}
+
+.ls-icon.md {
+  --ls-icon-size: var(--ls-size-md-icon);
+}
+
+.ls-icon.lg {
+  --ls-icon-size: var(--ls-size-lg-icon);
+}
+
+/* Child SVG / Iconify / Lucide / Material ligature fonts fill the shell; color via currentColor */
+.ls-icon > svg,
+.ls-icon > img,
+.ls-icon > .iconify {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.ls-icon > .material-symbols-outlined,
+.ls-icon > .material-symbols-rounded,
+.ls-icon > .material-symbols-sharp,
+.ls-icon > .material-icons,
+.ls-icon > .material-icons-outlined,
+.ls-icon > .material-icons-round,
+.ls-icon > .material-icons-sharp,
+.ls-icon > .material-icons-two-tone {
+  display: block;
+  overflow: visible;
+  font-size: var(--ls-icon-size);
+  width: 1em;
+  height: 1em;
+  line-height: 1;
+  white-space: nowrap;
+  font-feature-settings: "liga";
+  -webkit-font-feature-settings: "liga";
+  font-variant-ligatures: common-ligatures;
+  user-select: none;
+}
+
+/* Official Material Icons Two Tone is a COLR color font: baked-in black/gray.
+   CSS color / currentColor cannot recolor it. Prefer outlined / Symbols for theming. */
+
+.ls-icon.material-symbols-outlined,
+.ls-icon.material-symbols-rounded,
+.ls-icon.material-symbols-sharp,
+.ls-icon.material-icons,
+.ls-icon.material-icons-outlined,
+.ls-icon.material-icons-round,
+.ls-icon.material-icons-sharp,
+.ls-icon.material-icons-two-tone {
+  overflow: visible;
+  font-size: var(--ls-icon-size);
+  line-height: 1;
+}
+
+/* Material Symbols FILL. Default outline; .fill is the solid glyph.
+   Weight / grade / optical size stay as variables if you need them. */
+.ls-icon.fill,
+.material-symbols-outlined.fill,
+.material-symbols-rounded.fill,
+.material-symbols-sharp.fill {
+  --ls-icon-fill: 1;
+}
+
+.ls-icon > .material-symbols-outlined,
+.ls-icon > .material-symbols-rounded,
+.ls-icon > .material-symbols-sharp,
+.ls-icon.material-symbols-outlined,
+.ls-icon.material-symbols-rounded,
+.ls-icon.material-symbols-sharp,
+.material-symbols-outlined.fill,
+.material-symbols-rounded.fill,
+.material-symbols-sharp.fill {
+  font-variation-settings:
+    "FILL" var(--ls-icon-fill, 0),
+    "wght" var(--ls-icon-wght),
+    "GRAD" var(--ls-icon-grad),
+    "opsz" var(--ls-icon-opsz);
+}
+
+.ls-icon > .iconify svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* Built-in semantic icons (mask). Paths encoded black for mask alpha. */
+.ls-icon.warning::before,
+.ls-icon.error::before,
+.ls-icon.info::before,
+.ls-icon.success::before,
+.ls-icon.close::before {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 100%;
+  background-color: currentColor;
+  -webkit-mask: var(--ls-icon) center / contain no-repeat;
+  mask: var(--ls-icon) center / contain no-repeat;
+}
+
+.ls-icon.warning {
+  color: var(--ls-popover-active);
+  --ls-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 3.8 21.2 19.6H2.8L12 3.8z'/%3E%3Cpath d='M12 10v4.2'/%3E%3Cpath d='M12 17.2h.01'/%3E%3C/svg%3E");
+}
+
+.ls-icon.error {
+  color: var(--ls-danger);
+  --ls-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='8.2'/%3E%3Cpath d='M12 8.2v5.4'/%3E%3Cpath d='M12 16.4h.01'/%3E%3C/svg%3E");
+}
+
+.ls-icon.info {
+  color: var(--ls-accent-hover);
+  --ls-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='8.2'/%3E%3Cpath d='M12 11.2V16'/%3E%3Cpath d='M12 8.2h.01'/%3E%3C/svg%3E");
+}
+
+.ls-icon.success {
+  color: var(--ls-ok);
+  --ls-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='8.2'/%3E%3Cpath d='m8.2 12.2 2.4 2.4 5.2-5.2'/%3E%3C/svg%3E");
+}
+
+.ls-icon.close {
+  --ls-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M7 7l10 10'/%3E%3Cpath d='M17 7 7 17'/%3E%3C/svg%3E");
+}

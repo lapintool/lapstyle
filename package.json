@@ -1,0 +1,51 @@
+{
+  "name": "lapstyle",
+  "version": "0.3.1",
+  "description": "A desktop UI kit with a defined look, optional JS enhancement, and no Vue / React binding. Class conventions + enhance(); native elements first.",
+  "license": "MIT",
+  "type": "module",
+  "main": "./src/lapstyle.js",
+  "module": "./src/lapstyle.js",
+  "types": "./src/lapstyle.d.ts",
+  "style": "./src/index.css",
+  "scripts": {
+    "test": "node --test test/**/*.test.js"
+  },
+  "files": [
+    "src",
+    "CHANGELOG.md"
+  ],
+  "exports": {
+    ".": {
+      "types": "./src/lapstyle.d.ts",
+      "import": "./src/lapstyle.js",
+      "default": "./src/lapstyle.js"
+    },
+    "./auto": {
+      "types": "./src/lapstyle.d.ts",
+      "import": "./src/lapstyle.auto.js",
+      "default": "./src/lapstyle.auto.js"
+    },
+    "./index.css": "./src/index.css",
+    "./progress.css": "./src/progress.css",
+    "./expand.css": "./src/expand.css",
+    "./slider.css": "./src/slider.css",
+    "./tokens.css": "./src/tokens.css",
+    "./lapstyle.js": "./src/lapstyle.js",
+    "./lapstyle.auto.js": "./src/lapstyle.auto.js",
+    "./package.json": "./package.json",
+    "./*": "./src/*"
+  },
+  "sideEffects": ["*.css", "./src/lapstyle.auto.js"],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lapintool/lapstyle.git"
+  },
+  "bugs": {
+    "url": "https://github.com/lapintool/lapstyle/issues"
+  },
+  "homepage": "https://github.com/lapintool/lapstyle#readme",
+  "publishConfig": {
+    "access": "public"
+  }
+}

@@ -1,0 +1,169 @@
+.ls-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45em;
+  font-size: var(--ls-input-font-size);
+  color: var(--ls-text-dim);
+  min-width: 0;
+}
+
+.ls-field.sm {
+  --ls-input-font-size: var(--ls-size-sm-font);
+  --ls-input-min-height: var(--ls-size-sm-control);
+}
+
+.ls-field.md {
+  --ls-input-font-size: var(--ls-size-md-font);
+  --ls-input-min-height: var(--ls-size-md-control);
+}
+
+.ls-field.lg {
+  --ls-input-font-size: var(--ls-size-lg-font);
+  --ls-input-min-height: var(--ls-size-lg-control);
+}
+
+.ls-field .label {
+  font-size: 0.85em;
+  line-height: 1.3;
+}
+
+.ls-input {
+  --ls-control-height: var(--ls-input-min-height, var(--ls-size-md-control));
+  --ls-input-radius: var(--ls-input-radius);
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  height: auto;
+  min-height: var(--ls-input-min-height);
+  padding: var(--ls-input-padding);
+  border: 1px solid var(--ls-border);
+  border-radius: var(--ls-input-radius);
+  background: var(--ls-input-bg);
+  color: var(--ls-text);
+  font: inherit;
+  font-size: 1em;
+  line-height: 1.4;
+  outline: none;
+  transition:
+    border-color var(--ls-hover),
+    box-shadow var(--ls-hover),
+    background-color var(--ls-hover),
+    color var(--ls-hover),
+    opacity var(--ls-hover);
+}
+
+.ls-input.sm {
+  --ls-control-height: var(--ls-size-sm-control);
+  --ls-input-font-size: var(--ls-size-sm-font);
+  --ls-input-min-height: var(--ls-control-height);
+  font-size: var(--ls-input-font-size);
+}
+
+.ls-input.md {
+  --ls-control-height: var(--ls-size-md-control);
+  --ls-input-font-size: var(--ls-size-md-font);
+  --ls-input-min-height: var(--ls-control-height);
+  font-size: var(--ls-input-font-size);
+}
+
+.ls-input.lg {
+  --ls-control-height: var(--ls-size-lg-control);
+  --ls-input-font-size: var(--ls-size-lg-font);
+  --ls-input-min-height: var(--ls-control-height);
+  font-size: var(--ls-input-font-size);
+}
+
+.ls-input.fill,
+.ls-input.outline {
+  /* default filled look; outline kept as alias */
+}
+
+.ls-input.borderless {
+  border-color: transparent;
+  background: transparent;
+}
+
+.ls-input.rounded {
+  --ls-input-radius: 100em;
+}
+
+.ls-input.dense {
+  /* Compact chrome only — font-size stays on the current size step. */
+  --ls-input-padding: 0 0.55em;
+  --ls-input-min-height: calc(var(--ls-control-height, var(--ls-size-md-control)) - var(--ls-dense-shrink));
+}
+
+.ls-input[type="number"]::-webkit-inner-spin-button,
+.ls-input[type="number"]::-webkit-outer-spin-button {
+  margin-inline-end: calc(-1 * var(--ls-input-spin-offset, 10px));
+}
+
+.ls-input::placeholder {
+  color: color-mix(in srgb, var(--ls-text) 40%, transparent);
+  opacity: 1;
+}
+
+@media (any-hover: hover) {
+  .ls-input:hover:not(:disabled):not(:read-only) {
+    box-shadow: 0 0 8px 4px color-mix(in srgb, var(--ls-color-blue) 28%, transparent);
+  }
+
+  .ls-input:hover:not(:disabled):not(:read-only):not(:focus):not(:focus-visible) {
+    border-color: color-mix(in srgb, var(--ls-color-blue) 65%, var(--ls-border));
+  }
+
+  .ls-input.borderless:hover:not(:disabled):not(:read-only):not(:focus):not(:focus-visible) {
+    border-color: transparent;
+  }
+
+  .ls-input.is-error:hover:not(:disabled):not(:read-only) {
+    box-shadow: 0 0 8px 4px color-mix(in srgb, var(--ls-color-red) 28%, transparent);
+  }
+
+  .ls-input.is-error:hover:not(:disabled):not(:read-only):not(:focus):not(:focus-visible) {
+    border-color: var(--ls-color-red);
+  }
+}
+
+.ls-input:focus,
+.ls-input:focus-visible {
+  border-color: var(--ls-input-focus);
+}
+
+.ls-input.borderless:focus {
+  border-color: var(--ls-input-focus);
+}
+
+.ls-input:read-only {
+  color: var(--ls-text-dim);
+  border-style: dashed;
+}
+
+.ls-input.borderless:read-only {
+  border-color: var(--ls-border);
+}
+
+.ls-input:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+
+.ls-input.is-error {
+  border-color: var(--ls-color-red);
+}
+
+.ls-input.is-error:focus,
+.ls-input.is-error:focus-visible {
+  border-color: var(--ls-color-red);
+}
+
+.ls-field .error {
+  margin: 0;
+  color: var(--ls-color-red);
+  font-size: 0.85em;
+  line-height: 1.35;
+}
+
+.ls-field .error[hidden] {
+  display: none !important;
+}

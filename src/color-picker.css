@@ -1,0 +1,90 @@
+.ls-color-picker {
+  --ls-cp-value: #888888;
+  --ls-cp-hue: #ff0000;
+  --ls-cp-s: 1;
+  --ls-cp-v: 1;
+  --ls-cp-h: 0;
+  display: grid;
+  gap: 10px;
+  width: 220px;
+  padding: 12px;
+  border: 1px solid var(--ls-border);
+  border-radius: 8px;
+  background: var(--ls-bg-elevated);
+  color: var(--ls-text);
+  box-shadow: var(--ls-popover-shadow);
+  font-size: 0.8125rem;
+}
+
+.ls-color-picker .sv {
+  position: relative;
+  width: 100%;
+  height: 140px;
+  border-radius: 4px;
+  background:
+    linear-gradient(to top, #000, transparent),
+    linear-gradient(to right, #fff, var(--ls-cp-hue));
+  cursor: default;
+  touch-action: none;
+}
+
+.ls-color-picker .hue {
+  position: relative;
+  width: 100%;
+  height: 12px;
+  border-radius: 99px;
+  background: linear-gradient(
+    to right,
+    #f00,
+    #ff0,
+    #0f0,
+    #0ff,
+    #00f,
+    #f0f,
+    #f00
+  );
+  cursor: default;
+  touch-action: none;
+}
+
+.ls-color-picker .thumb {
+  position: absolute;
+  box-sizing: border-box;
+  width: 12px;
+  height: 12px;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  box-shadow: 0 0 0 1px rgb(0 0 0 / 0.45);
+  pointer-events: auto;
+  cursor: default;
+  transform: translate(-50%, -50%);
+}
+
+.ls-color-picker .sv .thumb {
+  left: calc(var(--ls-cp-s) * 100%);
+  top: calc((1 - var(--ls-cp-v)) * 100%);
+}
+
+.ls-color-picker .hue .thumb {
+  top: 50%;
+  left: calc((var(--ls-cp-h) / 360) * 100%);
+}
+
+.ls-color-picker .fields {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 8px;
+  align-items: center;
+}
+
+.ls-color-picker .hex {
+  min-width: 0;
+}
+
+.ls-color-picker .preview {
+  width: 28px;
+  height: 28px;
+  border: 1px solid var(--ls-border);
+  border-radius: 4px;
+  background: var(--ls-cp-value);
+}

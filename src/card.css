@@ -1,0 +1,8 @@
+.ls-card {
+  box-sizing: border-box;
+  padding: 14px;
+  border: 1px solid var(--ls-border);
+  border-radius: 8px;
+  background: var(--ls-bg-elevated);
+  color: var(--ls-text);
+}

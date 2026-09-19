@@ -1,0 +1,135 @@
+.ls-dialog {
+  position: fixed;
+  inset: 0;
+  z-index: var(--ls-z-dialog);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.45);
+}
+
+.ls-dialog:not([hidden]) {
+  display: flex;
+  animation: ls-dialog-in var(--ls-duration) var(--ls-ease-out);
+}
+
+.ls-dialog .panel {
+  box-sizing: border-box;
+  width: min(440px, calc(100vw - 32px));
+  padding: 16px 18px 14px;
+  background: var(--ls-bg-elevated);
+  color: var(--ls-text);
+  border: 1px solid var(--ls-border);
+  border-radius: 8px;
+  box-shadow: var(--ls-popover-shadow);
+}
+
+.ls-dialog:not([hidden]) .panel {
+  animation: ls-panel-in var(--ls-duration) var(--ls-ease-out);
+}
+
+.ls-dialog .title {
+  margin: 0 0 8px;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.ls-dialog .hint {
+  margin: 0 0 12px;
+  color: var(--ls-text-dim);
+  font-size: 0.75rem;
+  line-height: 1.45;
+}
+
+.ls-dialog .hint[hidden] {
+  display: none !important;
+}
+
+.ls-dialog .body {
+  margin: 0;
+  color: var(--ls-text);
+  font-size: 0.8125rem;
+  line-height: 1.55;
+  white-space: pre-wrap;
+}
+
+.ls-dialog .head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.ls-dialog .head .title {
+  margin: 0;
+}
+
+.ls-dialog .panel.draggable :is(.head, .title, .drag-handle) {
+  cursor: default;
+  user-select: none;
+  /* Dragging starts on the handle only, so touch panning must be disabled
+     there �?not on the whole panel, which would block touch scrolling
+     inside the dialog body. */
+  touch-action: none;
+}
+
+.ls-dialog .icon {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  color: var(--ls-accent-hover);
+}
+
+.ls-dialog[data-kind="warning"] .icon {
+  color: var(--ls-popover-active);
+}
+
+.ls-dialog[data-kind="error"] .icon {
+  color: var(--ls-danger);
+}
+
+.ls-dialog .actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.ls-dialog .actions .ls-btn:not(.fill):not(.push):not(.outline) {
+  background: transparent;
+  color: var(--ls-btn-color);
+}
+
+.ls-dialog .actions .ls-btn:not(.fill):not(.push):not(.outline)::before {
+  box-shadow: none;
+  border: 0;
+}
+
+.ls-dialog .error {
+  margin: 8px 0 0;
+  color: var(--ls-color-red);
+  font-size: 0.75rem;
+}
+
+.ls-dialog .error[hidden] {
+  display: none !important;
+}
+
+/* Non-modal: no mask, clicks pass through to the page.
+   默认仍居中；拖拽�?transform 相对中心偏移�?*/
+.ls-dialog.modeless {
+  background: transparent;
+  pointer-events: none;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.ls-dialog.modeless .panel {
+  pointer-events: auto;
+}
+
+/* 非模态面板常可拖（transform 记位移）；入场动画不能再�?transform，否则打开会跳�?*/
+.ls-dialog.modeless:not([hidden]) .panel {
+  animation: ls-dialog-in var(--ls-duration-fast) var(--ls-ease-out);
+}

@@ -1,0 +1,90 @@
+.ls-dropdown {
+  --ls-font-size: var(--ls-size-md-font);
+  --ls-dropdown-icon-size: var(--ls-size-md-icon);
+  --ls-control-height: var(--ls-size-md-control);
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  min-width: 0;
+}
+
+.ls-dropdown.sm {
+  --ls-font-size: var(--ls-size-sm-font);
+  --ls-dropdown-icon-size: var(--ls-size-sm-icon);
+  --ls-control-height: var(--ls-size-sm-control);
+}
+
+.ls-dropdown.md {
+  --ls-font-size: var(--ls-size-md-font);
+  --ls-dropdown-icon-size: var(--ls-size-md-icon);
+  --ls-control-height: var(--ls-size-md-control);
+}
+
+.ls-dropdown.lg {
+  --ls-font-size: var(--ls-size-lg-font);
+  --ls-dropdown-icon-size: var(--ls-size-lg-icon);
+  --ls-control-height: var(--ls-size-lg-control);
+}
+
+.ls-dropdown .trigger {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5em;
+  min-width: 10.5rem;
+  min-height: var(--ls-control-height);
+  height: auto;
+  padding: 0 0.75em;
+  border: 1px solid var(--ls-border);
+  border-radius: 4px;
+  background: var(--ls-input-bg);
+  color: var(--ls-text);
+  font: inherit;
+  font-size: var(--ls-font-size);
+  line-height: 1.2;
+  cursor: pointer;
+  transition:
+    background-color var(--ls-hover),
+    border-color var(--ls-hover),
+    color var(--ls-hover),
+    opacity var(--ls-hover);
+}
+
+.ls-dropdown.dense .trigger {
+  min-height: calc(var(--ls-control-height) - var(--ls-dense-shrink));
+  padding: 0 0.55em;
+}
+
+.ls-dropdown .trigger:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--ls-input-bg) 88%, var(--ls-text) 12%);
+}
+
+.ls-dropdown .trigger:focus {
+  outline: none;
+  border-color: var(--ls-accent-hover);
+}
+
+.ls-dropdown .trigger[aria-expanded="true"] {
+  border-color: var(--ls-accent-hover);
+}
+
+.ls-dropdown .trigger:disabled {
+  opacity: 0.45;
+  cursor: default;
+  pointer-events: none;
+}
+
+.ls-dropdown .caret {
+  flex: 0 0 auto;
+  width: 0;
+  height: 0;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 5px solid var(--ls-text-dim);
+  transition: transform var(--ls-duration) var(--ls-ease-out);
+}
+
+.ls-dropdown .trigger[aria-expanded="true"] .caret {
+  transform: rotate(180deg);
+}

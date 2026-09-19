@@ -1,0 +1,53 @@
+@property --scrollbar-fade {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
+
+.ls-scroll {
+  --scrollbar-fade: 0;
+  overflow: auto;
+  transition:
+    --scrollbar-fade var(--ls-scrollbar-fade-duration) var(--ls-ease-out),
+    scrollbar-color var(--ls-scrollbar-fade-duration) var(--ls-ease-out);
+  scrollbar-width: thin;
+  scrollbar-color: rgb(
+      var(--ls-scrollbar-thumb-rgb) / calc(var(--ls-scrollbar-thumb-alpha) * var(--scrollbar-fade))
+    )
+    transparent;
+}
+
+.ls-scroll:hover {
+  --scrollbar-fade: 1;
+}
+
+.ls-scroll::-webkit-scrollbar {
+  width: var(--ls-scrollbar-size);
+  height: var(--ls-scrollbar-size);
+  background: transparent;
+}
+
+.ls-scroll::-webkit-scrollbar-button {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+.ls-scroll::-webkit-scrollbar-track,
+.ls-scroll::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+.ls-scroll::-webkit-scrollbar-thumb {
+  background-color: rgb(
+    var(--ls-scrollbar-thumb-rgb) / calc(var(--ls-scrollbar-thumb-alpha) * var(--scrollbar-fade))
+  );
+  border-radius: 99px;
+  transition: background-color var(--ls-scrollbar-fade-duration) var(--ls-ease-out);
+}
+
+.ls-scroll::-webkit-scrollbar-thumb:hover {
+  background-color: rgb(
+    var(--ls-scrollbar-thumb-rgb) / calc(var(--ls-scrollbar-thumb-hover-alpha) * var(--scrollbar-fade))
+  );
+}

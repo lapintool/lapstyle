@@ -1,0 +1,91 @@
+/* 分栏 Splitter：容器 + 两个 .pane（可选 .handle）。
+   未加载 lapstyle.js 时退化为静态分栏，pane 之间画一条分隔线；
+   加载后由 enhance() 在 pane 之间补插 .handle（拖拽 / 键盘 / 双击复位）。 */
+.ls-splitter {
+  display: flex;
+  box-sizing: border-box;
+  min-width: 0;
+  min-height: 0;
+}
+
+.ls-splitter.vertical {
+  flex-direction: column;
+}
+
+.ls-splitter .pane {
+  flex: 1 1 0;
+  box-sizing: border-box;
+  min-width: 0;
+  min-height: 0;
+  overflow: auto;
+}
+
+/* 无 handle 时的静态分隔线（有 handle 后由 handle 自身的边线替代） */
+.ls-splitter:not(:has(> .handle)) > .pane + .pane {
+  border-top: 0;
+  border-left: 1px solid var(--ls-border);
+}
+
+.ls-splitter.vertical:not(:has(> .handle)) > .pane + .pane {
+  border-top: 1px solid var(--ls-border);
+  border-left: 0;
+}
+
+.ls-splitter .handle {
+  flex: 0 0 6px;
+  position: relative;
+  box-sizing: border-box;
+  background: var(--ls-border);
+  transition: background-color var(--ls-hover);
+  touch-action: none;
+}
+
+/* 上下留出“抓手”热区，实际可视线只有 1px */
+.ls-splitter:not(.vertical) > .handle {
+  width: 6px;
+  cursor: col-resize;
+}
+
+.ls-splitter.vertical > .handle {
+  height: 6px;
+  cursor: row-resize;
+}
+
+.ls-splitter .handle::after {
+  content: "";
+  position: absolute;
+  background: transparent;
+  border-radius: 2px;
+  transition: background-color var(--ls-hover);
+}
+
+.ls-splitter:not(.vertical) > .handle::after {
+  inset: 50% auto 50% 50%;
+  width: 2px;
+  height: 24px;
+  transform: translate(-50%, -50%);
+}
+
+.ls-splitter.vertical > .handle::after {
+  inset: 50% 50% auto 50%;
+  width: 24px;
+  height: 2px;
+  transform: translate(-50%, -50%);
+}
+
+.ls-splitter .handle:hover,
+.ls-splitter .handle:focus-visible,
+.ls-splitter .handle.is-dragging {
+  background: color-mix(in srgb, var(--ls-color-blue) 45%, var(--ls-border));
+}
+
+.ls-splitter .handle:hover::after,
+.ls-splitter .handle:focus-visible::after,
+.ls-splitter .handle.is-dragging::after {
+  background: var(--ls-color-blue);
+}
+
+.ls-splitter .handle:focus-visible {
+  outline: 2px solid var(--ls-input-focus);
+  outline-offset: -2px;
+}

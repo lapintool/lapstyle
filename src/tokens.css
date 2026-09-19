@@ -1,0 +1,208 @@
+:root {
+  --ls-color-blue: #248df4;
+  --ls-color-blue-on: #ffffff;
+  --ls-color-cyan: #00bebe;
+  --ls-color-cyan-on: #ffffff;
+  --ls-color-magenta: #d32ede;
+  --ls-color-magenta-on: #ffffff;
+  --ls-color-green: #03a329;
+  --ls-color-green-on: #ffffff;
+  --ls-color-red: #ff0000;
+  --ls-color-red-on: #ffffff;
+  --ls-color-yellow: #f49700;
+  --ls-color-yellow-on: #ffffff;
+  --ls-color-dark: #424242;
+  --ls-color-dark-on: #ffffff;
+  --ls-color-gray: #808080;
+  --ls-color-gray-on: #ffffff;
+  --ls-color-white: #ffffff;
+  --ls-color-white-on: #1d1d1d;
+  --ls-color-black: #000000;
+  --ls-color-black-on: #ffffff;
+  --ls-color-blue-hover: color-mix(in srgb, var(--ls-color-blue) 78%, #000);
+  --ls-color-cyan-hover: color-mix(in srgb, var(--ls-color-cyan) 78%, #000);
+  --ls-color-magenta-hover: color-mix(in srgb, var(--ls-color-magenta) 78%, #000);
+  --ls-color-green-hover: color-mix(in srgb, var(--ls-color-green) 78%, #000);
+  --ls-color-red-hover: color-mix(in srgb, var(--ls-color-red) 78%, #000);
+  --ls-color-yellow-hover: color-mix(in srgb, var(--ls-color-yellow) 78%, #000);
+  --ls-color-gray-hover: color-mix(in srgb, var(--ls-color-gray) 78%, #000);
+  --ls-color-dark-hover: color-mix(in srgb, var(--ls-color-dark) 72%, #fff);
+  --ls-color-white-hover: color-mix(in srgb, var(--ls-color-white) 86%, #000);
+  --ls-color-black-hover: color-mix(in srgb, var(--ls-color-black) 72%, #fff);
+  --ls-input-focus: color-mix(in srgb, var(--ls-color-blue) 58%, #ffffff);
+
+  /* Control size ladder (sm / md / lg). Override any token to retune a step. */
+  --ls-size-sm-font: 0.75rem; /* 12px */
+  --ls-size-sm-icon: 1rem; /* 16px */
+  --ls-size-sm-control: 1.5rem; /* 24px */
+
+  --ls-size-md-font: 0.875rem; /* 14px */
+  --ls-size-md-icon: 1.25rem; /* 20px */
+  --ls-size-md-control: 1.75rem; /* 28px */
+
+  --ls-size-lg-font: 1rem; /* 16px */
+  --ls-size-lg-icon: 1.5rem; /* 24px */
+  --ls-size-lg-control: 2.25rem; /* 36px */
+
+  /* Dense only shrinks chrome; font/icon stay on the current size step. */
+  --ls-dense-shrink: 0.25rem;
+
+  /* Shared motion: expand-panel easing + hover duration. */
+  --ls-ease: cubic-bezier(0.165, 0.84, 0.44, 1);
+  --ls-expand-duration: 0.5s;
+  --ls-hover-duration: 0.5s;
+  --ls-hover: var(--ls-hover-duration) var(--ls-ease);
+
+  /* Surface layering */
+  --ls-z-expand: 20;
+  --ls-z-menu: 40;
+  --ls-z-tooltip: 60;
+  --ls-z-dialog: 70;
+
+  /* Tooltip / icon defaults (overridable) */
+  --ls-tooltip-delay: 0.28s;
+  --ls-tooltip-offset: 8px;
+  --ls-icon-grad: 0;
+  --ls-icon-opsz: 24;
+  --ls-icon-wght: 400;
+}
+
+:root,
+[data-theme="dark"] {
+  color-scheme: dark;
+  --ls-bg: #111111;
+  --ls-bg-elevated: #1a1a1a;
+  --ls-border: #2e2e2e;
+  --ls-text: #e0e0e0;
+  --ls-text-dim: #d7d7d7;
+  --ls-text-muted: #555555;
+  --ls-accent-hover: #1177bb;
+  --ls-danger: #c74e39;
+  --ls-ok: #3d9a5f;
+  --ls-popover-bg: #484848;
+  --ls-popover-text: #f3f3f3;
+  --ls-popover-active: #f0b429;
+  --ls-popover-shadow: 0 10px 28px rgba(0, 0, 0, 0.45);
+  --ls-btn-fill: #3a3a3a;
+  --ls-btn-fill-hover: color-mix(in srgb, var(--ls-btn-fill) 72%, #fff);
+  --ls-btn-shadow: 0 1px 5px rgba(0, 0, 0, 0.2), 0 2px 2px rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.12);
+  --ls-btn-shadow-active: 0 3px 5px -1px rgba(0, 0, 0, 0.2), 0 5px 8px rgba(0, 0, 0, 0.14), 0 1px 14px rgba(0, 0, 0, 0.12);
+  --ls-btn-transition: var(--ls-hover);
+  --ls-btn-radius: 0.214em;
+  --ls-btn-radius-push: 0.5em;
+  --ls-btn-padding-block: 0.143em;
+  --ls-btn-padding: var(--ls-btn-padding-block) 0.857em;
+  --ls-btn-font-size: var(--ls-size-md-font);
+  --ls-btn-font-weight: 500;
+  --ls-btn-line-height: 1.4em;
+  --ls-btn-min-height: var(--ls-size-md-control);
+  --ls-btn-gap: 0.286em;
+  --ls-btn-press: 0.1em;
+  --ls-btn-ledge-width: 0.143em;
+  --ls-btn-ledge-mix: 52%;
+  --ls-radio-size: 40px;
+  --ls-radio-unchecked: rgb(255 255 255 / 0.7);
+  --ls-radio-ripple: 0.32;
+  --ls-checkbox-size: 40px;
+  --ls-checkbox-unchecked: rgb(255 255 255 / 0.7);
+  --ls-checkbox-radius: 3px;
+  --ls-switch-track-w: 34px;
+  --ls-switch-track-h: 14px;
+  --ls-switch-dot: 20px;
+  --ls-switch-track-off: rgb(255 255 255 / 0.42);
+  --ls-switch-dot-off: #bdbdbd;
+  --ls-btn-hover: rgba(255, 255, 255, 0.06);
+  --ls-btn-active: rgba(255, 255, 255, 0.1);
+  --ls-menu-item-active-bg: #303030;
+  --ls-menu-item-active-text: #1177bb;
+  --ls-input-bg: #3c3c3c;
+  --ls-input-font-size: var(--ls-size-md-font);
+  --ls-input-min-height: var(--ls-size-md-control);
+  --ls-input-padding: 0 0.75em;
+  --ls-input-radius: 0.286em;
+  --ls-input-spin-offset: 10px;
+  --ls-tabs-bar-bg: #212121;
+  --ls-tabs-bg: var(--ls-bg);
+  --ls-tabs-active-text: var(--ls-menu-item-active-text);
+  --ls-scroll-shadow: #000000;
+  --ls-expand-bg: var(--ls-bg-elevated);
+  --ls-expand-header-bg: color-mix(in srgb, var(--ls-bg-elevated) 88%, #000);
+  --ls-ease-out: var(--ls-ease);
+  --ls-duration: 0.5s;
+  --ls-duration-fast: 0.5s;
+  --ls-scrollbar-size: 4px;
+  --ls-scrollbar-thumb-rgb: 255 255 255;
+  --ls-scrollbar-thumb-alpha: 0.14;
+  --ls-scrollbar-thumb-hover-alpha: 0.2;
+  --ls-scrollbar-fade-duration: 0.7s;
+  font-family: "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+}
+
+[data-theme="light"] {
+  color-scheme: light;
+  --ls-bg: #ffffff;
+  --ls-bg-elevated: #fafafa;
+  --ls-border: #e1e1e1;
+  --ls-text: #333333;
+  --ls-text-dim: #646464;
+  --ls-text-muted: #c0c0c0;
+  --ls-accent-hover: #106ebe;
+  --ls-danger: #c74e39;
+  --ls-ok: #15803d;
+  --ls-popover-bg: #ffffff;
+  --ls-popover-text: #222222;
+  --ls-popover-active: #d97706;
+  --ls-popover-shadow: 0 10px 28px rgba(0, 0, 0, 0.16);
+  --ls-btn-fill: #ffffff;
+  --ls-btn-fill-hover: color-mix(in srgb, var(--ls-btn-fill) 86%, #000);
+  --ls-btn-shadow: 0 1px 5px rgba(0, 0, 0, 0.2), 0 2px 2px rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.12);
+  --ls-btn-shadow-active: 0 3px 5px -1px rgba(0, 0, 0, 0.2), 0 5px 8px rgba(0, 0, 0, 0.14), 0 1px 14px rgba(0, 0, 0, 0.12);
+  --ls-btn-transition: var(--ls-hover);
+  --ls-btn-radius: 0.214em;
+  --ls-btn-radius-push: 0.5em;
+  --ls-btn-padding-block: 0.143em;
+  --ls-btn-padding: var(--ls-btn-padding-block) 0.857em;
+  --ls-radio-size: 40px;
+  --ls-radio-unchecked: rgb(0 0 0 / 0.54);
+  --ls-radio-ripple: 0.12;
+  --ls-checkbox-size: 40px;
+  --ls-checkbox-unchecked: rgb(0 0 0 / 0.54);
+  --ls-checkbox-radius: 3px;
+  --ls-switch-track-w: 34px;
+  --ls-switch-track-h: 14px;
+  --ls-switch-dot: 20px;
+  --ls-switch-track-off: rgb(0 0 0 / 0.38);
+  --ls-switch-dot-off: #fafafa;
+  --ls-btn-font-size: var(--ls-size-md-font);
+  --ls-btn-font-weight: 500;
+  --ls-btn-line-height: 1.4em;
+  --ls-btn-min-height: var(--ls-size-md-control);
+  --ls-btn-gap: 0.286em;
+  --ls-btn-press: 0.1em;
+  --ls-btn-ledge-width: 0.143em;
+  --ls-btn-ledge-mix: 16%;
+  --ls-btn-hover: rgba(0, 0, 0, 0.05);
+  --ls-btn-active: rgba(0, 0, 0, 0.08);
+  --ls-menu-item-active-bg: #c7dded;
+  --ls-menu-item-active-text: #009bf9;
+  --ls-input-bg: #ffffff;
+  --ls-input-font-size: var(--ls-size-md-font);
+  --ls-input-min-height: var(--ls-size-md-control);
+  --ls-input-padding: 0 0.75em;
+  --ls-input-radius: 0.286em;
+  --ls-input-spin-offset: 10px;
+  --ls-tabs-bar-bg: #f0f0f0;
+  --ls-tabs-bg: var(--ls-bg);
+  --ls-tabs-active-text: var(--ls-menu-item-active-text);
+  --ls-scroll-shadow: rgba(0, 0, 0, 0.22);
+  --ls-expand-bg: var(--ls-bg-elevated);
+  --ls-expand-header-bg: color-mix(in srgb, var(--ls-bg-elevated) 92%, #000);
+  --ls-ease-out: var(--ls-ease);
+  --ls-duration: 0.5s;
+  --ls-duration-fast: 0.5s;
+  --ls-scrollbar-size: 4px;
+  --ls-scrollbar-thumb-rgb: 0 0 0;
+  --ls-scrollbar-thumb-alpha: 0.14;
+  --ls-scrollbar-thumb-hover-alpha: 0.2;
+  --ls-scrollbar-fade-duration: 0.7s;
+}

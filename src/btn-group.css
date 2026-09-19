@@ -1,0 +1,101 @@
+.ls-btn-group {
+  display: inline-flex;
+  flex-wrap: nowrap;
+  vertical-align: middle;
+  border-radius: var(--ls-btn-radius);
+}
+
+.ls-btn-group > .ls-btn {
+  align-self: stretch;
+  border-radius: inherit;
+  /* 静止态不把组内按钮提升为独立合成层：每个按钮各自的 translate3d(0,0,1px)
+     合成层在特定布局坐标下拼接时，Chromium 会在交界处渲染出 1px 亮线
+     （实心 fill/push 组的纯色背景上肉眼可见）。组内按钮的层叠上下文由
+     isolation: isolate 提供。按下只挪文字，不再对整颗按钮做 transform。 */
+  transform: none;
+  will-change: auto;
+}
+
+.ls-btn-group > .ls-btn::before {
+  box-shadow: none;
+}
+
+.ls-btn-group > .ls-btn.fill::before,
+.ls-btn-group > .ls-btn.push:not(.outline):not(.flat):not(.ghost)::before {
+  z-index: -1;
+}
+
+.ls-btn-group > .ls-btn:first-of-type {
+  border-top-left-radius: inherit;
+  border-bottom-left-radius: inherit;
+}
+
+.ls-btn-group > .ls-btn:last-of-type {
+  border-top-right-radius: inherit;
+  border-bottom-right-radius: inherit;
+}
+
+.ls-btn-group > .ls-btn:not(:last-of-type) {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.ls-btn-group > .ls-btn:not(:first-of-type) {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.ls-btn-group > .ls-btn + .ls-btn::before {
+  border-left: 0;
+}
+
+.ls-btn-group.fill,
+.ls-btn-group.push {
+  box-shadow: var(--ls-btn-shadow);
+}
+
+.ls-btn-group.outline,
+.ls-btn-group.flat,
+.ls-btn-group.ghost {
+  box-shadow: none;
+}
+
+.ls-btn-group.rounded {
+  --ls-btn-radius: 100em;
+  --ls-btn-radius-push: 100em;
+}
+
+.ls-btn-group.sm {
+  --ls-control-height: var(--ls-size-sm-control);
+  --ls-btn-icon-size: var(--ls-size-sm-icon);
+  --ls-btn-font-size: var(--ls-size-sm-font);
+  --ls-btn-min-height: var(--ls-control-height);
+}
+
+.ls-btn-group.md {
+  --ls-control-height: var(--ls-size-md-control);
+  --ls-btn-icon-size: var(--ls-size-md-icon);
+  --ls-btn-font-size: var(--ls-size-md-font);
+  --ls-btn-min-height: var(--ls-control-height);
+}
+
+.ls-btn-group.lg {
+  --ls-control-height: var(--ls-size-lg-control);
+  --ls-btn-icon-size: var(--ls-size-lg-icon);
+  --ls-btn-font-size: var(--ls-size-lg-font);
+  --ls-btn-min-height: var(--ls-control-height);
+}
+
+.ls-btn-group.dense {
+  --ls-btn-padding-block: 0.071em;
+  --ls-btn-padding: 0.071em 0.65em;
+  --ls-btn-line-height: 1.25em;
+  --ls-btn-gap: 0.2em;
+  --ls-btn-press: 0.071em;
+  --ls-btn-ledge-width: 0.1em;
+  --ls-btn-min-height: calc(var(--ls-control-height, var(--ls-size-md-control)) - var(--ls-dense-shrink));
+}
+
+.ls-btn-group.push {
+  border-radius: var(--ls-btn-radius-push);
+}

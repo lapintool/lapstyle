@@ -1,0 +1,365 @@
+.ls-btn {
+  --ls-control-height: var(--ls-size-md-control);
+  --ls-btn-icon-size: var(--ls-size-md-icon);
+  --ls-btn-color: var(--ls-color-gray);
+  --ls-btn-on: var(--ls-text);
+  --ls-btn-fill: var(--ls-btn-fill);
+  --ls-btn-hover: var(--ls-color-gray-hover);
+  --ls-btn-fill-hover: var(--ls-btn-fill-hover);
+  --ls-btn-ledge: color-mix(in srgb, #000 var(--ls-btn-ledge-mix), var(--ls-btn-fill));
+  --ls-btn-focus-ring: var(--ls-input-focus);
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--ls-btn-gap);
+  position: relative;
+  isolation: isolate;
+  width: auto;
+  height: auto;
+  min-height: var(--ls-btn-min-height, var(--ls-control-height));
+  padding: var(--ls-btn-padding);
+  border: 0;
+  border-radius: var(--ls-btn-radius);
+  background: transparent;
+  color: var(--ls-btn-color);
+  font: inherit;
+  font-size: var(--ls-btn-font-size);
+  font-weight: var(--ls-btn-font-weight);
+  line-height: var(--ls-btn-line-height);
+  text-align: center;
+  text-transform: uppercase;
+  text-decoration: none;
+  vertical-align: middle;
+  white-space: nowrap;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  outline: 0;
+  transform: translate3d(0, 0, 1px) translateY(0) scale(1);
+  transform-origin: center center;
+  backface-visibility: hidden;
+  will-change: transform;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition:
+    transform var(--ls-btn-transition),
+    background-color var(--ls-btn-transition),
+    color var(--ls-btn-transition),
+    padding var(--ls-btn-transition);
+}
+
+.ls-btn .ls-icon {
+  --ls-icon-size: var(--ls-btn-icon-size);
+}
+
+.ls-btn .ls-icon.sm {
+  --ls-icon-size: var(--ls-size-sm-icon);
+}
+
+.ls-btn .ls-icon.md {
+  --ls-icon-size: var(--ls-size-md-icon);
+}
+
+.ls-btn .ls-icon.lg {
+  --ls-icon-size: var(--ls-size-lg-icon);
+}
+
+.ls-btn.sm {
+  --ls-control-height: var(--ls-size-sm-control);
+  --ls-btn-icon-size: var(--ls-size-sm-icon);
+  --ls-btn-font-size: var(--ls-size-sm-font);
+  --ls-btn-min-height: var(--ls-control-height);
+}
+
+.ls-btn.md {
+  --ls-control-height: var(--ls-size-md-control);
+  --ls-btn-icon-size: var(--ls-size-md-icon);
+  --ls-btn-font-size: var(--ls-size-md-font);
+  --ls-btn-min-height: var(--ls-control-height);
+}
+
+.ls-btn.lg {
+  --ls-control-height: var(--ls-size-lg-control);
+  --ls-btn-icon-size: var(--ls-size-lg-icon);
+  --ls-btn-font-size: var(--ls-size-lg-font);
+  --ls-btn-min-height: var(--ls-control-height);
+}
+
+.ls-btn::before,
+.ls-btn::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+.ls-btn::before {
+  box-shadow: none;
+  border: 1px solid currentColor;
+  transition:
+    box-shadow var(--ls-btn-transition),
+    border-width var(--ls-btn-transition),
+    border-color var(--ls-btn-transition);
+}
+
+.ls-btn::after {
+  background-color: currentColor;
+  opacity: 0;
+  transition: opacity var(--ls-btn-transition);
+}
+
+.ls-btn.blue {
+  --ls-btn-color: var(--ls-color-blue);
+  --ls-btn-on: var(--ls-color-blue-on);
+  --ls-btn-fill: var(--ls-color-blue);
+  --ls-btn-hover: var(--ls-color-blue-hover);
+}
+
+.ls-btn.cyan {
+  --ls-btn-color: var(--ls-color-cyan);
+  --ls-btn-on: var(--ls-color-cyan-on);
+  --ls-btn-fill: var(--ls-color-cyan);
+  --ls-btn-hover: var(--ls-color-cyan-hover);
+}
+
+.ls-btn.magenta {
+  --ls-btn-color: var(--ls-color-magenta);
+  --ls-btn-on: var(--ls-color-magenta-on);
+  --ls-btn-fill: var(--ls-color-magenta);
+  --ls-btn-hover: var(--ls-color-magenta-hover);
+}
+
+.ls-btn.green {
+  --ls-btn-color: var(--ls-color-green);
+  --ls-btn-on: var(--ls-color-green-on);
+  --ls-btn-fill: var(--ls-color-green);
+  --ls-btn-hover: var(--ls-color-green-hover);
+}
+
+.ls-btn.red {
+  --ls-btn-color: var(--ls-color-red);
+  --ls-btn-on: var(--ls-color-red-on);
+  --ls-btn-fill: var(--ls-color-red);
+  --ls-btn-hover: var(--ls-color-red-hover);
+}
+
+.ls-btn.yellow {
+  --ls-btn-color: var(--ls-color-yellow);
+  --ls-btn-on: var(--ls-color-yellow-on);
+  --ls-btn-fill: var(--ls-color-yellow);
+  --ls-btn-hover: var(--ls-color-yellow-hover);
+}
+
+.ls-btn.dark {
+  --ls-btn-color: var(--ls-color-dark);
+  --ls-btn-on: var(--ls-color-dark-on);
+  --ls-btn-fill: var(--ls-color-dark);
+  --ls-btn-hover: var(--ls-color-dark-hover);
+}
+
+.ls-btn.gray {
+  --ls-btn-color: var(--ls-color-gray);
+  --ls-btn-on: var(--ls-color-gray-on);
+  --ls-btn-fill: var(--ls-color-gray);
+  --ls-btn-hover: var(--ls-color-gray-hover);
+}
+
+.ls-btn.white {
+  --ls-btn-color: var(--ls-color-white);
+  --ls-btn-on: var(--ls-color-white-on);
+  --ls-btn-fill: var(--ls-color-white);
+  --ls-btn-hover: var(--ls-color-white-hover);
+}
+
+.ls-btn.black {
+  --ls-btn-color: var(--ls-color-black);
+  --ls-btn-on: var(--ls-color-black-on);
+  --ls-btn-fill: var(--ls-color-black);
+  --ls-btn-hover: var(--ls-color-black-hover);
+}
+
+.ls-btn.blue,
+.ls-btn.cyan,
+.ls-btn.magenta,
+.ls-btn.green,
+.ls-btn.red,
+.ls-btn.yellow,
+.ls-btn.dark,
+.ls-btn.gray,
+.ls-btn.white,
+.ls-btn.black {
+  --ls-btn-fill-hover: var(--ls-btn-hover);
+}
+
+@media (any-hover: hover) {
+  .ls-btn:hover:not(:disabled) {
+    --ls-btn-color: var(--ls-btn-hover);
+  }
+
+  .ls-btn:hover:not(:disabled)::after {
+    opacity: 0.15;
+  }
+
+  .ls-btn.fill:hover:not(:disabled),
+  .ls-btn.push:not(.outline):not(.flat):not(.ghost):hover:not(:disabled) {
+    --ls-btn-fill: var(--ls-btn-fill-hover);
+  }
+
+  .ls-btn.fill:hover:not(:disabled)::after,
+  .ls-btn.push:not(.outline):not(.flat):not(.ghost):hover:not(:disabled)::after {
+    opacity: 0;
+  }
+}
+
+.ls-btn:focus-visible::after {
+  opacity: 0.22;
+}
+
+/* Keyboard focus ring. ::after alone is too weak on low-fill variants and
+   dark-on-dark combinations, so fall back to a real outline here. */
+.ls-btn:focus-visible {
+  outline: 2px solid var(--ls-btn-focus-ring);
+  outline-offset: 2px;
+}
+
+/* keep the focus feedback when a keyboard-focused button is also hovered. */
+.ls-btn:focus-visible:hover::after {
+  opacity: 0.22;
+}
+
+.ls-btn:active:not(:disabled).ls-btn.fill:not(.push)::before {
+  box-shadow: var(--ls-btn-shadow-active);
+}
+
+.ls-btn:disabled {
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.ls-btn.fill {
+  background: var(--ls-btn-fill);
+  color: var(--ls-btn-on);
+}
+
+.ls-btn.fill::before {
+  box-shadow: var(--ls-btn-shadow);
+  border: 0;
+}
+
+.ls-btn.outline {
+  background: transparent;
+  color: var(--ls-btn-color);
+}
+
+.ls-btn.outline::before {
+  box-shadow: none;
+  border: 1px solid currentColor;
+}
+
+.ls-btn.flat,
+.ls-btn.ghost {
+  background: transparent;
+  color: var(--ls-btn-color);
+}
+
+.ls-btn.flat::before,
+.ls-btn.ghost::before {
+  box-shadow: none;
+  border: 0;
+}
+
+.ls-btn.push:not(.outline):not(.flat):not(.ghost) {
+  background: var(--ls-btn-fill);
+  color: var(--ls-btn-on);
+}
+
+.ls-btn.push:not(.outline):not(.flat):not(.ghost)::before {
+  box-shadow: none;
+  border-top: 0;
+  border-right: 0;
+  border-left: 0;
+}
+
+.ls-btn.push {
+  /* ledge 占底：上少下多，把内容抬到「面板」视觉中心（先前上下写反了） */
+  --ls-btn-content-nudge: calc(var(--ls-btn-ledge-width) / 2);
+  border-radius: var(--ls-btn-radius-push);
+  padding-top: calc(var(--ls-btn-padding-block) - var(--ls-btn-content-nudge));
+  padding-bottom: calc(var(--ls-btn-padding-block) + var(--ls-btn-content-nudge));
+}
+
+.ls-btn.push::before {
+  border-bottom: var(--ls-btn-ledge-width) solid var(--ls-btn-ledge);
+}
+
+.ls-btn.no-caps {
+  text-transform: none;
+}
+
+.ls-btn.stack {
+  flex-direction: column;
+  gap: var(--ls-btn-press);
+  height: auto;
+  white-space: normal;
+}
+
+.ls-btn.icon,
+.ls-btn.round {
+  width: var(--ls-btn-min-height);
+  min-width: var(--ls-btn-min-height);
+  min-height: var(--ls-btn-min-height);
+  height: var(--ls-btn-min-height);
+  padding: 0;
+}
+
+.ls-btn.push.icon,
+.ls-btn.push.round {
+  padding: 0 0 var(--ls-btn-content-nudge);
+}
+
+.ls-btn.rounded {
+  --ls-btn-radius: 100em;
+  --ls-btn-radius-push: 100em;
+}
+
+.ls-btn.round {
+  border-radius: 50%;
+}
+
+.ls-btn.dense {
+  /* Compact chrome only — font-size / icon size stay on the current sm|md|lg step. */
+  --ls-btn-padding-block: 0.071em;
+  --ls-btn-padding: 0.071em 0.65em;
+  --ls-btn-line-height: 1.25em;
+  --ls-btn-gap: 0.2em;
+  --ls-btn-press: 0.071em;
+  --ls-btn-ledge-width: 0.1em;
+  --ls-btn-min-height: calc(var(--ls-control-height) - var(--ls-dense-shrink));
+}
+
+/* 按下只挪文字/图标，背景与描边留在原位，避免按钮组接缝撕裂。 */
+.ls-btn:active:not(:disabled) {
+  padding-top: calc(var(--ls-btn-padding-block) + var(--ls-btn-press));
+  padding-bottom: calc(var(--ls-btn-padding-block) - var(--ls-btn-press));
+}
+
+.ls-btn.push:active:not(:disabled) {
+  padding-top: calc(var(--ls-btn-padding-block) - var(--ls-btn-content-nudge) + var(--ls-btn-press));
+  padding-bottom: calc(var(--ls-btn-padding-block) + var(--ls-btn-content-nudge) - var(--ls-btn-press));
+}
+
+.ls-btn.icon:active:not(:disabled),
+.ls-btn.round:active:not(:disabled) {
+  padding-top: var(--ls-btn-press);
+  padding-bottom: 0;
+}
+
+.ls-btn.push.icon:active:not(:disabled),
+.ls-btn.push.round:active:not(:disabled) {
+  padding-top: var(--ls-btn-press);
+  padding-bottom: calc(var(--ls-btn-content-nudge) - var(--ls-btn-press));
+}

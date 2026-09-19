@@ -1,0 +1,457 @@
+/* 复选框家族：同一颗原生 checkbox 的不同外观。
+   作者侧只写 <label class="ls-checkbox …"><input type="checkbox"> 文字</label>
+   方形（默认）/ 圆形（.round）/ 开关（.switch）/ 按钮（.btn）。
+   勾选图标为 Material 路径（check / task_alt），不引入图标库。 */
+
+@property --ls-ripple {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
+}
+
+.ls-checkbox {
+  --ls-checkbox-color: var(--ls-checkbox-unchecked);
+  --ls-checkbox-on: var(--ls-color-blue);
+  --ls-checkbox-tick: var(--ls-color-blue-on);
+  --ls-box: calc(var(--ls-checkbox-size) * 0.45);
+  --ls-check-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0%200%2024%2024'%3E%3Cpath fill='white' d='M9%2016.17L4.83%2012l-1.42%201.41L9%2019L21%207l-1.41-1.41z'/%3E%3C/svg%3E");
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  vertical-align: middle;
+  position: relative;
+  max-width: 100%;
+  outline: 0;
+  color: var(--ls-text);
+  font: inherit;
+  font-size: 0.875rem;
+  line-height: 1.715em;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.ls-checkbox:has(:checked) {
+  --ls-checkbox-color: var(--ls-checkbox-on, var(--ls-text));
+}
+
+.ls-checkbox.blue {
+  --ls-checkbox-on: var(--ls-color-blue);
+  --ls-checkbox-tick: var(--ls-color-blue-on);
+}
+
+.ls-checkbox.cyan {
+  --ls-checkbox-on: var(--ls-color-cyan);
+  --ls-checkbox-tick: var(--ls-color-cyan-on);
+}
+
+.ls-checkbox.magenta {
+  --ls-checkbox-on: var(--ls-color-magenta);
+  --ls-checkbox-tick: var(--ls-color-magenta-on);
+}
+
+.ls-checkbox.green {
+  --ls-checkbox-on: var(--ls-color-green);
+  --ls-checkbox-tick: var(--ls-color-green-on);
+}
+
+.ls-checkbox.red {
+  --ls-checkbox-on: var(--ls-color-red);
+  --ls-checkbox-tick: var(--ls-color-red-on);
+}
+
+.ls-checkbox.yellow {
+  --ls-checkbox-on: var(--ls-color-yellow);
+  --ls-checkbox-tick: var(--ls-color-yellow-on);
+}
+
+.ls-checkbox.dark {
+  --ls-checkbox-on: var(--ls-color-dark);
+  --ls-checkbox-tick: var(--ls-color-dark-on);
+}
+
+.ls-checkbox.gray {
+  --ls-checkbox-on: var(--ls-color-gray);
+  --ls-checkbox-tick: var(--ls-color-gray-on);
+}
+
+.ls-checkbox.white {
+  --ls-checkbox-on: var(--ls-color-white);
+  --ls-checkbox-tick: var(--ls-color-white-on);
+}
+
+.ls-checkbox.black {
+  --ls-checkbox-on: var(--ls-color-black);
+  --ls-checkbox-tick: var(--ls-color-black-on);
+}
+
+.ls-checkbox.blue,
+.ls-checkbox.cyan,
+.ls-checkbox.magenta,
+.ls-checkbox.green,
+.ls-checkbox.red,
+.ls-checkbox.yellow,
+.ls-checkbox.dark,
+.ls-checkbox.gray,
+.ls-checkbox.white,
+.ls-checkbox.black {
+  --ls-checkbox-color: var(--ls-checkbox-on);
+}
+
+/* .color：保持颜色——关闭时边框仍为品牌色；选中只显示勾，不填充 */
+.ls-checkbox.color {
+  --ls-checkbox-color: var(--ls-checkbox-on, var(--ls-text));
+  --ls-checkbox-tick: var(--ls-checkbox-on, var(--ls-text));
+}
+
+.ls-checkbox.color:not(.btn) {
+  color: var(--ls-checkbox-on, var(--ls-text));
+}
+
+.ls-checkbox > input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  opacity: 0;
+  cursor: pointer;
+  z-index: 1;
+}
+
+.ls-checkbox:has(:disabled) {
+  opacity: 0.75;
+  cursor: default;
+}
+
+.ls-checkbox:has(:disabled) > input {
+  cursor: default;
+}
+
+/* ---------------------------------------------------------------------------
+ * 方形 / 圆形：::before 方框，::after 勾；光晕从中心缩放实心圆
+ * ------------------------------------------------------------------------- */
+
+.ls-checkbox:not(.switch):not(.btn) {
+  --ls-ripple: 0px;
+  min-height: var(--ls-checkbox-size);
+  padding-inline: var(--ls-checkbox-size) 8px;
+  background-image: radial-gradient(
+    circle closest-side,
+    color-mix(in srgb, var(--ls-checkbox-color) calc(var(--ls-radio-ripple) * 100%), transparent) 100%,
+    transparent 100%
+  );
+  background-repeat: no-repeat;
+  background-position: calc((var(--ls-checkbox-size) - var(--ls-ripple)) / 2) 50%;
+  background-size: var(--ls-ripple) var(--ls-ripple);
+  transition: --ls-ripple var(--ls-hover);
+}
+
+.ls-checkbox:not(.switch):not(.btn)::before,
+.ls-checkbox:not(.switch):not(.btn)::after {
+  content: "";
+  position: absolute;
+  left: calc((var(--ls-checkbox-size) - var(--ls-box)) / 2);
+  top: 50%;
+  width: var(--ls-box);
+  height: var(--ls-box);
+  margin-top: calc(var(--ls-box) / -2);
+  box-sizing: border-box;
+  pointer-events: none;
+}
+
+.ls-checkbox:not(.switch):not(.btn)::before {
+  border: 2px solid var(--ls-checkbox-color);
+  border-radius: var(--ls-checkbox-radius);
+  background: transparent;
+  transition:
+    background-color var(--ls-hover),
+    border-color var(--ls-hover),
+    box-shadow var(--ls-hover);
+}
+
+.ls-checkbox:not(.switch):not(.btn):has(:checked)::before {
+  border-color: var(--ls-checkbox-color);
+  background: var(--ls-checkbox-color);
+}
+
+/* 半透明色（禁用灰）描边叠在填充上会发深；选中填充后描边透明，整块同一色 */
+.ls-checkbox:not(.switch):not(.btn):not(.color):has(:checked)::before {
+  border-color: transparent;
+}
+
+.ls-checkbox.color:not(.switch):not(.btn):has(:checked)::before {
+  background: transparent;
+}
+
+.ls-checkbox.round:not(.switch):not(.btn)::before {
+  border-radius: 50%;
+}
+
+.ls-checkbox:not(.switch):not(.btn):not(:has(:disabled)):has(:focus-visible) {
+  --ls-ripple: var(--ls-checkbox-size);
+}
+
+@media (any-hover: hover) {
+  .ls-checkbox:not(.switch):not(.btn):not(:has(:disabled)):hover {
+    --ls-ripple: var(--ls-checkbox-size);
+  }
+}
+
+.ls-checkbox:not(.switch):not(.btn)::after {
+  background: var(--ls-checkbox-tick);
+  opacity: 0;
+  transform: scale(0);
+  transform-origin: center;
+  transition:
+    opacity var(--ls-hover),
+    transform var(--ls-hover),
+    background-color var(--ls-hover);
+  -webkit-mask: var(--ls-check-icon) center / contain no-repeat;
+  mask: var(--ls-check-icon) center / contain no-repeat;
+  -webkit-mask-mode: alpha;
+  mask-mode: alpha;
+}
+
+.ls-checkbox:not(.switch):not(.btn):has(:checked)::after {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.ls-checkbox.round:not(.switch):not(.btn)::after {
+  --ls-tick: calc(var(--ls-box) - 4px);
+  left: calc((var(--ls-checkbox-size) - var(--ls-tick)) / 2);
+  width: var(--ls-tick);
+  height: var(--ls-tick);
+  margin-top: calc(var(--ls-tick) / -2);
+}
+
+.ls-checkbox.round.color:not(.switch):not(.btn)::after {
+  background: var(--ls-checkbox-color);
+}
+
+.ls-checkbox.round.color:not(.switch):not(.btn):has(:checked)::after {
+  background: var(--ls-checkbox-on, var(--ls-text));
+}
+
+/* ---------------------------------------------------------------------------
+ * 开关 .switch —— Quasar QToggle：::before 轨道，::after 圆点
+ * ------------------------------------------------------------------------- */
+
+.ls-checkbox.switch {
+  --ls-switch-color: var(--ls-switch-dot-off);
+  min-height: var(--ls-checkbox-size);
+  padding-inline: var(--ls-switch-track-w) 8px;
+}
+
+.ls-checkbox.switch:has(:checked) {
+  --ls-switch-color: var(--ls-checkbox-on, var(--ls-text));
+}
+
+.ls-checkbox.switch.color:not(:has(:checked)) {
+  --ls-switch-color: color-mix(in srgb, var(--ls-checkbox-on, var(--ls-text)) 28%, transparent);
+}
+
+.ls-checkbox.switch::before,
+.ls-checkbox.switch::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+  box-sizing: border-box;
+}
+
+.ls-checkbox.switch::before {
+  left: 0;
+  top: 50%;
+  width: var(--ls-switch-track-w);
+  height: var(--ls-switch-track-h);
+  margin-top: calc(var(--ls-switch-track-h) / -2);
+  border-radius: calc(var(--ls-switch-track-h) / 2);
+  background: var(--ls-switch-track-off);
+  transition: background-color var(--ls-hover);
+}
+
+.ls-checkbox.switch:has(:checked)::before {
+  background: color-mix(in srgb, var(--ls-switch-color) 32%, transparent);
+}
+
+.ls-checkbox.switch.color:not(:has(:checked))::before {
+  background: color-mix(in srgb, var(--ls-checkbox-on, var(--ls-text)) 12%, transparent);
+}
+
+.ls-checkbox.switch::after {
+  left: 0;
+  top: 50%;
+  width: var(--ls-switch-dot);
+  height: var(--ls-switch-dot);
+  margin-top: calc(var(--ls-switch-dot) / -2);
+  border-radius: 50%;
+  background: var(--ls-switch-color);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+  transform: translateX(0);
+  transition:
+    transform var(--ls-hover),
+    background-color var(--ls-hover),
+    box-shadow var(--ls-hover);
+}
+
+.ls-checkbox.switch:has(:checked)::after {
+  transform: translateX(calc(var(--ls-switch-track-w) - var(--ls-switch-dot)));
+}
+
+.ls-checkbox.switch:not(:has(:disabled)):has(:focus-visible)::after {
+  box-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.4),
+    0 0 0 calc((var(--ls-checkbox-size) - var(--ls-switch-dot)) / 2)
+      color-mix(in srgb, var(--ls-switch-color) calc(var(--ls-radio-ripple) * 100%), transparent);
+}
+
+@media (any-hover: hover) {
+  .ls-checkbox.switch:not(:has(:disabled)):hover::after {
+    box-shadow:
+      0 1px 3px rgba(0, 0, 0, 0.4),
+      0 0 0 calc((var(--ls-checkbox-size) - var(--ls-switch-dot)) / 2)
+        color-mix(in srgb, var(--ls-switch-color) calc(var(--ls-radio-ripple) * 100%), transparent);
+  }
+}
+
+/* ---------------------------------------------------------------------------
+ * 按钮 .btn —— 自包含，不依赖 button.css
+ * 未选 outline；hover 淡底；选中更深填充
+ * ------------------------------------------------------------------------- */
+
+.ls-checkbox.btn {
+  --ls-control-height: var(--ls-size-md-control);
+  isolation: isolate;
+  color: var(--ls-checkbox-on, var(--ls-text));
+  min-height: var(--ls-btn-min-height, var(--ls-control-height));
+  padding: var(--ls-btn-padding);
+  border: 1px solid currentColor;
+  border-radius: var(--ls-btn-radius);
+  background: transparent;
+  font-size: var(--ls-btn-font-size);
+  font-weight: var(--ls-btn-font-weight);
+  line-height: var(--ls-btn-line-height);
+  letter-spacing: 0.0125em;
+  text-transform: uppercase;
+  justify-content: center;
+  transition: padding var(--ls-btn-transition);
+}
+
+.ls-checkbox.btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: currentColor;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--ls-btn-transition);
+}
+
+.ls-checkbox.btn.sm {
+  --ls-control-height: var(--ls-size-sm-control);
+  --ls-btn-icon-size: var(--ls-size-sm-icon);
+  --ls-btn-font-size: var(--ls-size-sm-font);
+  --ls-btn-min-height: var(--ls-control-height);
+}
+
+.ls-checkbox.btn.md {
+  --ls-control-height: var(--ls-size-md-control);
+  --ls-btn-icon-size: var(--ls-size-md-icon);
+  --ls-btn-font-size: var(--ls-size-md-font);
+  --ls-btn-min-height: var(--ls-control-height);
+}
+
+.ls-checkbox.btn.lg {
+  --ls-control-height: var(--ls-size-lg-control);
+  --ls-btn-icon-size: var(--ls-size-lg-icon);
+  --ls-btn-font-size: var(--ls-size-lg-font);
+  --ls-btn-min-height: var(--ls-control-height);
+}
+
+.ls-checkbox.btn.dense {
+  --ls-btn-padding-block: 0.071em;
+  --ls-btn-padding: 0.071em 0.65em;
+  --ls-btn-line-height: 1.25em;
+  --ls-btn-gap: 0.2em;
+  --ls-btn-press: 0.071em;
+  --ls-btn-ledge-width: 0.1em;
+  --ls-btn-min-height: calc(var(--ls-control-height, var(--ls-size-md-control)) - var(--ls-dense-shrink));
+}
+
+.ls-checkbox.btn:not(:has(:disabled)):not(:has(:checked)):hover::before {
+  opacity: 0.07;
+}
+
+.ls-checkbox.btn:has(:checked)::before {
+  opacity: 0.32;
+}
+
+.ls-checkbox.btn:has(:focus-visible) {
+  outline: 2px solid var(--ls-input-focus);
+  outline-offset: -2px;
+}
+
+.ls-checkbox.btn:not(:has(:disabled)):active {
+  padding-top: calc(var(--ls-btn-padding-block) + var(--ls-btn-press));
+  padding-bottom: calc(var(--ls-btn-padding-block) - var(--ls-btn-press));
+}
+
+.ls-checkbox.btn:has(:disabled) {
+  opacity: 0.7;
+}
+
+/* 禁用：所有形态（含颜色 / .color / 开关 / 按钮）统一灰色，不再透出品牌色 */
+.ls-checkbox:has(:disabled),
+.ls-checkbox.color:not(.btn):has(:disabled),
+.ls-checkbox.switch:has(:checked):has(:disabled),
+.ls-checkbox.switch.color:not(:has(:checked)):has(:disabled),
+.ls-checkbox.btn:has(:disabled) {
+  --ls-checkbox-on: var(--ls-checkbox-unchecked);
+  --ls-checkbox-color: var(--ls-checkbox-unchecked);
+  --ls-checkbox-tick: var(--ls-bg);
+  --ls-switch-color: var(--ls-switch-dot-off);
+  color: var(--ls-checkbox-unchecked);
+}
+
+.ls-checkbox.color:has(:disabled),
+.ls-checkbox.color:not(.btn):has(:disabled) {
+  --ls-checkbox-tick: var(--ls-checkbox-unchecked);
+}
+
+.ls-checkbox.switch:has(:disabled)::before,
+.ls-checkbox.switch.color:has(:disabled)::before,
+.ls-checkbox.switch.color:not(:has(:checked)):has(:disabled)::before {
+  background: var(--ls-switch-track-off);
+}
+
+.ls-checkbox.switch:has(:checked):has(:disabled)::before {
+  background: color-mix(in srgb, var(--ls-switch-dot-off) 32%, transparent);
+}
+
+@media (forced-colors: active) {
+  .ls-checkbox {
+    forced-color-adjust: none;
+    color: CanvasText;
+  }
+  .ls-checkbox::before {
+    border: 2px solid CanvasText;
+    background: Canvas;
+  }
+  .ls-checkbox:has(:checked)::before {
+    background: Highlight;
+    border-color: Highlight;
+  }
+  .ls-checkbox.switch::before {
+    background: Canvas;
+    border: 2px solid CanvasText;
+  }
+  .ls-checkbox.switch:has(:checked)::before {
+    background: Highlight;
+    border-color: Highlight;
+  }
+}

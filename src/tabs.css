@@ -1,0 +1,267 @@
+/* 标签页：栏 + 面板一体。当前标签底色与面板相同，看起来连在一起。
+   三色：--ls-tabs-bg 背景 / --ls-tabs-bar 标签条（主题固定色）/ --ls-tabs-active 激活字。
+   未选字 --ls-text-dim；hover 只加亮字色。颜色 class 只改激活字色。 */
+
+.ls-tabs {
+  --ls-tabs-bar: var(--ls-tabs-bar-bg);
+  --ls-tabs-bg: var(--ls-tabs-bg);
+  --ls-tabs-color: var(--ls-text-dim);
+  --ls-tabs-active: var(--ls-tabs-active-text);
+  --ls-tabs-hover: var(--ls-text);
+  --ls-tabs-radius: 8px;
+  --ls-tabs-tab-radius: 4px;
+  --ls-tabs-bar-pad: 3px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  border: 1px solid var(--ls-border);
+  border-radius: var(--ls-tabs-radius);
+  background: var(--ls-tabs-bar);
+  color: var(--ls-text);
+  /* 不用 overflow:hidden，避免裁切条底描边与外壳圆角处边框 */
+}
+
+.ls-tabs.blue,
+.ls-tabs .bar.blue {
+  --ls-tabs-active: var(--ls-color-blue);
+}
+
+.ls-tabs.cyan,
+.ls-tabs .bar.cyan {
+  --ls-tabs-active: var(--ls-color-cyan);
+}
+
+.ls-tabs.magenta,
+.ls-tabs .bar.magenta {
+  --ls-tabs-active: var(--ls-color-magenta);
+}
+
+.ls-tabs.green,
+.ls-tabs .bar.green {
+  --ls-tabs-active: var(--ls-color-green);
+}
+
+.ls-tabs.red,
+.ls-tabs .bar.red {
+  --ls-tabs-active: var(--ls-color-red);
+}
+
+.ls-tabs.yellow,
+.ls-tabs .bar.yellow {
+  --ls-tabs-active: var(--ls-color-yellow);
+}
+
+.ls-tabs.dark,
+.ls-tabs .bar.dark {
+  --ls-tabs-active: var(--ls-color-dark);
+}
+
+.ls-tabs.gray,
+.ls-tabs .bar.gray {
+  --ls-tabs-active: var(--ls-color-gray);
+}
+
+.ls-tabs.white,
+.ls-tabs .bar.white {
+  --ls-tabs-active: var(--ls-color-white);
+}
+
+.ls-tabs.black,
+.ls-tabs .bar.black {
+  --ls-tabs-active: var(--ls-color-black);
+}
+
+.ls-tabs .bar {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: flex-end;
+  min-width: 0;
+  padding: var(--ls-tabs-bar-pad) var(--ls-tabs-bar-pad) 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  background: var(--ls-tabs-bar);
+  border-radius: calc(var(--ls-tabs-radius) - 1px) calc(var(--ls-tabs-radius) - 1px) 0 0;
+  position: relative;
+  z-index: 1;
+  /* inset 底线：激活标签底色盖住即断开；外阴影留给 is-scrolled */
+  box-shadow:
+    inset 0 -1px 0 var(--ls-border),
+    0 6px 6px -6px transparent;
+  transition: box-shadow var(--ls-duration-fast) var(--ls-ease-out);
+}
+
+/* 面板滚离顶部时，栏底投下阴影（与 Lapeditor 一致） */
+.ls-tabs.is-scrolled .bar {
+  box-shadow:
+    inset 0 -1px 0 var(--ls-border),
+    0 6px 6px -6px var(--ls-scroll-shadow);
+}
+
+.ls-tabs .tab {
+  box-sizing: border-box;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  max-width: 16rem;
+  margin: 0;
+  padding: 4px 8px;
+  border: 0;
+  border-radius: var(--ls-tabs-tab-radius) var(--ls-tabs-tab-radius) 0 0;
+  background: transparent;
+  color: var(--ls-tabs-color);
+  font: inherit;
+  font-size: 0.8125rem;
+  line-height: 1.3;
+  text-align: left;
+  white-space: nowrap;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  flex: 0 1 auto;
+  transition:
+    color var(--ls-hover),
+    background-color var(--ls-hover);
+}
+
+.ls-tabs .tab .ls-icon {
+  --ls-icon-size: 1rem;
+  color: inherit;
+}
+
+.ls-tabs .label {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ls-tabs .tab:hover:not(.is-active) {
+  background: transparent;
+  color: var(--ls-tabs-hover);
+}
+
+.ls-tabs .tab.is-active {
+  background: var(--ls-tabs-bg);
+  color: var(--ls-tabs-active);
+  border-radius: var(--ls-tabs-tab-radius) var(--ls-tabs-tab-radius) 0 0;
+  z-index: 1;
+}
+
+/* 底侧外圆角：只铺底色盖住条底线拐角，无描边 */
+.ls-tabs .tab.is-active::before,
+.ls-tabs .tab.is-active::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  width: var(--ls-tabs-tab-radius);
+  height: var(--ls-tabs-tab-radius);
+  pointer-events: none;
+}
+
+.ls-tabs .tab.is-active::before {
+  left: calc(-1 * var(--ls-tabs-tab-radius));
+  background: radial-gradient(
+    circle at 0 0,
+    transparent var(--ls-tabs-tab-radius),
+    var(--ls-tabs-bg) calc(var(--ls-tabs-tab-radius) + 0.5px)
+  );
+}
+
+.ls-tabs .tab.is-active::after {
+  right: calc(-1 * var(--ls-tabs-tab-radius));
+  background: radial-gradient(
+    circle at 100% 0,
+    transparent var(--ls-tabs-tab-radius),
+    var(--ls-tabs-bg) calc(var(--ls-tabs-tab-radius) + 0.5px)
+  );
+}
+
+.ls-tabs .tab:focus-visible {
+  outline: 2px solid var(--ls-input-focus);
+  outline-offset: -2px;
+}
+
+/* 未选中标签之间的细分隔，贴着当前标签的两侧不画 */
+.ls-tabs .tab:not(.is-active) + .tab:not(.is-active)::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 22%;
+  bottom: 22%;
+  width: 1px;
+  background: var(--ls-border);
+}
+
+.ls-tabs .close {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 1.15rem;
+  height: 1.15rem;
+  margin: 0;
+  margin-left: 2px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: inherit;
+  opacity: 0.5;
+  cursor: pointer;
+  transition:
+    opacity var(--ls-hover),
+    background-color var(--ls-hover);
+}
+
+.ls-tabs .tab:hover .close,
+.ls-tabs .tab.is-active .close {
+  opacity: 0.85;
+}
+
+.ls-tabs .close:hover {
+  background: var(--ls-btn-hover);
+  opacity: 1;
+}
+
+.ls-tabs .close .ls-icon {
+  --ls-icon-size: 0.85rem;
+}
+
+.ls-tabs .panel {
+  box-sizing: border-box;
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+  overflow: auto;
+  padding: 14px 16px;
+  background: var(--ls-tabs-bg);
+  color: var(--ls-text);
+  font-size: 0.875rem;
+  line-height: 1.5;
+  border-radius: 0 0 calc(var(--ls-tabs-radius) - 1px) calc(var(--ls-tabs-radius) - 1px);
+}
+
+.ls-tabs .panel[hidden] {
+  display: none;
+}
+
+/* 仅标签栏：去掉外壳 chrome；仅面板（客户区）透明。栏/选中色走全局 token（栏 elevated、选中/面板 bg）。 */
+.ls-tabs.bar-only {
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+
+.ls-tabs.bar-only .bar {
+  border-radius: 0;
+}
+
+.ls-tabs.bar-only .panel {
+  min-height: 0;
+  padding: 12px 0 0;
+  background: transparent;
+  border-radius: 0;
+}

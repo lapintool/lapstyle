@@ -1,0 +1,149 @@
+:has(> .ls-tooltip) {
+  position: relative;
+}
+
+/* tooltip 在宿�?stacking context 内；悬停时抬高宿主，才能盖住后绘的兄弟按钮等 */
+:has(> .ls-tooltip):hover,
+:has(> .ls-tooltip):focus-within {
+  z-index: var(--ls-z-tooltip);
+}
+
+.ls-tooltip {
+  box-sizing: border-box;
+  position: absolute;
+  left: 50%;
+  top: auto;
+  right: auto;
+  bottom: calc(100% + var(--ls-tooltip-offset));
+  z-index: var(--ls-z-tooltip);
+  width: max-content;
+  max-width: min(220px, 70vw);
+  padding: 6px 10px;
+  border-radius: 4px;
+  background: var(--ls-popover-bg);
+  color: var(--ls-popover-text);
+  box-shadow: var(--ls-popover-shadow);
+  font-size: 0.75rem;
+  font-weight: 400;
+  line-height: 1.35;
+  letter-spacing: normal;
+  text-align: center;
+  text-transform: none;
+  white-space: normal;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(-50%) translateY(4px);
+  transition:
+    opacity 0.15s var(--ls-ease-out),
+    transform 0.15s var(--ls-ease-out),
+    visibility 0.15s;
+  transition-delay: 0s;
+}
+
+.ls-tooltip.top,
+.ls-tooltip[data-ls-placement="top"] {
+  top: auto;
+  right: auto;
+  bottom: calc(100% + var(--ls-tooltip-offset));
+  left: 50%;
+  transform: translateX(-50%) translateY(4px);
+}
+
+.ls-tooltip.bottom,
+.ls-tooltip[data-ls-placement="bottom"] {
+  top: calc(100% + var(--ls-tooltip-offset));
+  right: auto;
+  bottom: auto;
+  left: 50%;
+  transform: translateX(-50%) translateY(-4px);
+}
+
+.ls-tooltip.left,
+.ls-tooltip[data-ls-placement="left"] {
+  top: 50%;
+  right: calc(100% + var(--ls-tooltip-offset));
+  bottom: auto;
+  left: auto;
+  transform: translate(-4px, -50%);
+}
+
+.ls-tooltip.right,
+.ls-tooltip[data-ls-placement="right"] {
+  top: 50%;
+  right: auto;
+  bottom: auto;
+  left: calc(100% + var(--ls-tooltip-offset));
+  transform: translate(4px, -50%);
+}
+
+.ls-tooltip.blue {
+  color: var(--ls-color-blue);
+}
+
+.ls-tooltip.cyan {
+  color: var(--ls-color-cyan);
+}
+
+.ls-tooltip.magenta {
+  color: var(--ls-color-magenta);
+}
+
+.ls-tooltip.green {
+  color: var(--ls-color-green);
+}
+
+.ls-tooltip.red {
+  color: var(--ls-color-red);
+}
+
+.ls-tooltip.yellow {
+  color: var(--ls-color-yellow);
+}
+
+.ls-tooltip.dark {
+  color: var(--ls-color-dark);
+}
+
+.ls-tooltip.gray {
+  color: var(--ls-color-gray);
+}
+
+.ls-tooltip.white {
+  color: var(--ls-color-white);
+}
+
+.ls-tooltip.black {
+  color: var(--ls-color-black);
+}
+
+:hover > .ls-tooltip,
+:focus-visible > .ls-tooltip {
+  opacity: 1;
+  visibility: visible;
+  transition-delay: var(--ls-tooltip-delay);
+}
+
+:hover > .ls-tooltip.top,
+:focus-visible > .ls-tooltip.top,
+:hover > .ls-tooltip[data-ls-placement="top"],
+:focus-visible > .ls-tooltip[data-ls-placement="top"],
+:hover > .ls-tooltip:not(.bottom):not(.left):not(.right):not([data-ls-placement]),
+:focus-visible > .ls-tooltip:not(.bottom):not(.left):not(.right):not([data-ls-placement]),
+:hover > .ls-tooltip.bottom,
+:focus-visible > .ls-tooltip.bottom,
+:hover > .ls-tooltip[data-ls-placement="bottom"],
+:focus-visible > .ls-tooltip[data-ls-placement="bottom"] {
+  transform: translateX(-50%) translateY(0);
+}
+
+:hover > .ls-tooltip.left,
+:focus-visible > .ls-tooltip.left,
+:hover > .ls-tooltip[data-ls-placement="left"],
+:focus-visible > .ls-tooltip[data-ls-placement="left"],
+:hover > .ls-tooltip.right,
+:focus-visible > .ls-tooltip.right,
+:hover > .ls-tooltip[data-ls-placement="right"],
+:focus-visible > .ls-tooltip[data-ls-placement="right"] {
+  transform: translate(0, -50%);
+}

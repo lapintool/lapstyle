@@ -1,0 +1,199 @@
+/* 单选：同一颗原生 radio 的圆环外观。
+   作者侧只写 <label class="ls-radio …"><input type="radio"> 文字</label>
+   对齐 Quasar QRadio：未选空心环，选中环 + 内点从中心放大；hover 光晕为实心圆。 */
+
+@property --ls-ripple {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
+}
+
+.ls-radio {
+  --ls-radio-color: var(--ls-radio-unchecked);
+  --ls-radio-on: var(--ls-color-blue);
+  --ls-radio-box: calc(var(--ls-radio-size) * 0.5);
+  --ls-radio-dot: calc(var(--ls-radio-box) * 0.5);
+  --ls-ripple: 0px;
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  vertical-align: middle;
+  position: relative;
+  max-width: 100%;
+  min-height: var(--ls-radio-size);
+  padding-inline: var(--ls-radio-size) 8px;
+  outline: 0;
+  color: var(--ls-text);
+  font: inherit;
+  font-size: 0.875rem;
+  line-height: 1.715em;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  background-image: radial-gradient(
+    circle closest-side,
+    color-mix(in srgb, var(--ls-radio-color) calc(var(--ls-radio-ripple) * 100%), transparent) 100%,
+    transparent 100%
+  );
+  background-repeat: no-repeat;
+  background-position: calc((var(--ls-radio-size) - var(--ls-ripple)) / 2) 50%;
+  background-size: var(--ls-ripple) var(--ls-ripple);
+  transition: --ls-ripple var(--ls-hover);
+}
+
+.ls-radio:has(:checked) {
+  --ls-radio-color: var(--ls-radio-on, var(--ls-text));
+}
+
+.ls-radio.blue {
+  --ls-radio-on: var(--ls-color-blue);
+}
+
+.ls-radio.cyan {
+  --ls-radio-on: var(--ls-color-cyan);
+}
+
+.ls-radio.magenta {
+  --ls-radio-on: var(--ls-color-magenta);
+}
+
+.ls-radio.green {
+  --ls-radio-on: var(--ls-color-green);
+}
+
+.ls-radio.red {
+  --ls-radio-on: var(--ls-color-red);
+}
+
+.ls-radio.yellow {
+  --ls-radio-on: var(--ls-color-yellow);
+}
+
+.ls-radio.dark {
+  --ls-radio-on: var(--ls-color-dark);
+}
+
+.ls-radio.gray {
+  --ls-radio-on: var(--ls-color-gray);
+}
+
+.ls-radio.white {
+  --ls-radio-on: var(--ls-color-white);
+}
+
+.ls-radio.black {
+  --ls-radio-on: var(--ls-color-black);
+}
+
+.ls-radio.blue,
+.ls-radio.cyan,
+.ls-radio.magenta,
+.ls-radio.green,
+.ls-radio.red,
+.ls-radio.yellow,
+.ls-radio.dark,
+.ls-radio.gray,
+.ls-radio.white,
+.ls-radio.black {
+  --ls-radio-color: var(--ls-radio-on);
+}
+
+/* .color：保持颜色——关闭时圆环仍为品牌色；文字也跟随该颜色 */
+.ls-radio.color {
+  --ls-radio-color: var(--ls-radio-on, var(--ls-text));
+  color: var(--ls-radio-on, var(--ls-text));
+}
+
+.ls-radio > input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  opacity: 0;
+  cursor: pointer;
+  z-index: 1;
+}
+
+.ls-radio::before,
+.ls-radio::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  box-sizing: border-box;
+  pointer-events: none;
+  border-radius: 50%;
+}
+
+.ls-radio::before {
+  left: calc((var(--ls-radio-size) - var(--ls-radio-box)) / 2);
+  width: var(--ls-radio-box);
+  height: var(--ls-radio-box);
+  margin-top: calc(var(--ls-radio-box) / -2);
+  border: 2px solid var(--ls-radio-color);
+  background: transparent;
+  transition: border-color var(--ls-hover);
+}
+
+.ls-radio::after {
+  left: calc((var(--ls-radio-size) - var(--ls-radio-dot)) / 2);
+  width: var(--ls-radio-dot);
+  height: var(--ls-radio-dot);
+  margin-top: calc(var(--ls-radio-dot) / -2);
+  background: var(--ls-radio-color);
+  transform: scale(0);
+  transform-origin: center;
+  transition:
+    transform var(--ls-hover),
+    background-color var(--ls-hover);
+}
+
+.ls-radio:has(:checked)::after {
+  transform: scale(1);
+}
+
+.ls-radio:not(:has(:disabled)):has(:focus-visible) {
+  --ls-ripple: var(--ls-radio-size);
+}
+
+@media (any-hover: hover) {
+  .ls-radio:not(:has(:disabled)):hover {
+    --ls-ripple: var(--ls-radio-size);
+  }
+}
+
+.ls-radio:has(:disabled) {
+  opacity: 0.75;
+  cursor: default;
+}
+
+.ls-radio:has(:disabled) > input {
+  cursor: default;
+}
+
+/* 禁用：含颜色 / .color 统一灰色，不再透出品牌色 */
+.ls-radio:has(:disabled),
+.ls-radio.color:has(:disabled) {
+  --ls-radio-on: var(--ls-radio-unchecked);
+  --ls-radio-color: var(--ls-radio-unchecked);
+  color: var(--ls-radio-unchecked);
+}
+
+@media (forced-colors: active) {
+  .ls-radio {
+    forced-color-adjust: none;
+    color: CanvasText;
+  }
+  .ls-radio::before {
+    border: 2px solid CanvasText;
+    background: Canvas;
+  }
+  .ls-radio:has(:checked)::before {
+    border-color: Highlight;
+  }
+  .ls-radio:has(:checked)::after {
+    background: Highlight;
+  }
+}

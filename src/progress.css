@@ -1,0 +1,202 @@
+/* Linear progress — Quasar QLinearProgress–style.
+   Visual width reads --ls-progress (percentage, e.g. 40%).
+   With lapstyle.js enhance(): aria-valuenow/min/max and --ls-progress stay in sync
+   (aria-valuenow wins when both are set). */
+
+.ls-progress {
+  --ls-progress: 0%;
+  --ls-progress-buffer: 0%;
+  --ls-progress-size: 4px;
+  --ls-progress-speed: 0.3s;
+  --ls-progress-color: var(--ls-color-blue);
+  --ls-progress-track: rgb(255 255 255 / 0.22);
+  --ls-progress-stripe-size: 40px;
+  box-sizing: border-box;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: var(--ls-progress-size);
+  overflow: hidden;
+  background: var(--ls-progress-track);
+  color: var(--ls-progress-color);
+  font: inherit;
+  font-size: 0.75rem;
+  font-weight: 500;
+  line-height: 1;
+  text-align: center;
+  vertical-align: middle;
+  transform: scale3d(1, 1, 1);
+}
+
+[data-theme="light"] .ls-progress {
+  --ls-progress-track: rgb(0 0 0 / 0.16);
+}
+
+.ls-progress.blue {
+  --ls-progress-color: var(--ls-color-blue);
+}
+
+.ls-progress.cyan {
+  --ls-progress-color: var(--ls-color-cyan);
+}
+
+.ls-progress.magenta {
+  --ls-progress-color: var(--ls-color-magenta);
+}
+
+.ls-progress.green {
+  --ls-progress-color: var(--ls-color-green);
+}
+
+.ls-progress.red {
+  --ls-progress-color: var(--ls-color-red);
+}
+
+.ls-progress.yellow {
+  --ls-progress-color: var(--ls-color-yellow);
+}
+
+.ls-progress.dark {
+  --ls-progress-color: var(--ls-color-dark);
+}
+
+.ls-progress.gray {
+  --ls-progress-color: var(--ls-color-gray);
+}
+
+.ls-progress.white {
+  --ls-progress-color: var(--ls-color-white);
+}
+
+.ls-progress.black {
+  --ls-progress-color: var(--ls-color-black);
+}
+
+.ls-progress.dense {
+  --ls-progress-size: 2px;
+}
+
+.ls-progress.rounded {
+  border-radius: 100em;
+}
+
+.ls-progress.reverse {
+  transform: scale3d(-1, 1, 1);
+}
+
+.ls-progress.reverse > * {
+  transform: scale3d(-1, 1, 1);
+}
+
+.ls-progress::before,
+.ls-progress::after {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 0;
+  pointer-events: none;
+  border-radius: inherit;
+}
+
+/* Buffer track (determinate). */
+.ls-progress::before {
+  z-index: 0;
+  width: var(--ls-progress-buffer);
+  background: currentColor;
+  opacity: 0.4;
+  transition: width var(--ls-progress-speed);
+}
+
+/* Progress model (determinate). */
+.ls-progress::after {
+  z-index: 1;
+  width: var(--ls-progress);
+  background: currentColor;
+  transition: width var(--ls-progress-speed);
+}
+
+.ls-progress.stripe::after {
+  background-image: linear-gradient(
+    45deg,
+    rgb(255 255 255 / 0.15) 25%,
+    transparent 25%,
+    transparent 50%,
+    rgb(255 255 255 / 0.15) 50%,
+    rgb(255 255 255 / 0.15) 75%,
+    transparent 75%,
+    transparent
+  );
+  background-size: var(--ls-progress-stripe-size) var(--ls-progress-stripe-size);
+}
+
+.ls-progress > * {
+  position: relative;
+  z-index: 2;
+  padding: 0 0.5em;
+  color: var(--ls-text);
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+/* Indeterminate / query: both pseudos become sweeping bars. */
+.ls-progress.indeterminate::before,
+.ls-progress.indeterminate::after,
+.ls-progress.query::before,
+.ls-progress.query::after {
+  width: auto;
+  right: 0;
+  opacity: 1;
+  transition: none;
+  background-image: none;
+  transform-origin: 0 0;
+}
+
+.ls-progress.indeterminate::before,
+.ls-progress.query::before {
+  animation: ls-progress-indeterminate 2.1s cubic-bezier(0.65, 0.815, 0.735, 0.395) infinite;
+}
+
+.ls-progress.indeterminate::after,
+.ls-progress.query::after {
+  transform: translate3d(-101%, 0, 0) scale3d(1, 1, 1);
+  animation: ls-progress-indeterminate-short 2.1s cubic-bezier(0.165, 0.84, 0.44, 1) infinite;
+  animation-delay: 1.15s;
+}
+
+.ls-progress.query {
+  transform: scale3d(-1, 1, 1);
+}
+
+.ls-progress.query > * {
+  transform: scale3d(-1, 1, 1);
+}
+
+@keyframes ls-progress-indeterminate {
+  0% {
+    transform: translate3d(-35%, 0, 0) scale3d(0.35, 1, 1);
+  }
+
+  60% {
+    transform: translate3d(100%, 0, 0) scale3d(0.9, 1, 1);
+  }
+
+  100% {
+    transform: translate3d(100%, 0, 0) scale3d(0.9, 1, 1);
+  }
+}
+
+@keyframes ls-progress-indeterminate-short {
+  0% {
+    transform: translate3d(-101%, 0, 0) scale3d(1, 1, 1);
+  }
+
+  60% {
+    transform: translate3d(107%, 0, 0) scale3d(0.01, 1, 1);
+  }
+
+  100% {
+    transform: translate3d(107%, 0, 0) scale3d(0.01, 1, 1);
+  }
+}

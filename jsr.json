@@ -1,6 +1,6 @@
 {
   "name": "@lapintool/lapstyle",
-  "version": "0.4.0",
+  "version": "0.4.1-alpha",
   "license": "MIT",
   "exports": "./src/lapstyle.js",
   "publish": {

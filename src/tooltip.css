@@ -41,6 +41,11 @@
   transition-delay: 0s;
 }
 
+.ls-tooltip[data-theme] {
+  background: var(--ls-bg-elevated);
+  color: var(--ls-text);
+}
+
 .ls-tooltip.top,
 .ls-tooltip[data-ls-placement="top"] {
   top: auto;

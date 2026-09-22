@@ -20,8 +20,6 @@ export function initDialogDrag(panel) {
   }
 
   function writeDrag(x, y) {
-    originX = x;
-    originY = y;
     panel.style.setProperty("--ls-drag-x", `${x}px`);
     panel.style.setProperty("--ls-drag-y", `${y}px`);
     panel.style.transform = "translate(var(--ls-drag-x), var(--ls-drag-y))";

@@ -28,6 +28,11 @@
   animation: ls-panel-in var(--ls-duration) var(--ls-ease-out);
 }
 
+/* 可拖面板用 transform 记位移，入场不能再改 transform，否则打开会先偏一下再回正。 */
+.ls-dialog:not([hidden]) .panel.draggable {
+  animation: ls-dialog-in var(--ls-duration) var(--ls-ease-out);
+}
+
 .ls-dialog .title {
   margin: 0 0 8px;
   font-size: 1rem;

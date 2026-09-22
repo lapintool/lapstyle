@@ -53,18 +53,15 @@
 }
 
 .ls-menu .item.is-active {
-  background: var(--ls-menu-item-active-bg);
-  color: var(--ls-menu-item-active-text);
-}
-
-.ls-menu.highlight .item.is-active {
   background: transparent;
   color: var(--ls-menu-item-active-text);
   font-weight: 700;
 }
 
-.ls-menu.highlight .item.is-active:hover:not(:disabled) {
-  background: transparent;
+.ls-menu.fill .item.is-active,
+.ls-menu.fill .item.is-active:hover:not(:disabled) {
+  background: var(--ls-menu-item-active-bg);
+  font-weight: inherit;
 }
 
 .ls-menu .item:disabled,

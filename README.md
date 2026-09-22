@@ -2,14 +2,14 @@
 
 A desktop UI kit with a defined look, optional JS enhancement, and no Vue / React binding. Author native elements with class conventions; call `enhance()` when you need interaction.
 
-Current version **0.4.0**. License: MIT. Repository: https://github.com/lapintool/lapstyle
+Current version **0.4.1-alpha**. License: MIT. Repository: https://github.com/lapintool/lapstyle
 
 English is the default language for docs and the official demo.
 
 ## Install
 
 ```bash
-pnpm add github:lapintool/lapstyle#v0.4.0
+pnpm add github:lapintool/lapstyle#v0.4.1-alpha
 ```
 
 Bundler / SPA (recommended; call `enhance` yourself):

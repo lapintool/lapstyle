@@ -1,6 +1,6 @@
 {
   "name": "lapstyle",
-  "version": "0.4.0",
+  "version": "0.4.1-alpha",
   "description": "A desktop UI kit with a defined look, optional JS enhancement, and no Vue / React binding. Class conventions + enhance(); native elements first.",
   "license": "MIT",
   "type": "module",

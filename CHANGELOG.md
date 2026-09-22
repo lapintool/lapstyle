@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.4.1-alpha
+
+- Menu selection is bold accent text with no fill. `.fill` opts into the active background. `.highlight` is removed.
+- Draggable dialogs no longer jump on open, and dragging follows the pointer.
+- Splitter handles use smooth SVG resize cursors, with the system cursor as fallback.
+- A tooltip with `data-theme` uses that theme's elevated background and text.
+
 ## 0.4.0
 
 - Added named themes: `mint`, `sky`, `pink`, `brown`, `amber` (`data-theme` on `<html>`).

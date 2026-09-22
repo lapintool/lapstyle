@@ -19,6 +19,8 @@
   --ls-color-white-on: #1d1d1d;
   --ls-color-black: #000000;
   --ls-color-black-on: #ffffff;
+  --ls-accent: var(--ls-color-blue);
+  --ls-accent-on: var(--ls-color-blue-on);
   --ls-color-blue-hover: color-mix(in srgb, var(--ls-color-blue) 78%, #000);
   --ls-color-cyan-hover: color-mix(in srgb, var(--ls-color-cyan) 78%, #000);
   --ls-color-magenta-hover: color-mix(in srgb, var(--ls-color-magenta) 78%, #000);
@@ -29,7 +31,7 @@
   --ls-color-dark-hover: color-mix(in srgb, var(--ls-color-dark) 72%, #fff);
   --ls-color-white-hover: color-mix(in srgb, var(--ls-color-white) 86%, #000);
   --ls-color-black-hover: color-mix(in srgb, var(--ls-color-black) 72%, #fff);
-  --ls-input-focus: color-mix(in srgb, var(--ls-color-blue) 58%, #ffffff);
+  --ls-input-focus: color-mix(in srgb, var(--ls-accent, var(--ls-color-blue)) 58%, #ffffff);
 
   /* Control size ladder (sm / md / lg). Override any token to retune a step. */
   --ls-size-sm-font: 0.75rem; /* 12px */
@@ -46,6 +48,11 @@
 
   /* Dense only shrinks chrome; font/icon stay on the current size step. */
   --ls-dense-shrink: 0.25rem;
+
+  /* Number stepper: end inset sits between native (too deep) and the old 10px flush. */
+  --ls-input-spin-end: 0.58em;
+  --ls-input-spin-end-dense: 0.5em;
+  --ls-input-spin-size: 1;
 
   /* Shared motion: expand-panel easing + hover duration. */
   --ls-ease: cubic-bezier(0.165, 0.84, 0.44, 1);
@@ -67,7 +74,8 @@
   --ls-icon-wght: 400;
 }
 
-:root,
+:root:not([data-theme]),
+:root[data-theme="dark"],
 [data-theme="dark"] {
   color-scheme: dark;
   --ls-bg: #111111;
@@ -76,7 +84,10 @@
   --ls-text: #e0e0e0;
   --ls-text-dim: #d7d7d7;
   --ls-text-muted: #555555;
+  --ls-accent: #1177bb;
+  --ls-accent-on: #ffffff;
   --ls-accent-hover: #1177bb;
+  --ls-input-focus: color-mix(in srgb, var(--ls-accent) 58%, #ffffff);
   --ls-danger: #c74e39;
   --ls-ok: #3d9a5f;
   --ls-popover-bg: #484848;
@@ -120,7 +131,6 @@
   --ls-input-min-height: var(--ls-size-md-control);
   --ls-input-padding: 0 0.75em;
   --ls-input-radius: 0.286em;
-  --ls-input-spin-offset: 10px;
   --ls-tabs-bar-bg: #212121;
   --ls-tabs-bg: var(--ls-bg);
   --ls-tabs-active-text: var(--ls-menu-item-active-text);
@@ -146,7 +156,10 @@
   --ls-text: #333333;
   --ls-text-dim: #646464;
   --ls-text-muted: #c0c0c0;
+  --ls-accent: #009bf9;
+  --ls-accent-on: #ffffff;
   --ls-accent-hover: #106ebe;
+  --ls-input-focus: color-mix(in srgb, var(--ls-accent) 58%, #ffffff);
   --ls-danger: #c74e39;
   --ls-ok: #15803d;
   --ls-popover-bg: #ffffff;
@@ -190,7 +203,6 @@
   --ls-input-min-height: var(--ls-size-md-control);
   --ls-input-padding: 0 0.75em;
   --ls-input-radius: 0.286em;
-  --ls-input-spin-offset: 10px;
   --ls-tabs-bar-bg: #f0f0f0;
   --ls-tabs-bg: var(--ls-bg);
   --ls-tabs-active-text: var(--ls-menu-item-active-text);
@@ -205,4 +217,180 @@
   --ls-scrollbar-thumb-alpha: 0.14;
   --ls-scrollbar-thumb-hover-alpha: 0.2;
   --ls-scrollbar-fade-duration: 0.7s;
+}
+
+/* Shared chrome for tinted light themes. Color tokens live on each theme. */
+[data-theme="mint"],
+[data-theme="sky"],
+[data-theme="pink"],
+[data-theme="brown"],
+[data-theme="amber"] {
+  color-scheme: light;
+  --ls-popover-shadow: 0 10px 28px rgba(0, 0, 0, 0.16);
+  --ls-btn-fill-hover: color-mix(in srgb, var(--ls-btn-fill) 86%, #000);
+  --ls-btn-shadow: 0 1px 5px rgba(0, 0, 0, 0.2), 0 2px 2px rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.12);
+  --ls-btn-shadow-active: 0 3px 5px -1px rgba(0, 0, 0, 0.2), 0 5px 8px rgba(0, 0, 0, 0.14), 0 1px 14px rgba(0, 0, 0, 0.12);
+  --ls-btn-transition: var(--ls-hover);
+  --ls-btn-radius: 0.214em;
+  --ls-btn-radius-push: 0.5em;
+  --ls-btn-padding-block: 0.143em;
+  --ls-btn-padding: var(--ls-btn-padding-block) 0.857em;
+  --ls-radio-size: 40px;
+  --ls-radio-unchecked: rgb(0 0 0 / 0.54);
+  --ls-radio-ripple: 0.12;
+  --ls-checkbox-size: 40px;
+  --ls-checkbox-unchecked: rgb(0 0 0 / 0.54);
+  --ls-checkbox-radius: 3px;
+  --ls-switch-track-w: 34px;
+  --ls-switch-track-h: 14px;
+  --ls-switch-dot: 20px;
+  --ls-switch-track-off: rgb(0 0 0 / 0.38);
+  --ls-switch-dot-off: #fafafa;
+  --ls-btn-font-size: var(--ls-size-md-font);
+  --ls-btn-font-weight: 500;
+  --ls-btn-line-height: 1.4em;
+  --ls-btn-min-height: var(--ls-size-md-control);
+  --ls-btn-gap: 0.286em;
+  --ls-btn-press: 0.1em;
+  --ls-btn-ledge-width: 0.143em;
+  --ls-btn-ledge-mix: 16%;
+  --ls-btn-hover: rgba(0, 0, 0, 0.05);
+  --ls-btn-active: rgba(0, 0, 0, 0.08);
+  --ls-input-font-size: var(--ls-size-md-font);
+  --ls-input-min-height: var(--ls-size-md-control);
+  --ls-input-padding: 0 0.75em;
+  --ls-input-radius: 0.286em;
+  --ls-tabs-bg: var(--ls-bg);
+  --ls-tabs-active-text: var(--ls-menu-item-active-text);
+  --ls-scroll-shadow: rgba(0, 0, 0, 0.22);
+  --ls-expand-bg: var(--ls-bg-elevated);
+  --ls-expand-header-bg: color-mix(in srgb, var(--ls-bg-elevated) 92%, #000);
+  --ls-ease-out: var(--ls-ease);
+  --ls-duration: 0.5s;
+  --ls-duration-fast: 0.5s;
+  --ls-scrollbar-size: 4px;
+  --ls-scrollbar-thumb-rgb: 0 0 0;
+  --ls-scrollbar-thumb-alpha: 0.14;
+  --ls-scrollbar-thumb-hover-alpha: 0.2;
+  --ls-scrollbar-fade-duration: 0.7s;
+}
+
+/* Mint — Radix Colors Green + Everforest accents */
+[data-theme="mint"] {
+  --ls-bg: #f4fbf6;
+  --ls-bg-elevated: #e6f6eb;
+  --ls-border: #c4e8d1;
+  --ls-text: #193b2d;
+  --ls-text-dim: #218358;
+  --ls-text-muted: #7a9e88;
+  --ls-accent: #30a46c;
+  --ls-accent-on: #ffffff;
+  --ls-accent-hover: #218358;
+  --ls-danger: #f85552;
+  --ls-ok: #30a46c;
+  --ls-popover-bg: #fbfefc;
+  --ls-popover-text: #193b2d;
+  --ls-popover-active: #30a46c;
+  --ls-btn-fill: #fbfefc;
+  --ls-menu-item-active-bg: #d6f1df;
+  --ls-menu-item-active-text: #00b72d;
+  --ls-input-bg: #fbfefc;
+  --ls-input-focus: color-mix(in srgb, var(--ls-accent) 58%, #ffffff);
+  --ls-tabs-bar-bg: #e6f6eb;
+}
+
+/* Sky — Tailwind Sky surfaces + Nord Frost accents */
+[data-theme="sky"] {
+  --ls-bg: #f0f9ff;
+  --ls-bg-elevated: #e0f2fe;
+  --ls-border: #bae6fd;
+  --ls-text: #0c4a6e;
+  --ls-text-dim: #0369a1;
+  --ls-text-muted: #7ba8c4;
+  --ls-accent: #0ea5e9;
+  --ls-accent-on: #ffffff;
+  --ls-accent-hover: #0284c7;
+  --ls-danger: #bf616a;
+  --ls-ok: #35a77c;
+  --ls-popover-bg: #f9feff;
+  --ls-popover-text: #0c4a6e;
+  --ls-popover-active: #0ea5e9;
+  --ls-btn-fill: #f9feff;
+  --ls-menu-item-active-bg: #bae6fd;
+  --ls-menu-item-active-text: #03a1f8;
+  --ls-input-bg: #f9feff;
+  --ls-input-focus: color-mix(in srgb, var(--ls-accent) 58%, #ffffff);
+  --ls-tabs-bar-bg: #e0f2fe;
+}
+
+/* Pink — Rosé Pine Dawn + a pink wash */
+[data-theme="pink"] {
+  --ls-bg: #fdf2f8;
+  --ls-bg-elevated: #fce7f3;
+  --ls-border: #f3c6d8;
+  --ls-text: #575279;
+  --ls-text-dim: #756173;
+  --ls-text-muted: #c37491;
+  --ls-accent: #e30707;
+  --ls-accent-on: #ffffff;
+  --ls-accent-hover: #b4637a;
+  --ls-danger: #b4637a;
+  --ls-ok: #286983;
+  --ls-popover-bg: #fffaf3;
+  --ls-popover-text: #575279;
+  --ls-popover-active: #d7827e;
+  --ls-btn-fill: #fff7fa;
+  --ls-menu-item-active-bg: #f4d4e0;
+  --ls-menu-item-active-text: #fc2e2e;
+  --ls-input-bg: #fff7fa;
+  --ls-input-focus: color-mix(in srgb, var(--ls-accent) 58%, #ffffff);
+  --ls-tabs-bar-bg: #f8d7e8;
+}
+
+/* Brown — Gruvbox Material Light Soft */
+[data-theme="brown"] {
+  --ls-bg: #fffaea;
+  --ls-bg-elevated: #ffeec2;
+  --ls-border: #c9b99a;
+  --ls-text: #654735;
+  --ls-text-dim: #665c54;
+  --ls-text-muted: #a89984;
+  --ls-accent: #c35e0a;
+  --ls-accent-on: #ffffff;
+  --ls-accent-hover: #c35e0a;
+  --ls-danger: #c14a4a;
+  --ls-ok: #6c782e;
+  --ls-popover-bg: #f9f5d7;
+  --ls-popover-text: #654735;
+  --ls-popover-active: #c35e0a;
+  --ls-btn-fill: #f9f5d7;
+  --ls-menu-item-active-bg: #ddc9a0;
+  --ls-menu-item-active-text: #9d5408;
+  --ls-input-bg: #f9f5d7;
+  --ls-input-focus: color-mix(in srgb, var(--ls-accent) 58%, #ffffff);
+  --ls-tabs-bar-bg: #ebdbb2;
+}
+
+/* Amber — Solarized Light */
+[data-theme="amber"] {
+  --ls-bg: #fdf6e3;
+  --ls-bg-elevated: #ffe286;
+  --ls-border: #ffb54f;
+  --ls-text: #6a5000;
+  --ls-text-dim: #966412;
+  --ls-text-muted: #d1b500;
+  --ls-accent: #b58900;
+  --ls-accent-on: #ffffff;
+  --ls-accent-hover: #cb4b16;
+  --ls-danger: #dc322f;
+  --ls-ok: #859900;
+  --ls-popover-bg: #fff4d0;
+  --ls-popover-text: #3c849b;
+  --ls-popover-active: #ecbb22;
+  --ls-btn-fill: #fdf6e3;
+  --ls-menu-item-active-bg: #f1d25d;
+  --ls-menu-item-active-text: #b58900;
+  --ls-input-bg: #fff7d8;
+  --ls-input-focus: color-mix(in srgb, var(--ls-accent) 58%, #ffffff);
+  --ls-tabs-bar-bg: #eee8d5;
 }

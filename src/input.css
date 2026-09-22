@@ -36,13 +36,16 @@
   height: auto;
   min-height: var(--ls-input-min-height);
   padding: var(--ls-input-padding);
+  /* Small block inset; the browser centers the editor inside min-height. Larger type grows the frame. */
+  padding-block: 0.15em;
   border: 1px solid var(--ls-border);
   border-radius: var(--ls-input-radius);
   background: var(--ls-input-bg);
   color: var(--ls-text);
   font: inherit;
   font-size: 1em;
-  line-height: 1.4;
+  /* Natural font height: caret and selection match the glyph box instead of a taller line box. */
+  line-height: normal;
   outline: none;
   transition:
     border-color var(--ls-hover),
@@ -93,9 +96,45 @@
   --ls-input-min-height: calc(var(--ls-control-height, var(--ls-size-md-control)) - var(--ls-dense-shrink));
 }
 
-.ls-input[type="number"]::-webkit-inner-spin-button,
+.ls-input[type="number"] {
+  padding-inline-end: var(--ls-input-spin-end, 0.58em);
+}
+
+.ls-input.dense[type="number"] {
+  padding-inline-end: var(--ls-input-spin-end-dense, 0.36em);
+}
+
+/* Native spin chrome paints its own light plate. Drop that and draw arrows in currentColor
+   so the field background (including borderless / transparent) shows through. */
 .ls-input[type="number"]::-webkit-outer-spin-button {
-  margin-inline-end: calc(-1 * var(--ls-input-spin-offset, 10px));
+  -webkit-appearance: none;
+  appearance: none;
+  margin: 0;
+}
+
+.ls-input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  appearance: none;
+  margin: 0;
+  box-sizing: border-box;
+  width: calc(14px * var(--ls-input-spin-size, 1));
+  height: calc(22px * var(--ls-input-spin-size, 1));
+  background-color: currentColor;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 22'%3E%3Cpath fill='%23000' d='M1 8.2 6 2.4 11 8.2 9.2 8.2 6 4.8 2.8 8.2Z'/%3E%3Cpath fill='%23000' d='M1 13.8 2.8 13.8 6 17.2 9.2 13.8 11 13.8 6 19.6Z'/%3E%3C/svg%3E") center / 10px 18px no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 22'%3E%3Cpath fill='%23000' d='M1 8.2 6 2.4 11 8.2 9.2 8.2 6 4.8 2.8 8.2Z'/%3E%3Cpath fill='%23000' d='M1 13.8 2.8 13.8 6 17.2 9.2 13.8 11 13.8 6 19.6Z'/%3E%3C/svg%3E") center / 10px 18px no-repeat;
+  opacity: 0.8;
+  cursor: default;
+}
+
+.ls-input[type="number"]::-webkit-inner-spin-button:hover,
+.ls-input[type="number"]::-webkit-inner-spin-button:active {
+  opacity: 1;
+}
+
+.ls-input[type="number"]::-moz-number-spin-box,
+.ls-input[type="number"]::-moz-number-spin-up,
+.ls-input[type="number"]::-moz-number-spin-down {
+  background: transparent;
 }
 
 .ls-input::placeholder {
@@ -105,11 +144,11 @@
 
 @media (any-hover: hover) {
   .ls-input:hover:not(:disabled):not(:read-only) {
-    box-shadow: 0 0 8px 4px color-mix(in srgb, var(--ls-color-blue) 28%, transparent);
+    box-shadow: 0 0 8px 4px color-mix(in srgb, var(--ls-accent) 28%, transparent);
   }
 
   .ls-input:hover:not(:disabled):not(:read-only):not(:focus):not(:focus-visible) {
-    border-color: color-mix(in srgb, var(--ls-color-blue) 65%, var(--ls-border));
+    border-color: color-mix(in srgb, var(--ls-accent) 65%, var(--ls-border));
   }
 
   .ls-input.borderless:hover:not(:disabled):not(:read-only):not(:focus):not(:focus-visible) {

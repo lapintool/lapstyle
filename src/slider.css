@@ -1,5 +1,5 @@
 .ls-slider {
-  --ls-slider-color: var(--ls-color-blue);
+  --ls-slider-color: var(--ls-accent);
   --ls-slider-track: rgb(255 255 255 / 0.1);
   --ls-slider-inner: rgb(255 255 255 / 0.1);
   --ls-slider-markers: rgb(255 255 255 / 0.3);
@@ -19,7 +19,7 @@
   touch-action: none;
 }
 
-[data-theme="light"] .ls-slider {
+[data-theme]:not([data-theme="dark"]) .ls-slider {
   --ls-slider-track: rgb(0 0 0 / 0.1);
   --ls-slider-inner: rgb(0 0 0 / 0.1);
   --ls-slider-markers: rgb(0 0 0 / 0.3);

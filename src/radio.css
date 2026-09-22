@@ -10,7 +10,7 @@
 
 .ls-radio {
   --ls-radio-color: var(--ls-radio-unchecked);
-  --ls-radio-on: var(--ls-color-blue);
+  --ls-radio-on: var(--ls-accent);
   --ls-radio-box: calc(var(--ls-radio-size) * 0.5);
   --ls-radio-dot: calc(var(--ls-radio-box) * 0.5);
   --ls-ripple: 0px;

@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.4.0
+
+- Added named themes: `mint`, `sky`, `pink`, `brown`, `amber` (`data-theme` on `<html>`).
+- Table cells all have borders. The rounded frame stays on the shell. `.no-frame` drops the outer stroke, `.plain` drops every line, and `.hover` opts into a light row tint.
+- Number inputs draw the spinner in `currentColor` and keep the caret the same height as the glyphs.
+- Menu `.highlight` marks the selected item with bold accent text and no fill.
+- Slider hides the marker-label row when there are no labels.
+- Input, checkbox, radio, progress, splitter, and slider hovers follow `--ls-accent`.
+
 ## 0.3.1
 
 - English is the default language for the README, package description, and official demo copy.

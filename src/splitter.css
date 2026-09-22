@@ -76,13 +76,13 @@
 .ls-splitter .handle:hover,
 .ls-splitter .handle:focus-visible,
 .ls-splitter .handle.is-dragging {
-  background: color-mix(in srgb, var(--ls-color-blue) 45%, var(--ls-border));
+  background: color-mix(in srgb, var(--ls-accent) 45%, var(--ls-border));
 }
 
 .ls-splitter .handle:hover::after,
 .ls-splitter .handle:focus-visible::after,
 .ls-splitter .handle.is-dragging::after {
-  background: var(--ls-color-blue);
+  background: var(--ls-accent);
 }
 
 .ls-splitter .handle:focus-visible {

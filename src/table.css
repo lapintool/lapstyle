@@ -1,21 +1,18 @@
-/* 表格：外壳负责圆角、描边与滚动；内部用原生 table / thead / th / td。
-   默认斑马纹；.dense 收紧单元格；.kv 键值表（首列作 key）。
-   描边用 inset box-shadow，避免 overflow + border-radius 裁切外框。 */
+/* 表格：圆角外框画在外壳上，格子只画内部的线，避免圆角被 overflow 裁掉。
+   默认斑马纹；.dense 收紧单元格；.kv 键值表（首列作 key）。 */
 
 .ls-table {
   box-sizing: border-box;
   overflow: auto;
-  border: 0;
+  border: 1px solid var(--ls-border);
   border-radius: 8px;
-  box-shadow: inset 0 0 0 1px var(--ls-border);
   background: var(--ls-bg-elevated);
   color: var(--ls-text);
 }
 
 .ls-table > table {
   width: 100%;
-  border-collapse: separate;
-  border-spacing: 0;
+  border-collapse: collapse;
   table-layout: fixed;
   font-size: 0.8125rem;
 }
@@ -24,21 +21,28 @@
 .ls-table td {
   box-sizing: border-box;
   padding: 8px 10px;
-  border: 0;
-  border-right: 1px solid var(--ls-border);
-  border-bottom: 1px solid var(--ls-border);
+  border: 1px solid var(--ls-border);
   vertical-align: top;
   word-wrap: break-word;
   line-height: 1.45;
   text-align: left;
 }
 
-.ls-table tr > :last-child {
-  border-right: 0;
+/* 外圈交给外壳的圆角边框，避免单元格边线被 overflow 裁掉。 */
+.ls-table tr:first-child > * {
+  border-top: 0;
 }
 
 .ls-table tr:last-child > * {
   border-bottom: 0;
+}
+
+.ls-table tr > :first-child {
+  border-left: 0;
+}
+
+.ls-table tr > :last-child {
+  border-right: 0;
 }
 
 .ls-table th {
@@ -62,4 +66,32 @@
 .ls-table.kv th {
   width: 20%;
   white-space: nowrap;
+}
+
+/* 无外框：去掉外壳那一圈，内部格子线保留。 */
+.ls-table.no-frame {
+  border: 0;
+}
+
+/* 完全无线：单元格和外壳都不画线。 */
+.ls-table.plain {
+  border: 0;
+}
+
+.ls-table.plain th,
+.ls-table.plain td {
+  border: 0;
+}
+
+/* 行悬停：加上 .hover 才启用。比表头更深一档，并带一点强调色。 */
+.ls-table.hover tbody > tr > th,
+.ls-table.hover tbody > tr > td {
+  transition: background-color var(--ls-duration) var(--ls-ease-out);
+}
+
+@media (any-hover: hover) {
+  .ls-table.hover tbody tr:hover > th,
+  .ls-table.hover tbody tr:hover > td {
+    background: color-mix(in srgb, var(--ls-accent) 6%, var(--ls-bg-elevated));
+  }
 }

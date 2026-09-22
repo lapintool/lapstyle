@@ -4,7 +4,6 @@
 
 .ls-tabs {
   --ls-tabs-bar: var(--ls-tabs-bar-bg);
-  --ls-tabs-bg: var(--ls-tabs-bg);
   --ls-tabs-color: var(--ls-text-dim);
   --ls-tabs-active: var(--ls-tabs-active-text);
   --ls-tabs-hover: var(--ls-text);

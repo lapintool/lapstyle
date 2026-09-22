@@ -57,6 +57,16 @@
   color: var(--ls-menu-item-active-text);
 }
 
+.ls-menu.highlight .item.is-active {
+  background: transparent;
+  color: var(--ls-menu-item-active-text);
+  font-weight: 700;
+}
+
+.ls-menu.highlight .item.is-active:hover:not(:disabled) {
+  background: transparent;
+}
+
 .ls-menu .item:disabled,
 .ls-menu .item[aria-disabled="true"] {
   opacity: 0.45;

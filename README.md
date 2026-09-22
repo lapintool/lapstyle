@@ -2,14 +2,14 @@
 
 A desktop UI kit with a defined look, optional JS enhancement, and no Vue / React binding. Author native elements with class conventions; call `enhance()` when you need interaction.
 
-Current version **0.3.1**. License: MIT. Repository: https://github.com/lapintool/lapstyle
+Current version **0.4.0**. License: MIT. Repository: https://github.com/lapintool/lapstyle
 
 English is the default language for docs and the official demo.
 
 ## Install
 
 ```bash
-pnpm add github:lapintool/lapstyle#v0.3.1
+pnpm add github:lapintool/lapstyle#v0.4.0
 ```
 
 Bundler / SPA (recommended; call `enhance` yourself):
@@ -32,11 +32,23 @@ For pages without a bundler, use the auto entry:
 
 `<html data-ls-no-auto>` skips automatic `enhance`. You can still call `window.Lapstyle.enhance` yourself.
 
-Dark is the default theme. For light, set it on the root:
+Dark is the default theme. Set `data-theme` on the root:
 
 ```html
 <html data-theme="light">
 ```
+
+Named themes (all light surfaces except `dark`):
+
+| Value | Look | Palette source |
+| --- | --- | --- |
+| `dark` | Default charcoal | Lapstyle |
+| `light` | Neutral white | Lapstyle |
+| `mint` | Pale green | [Radix Green](https://www.radix-ui.com/colors) + [Everforest](https://github.com/sainnhe/everforest) |
+| `sky` | Sky blue | [Tailwind Sky](https://tailwindcss.com/docs/colors) + [Nord Frost](https://www.nordtheme.com/) |
+| `pink` | Rose pink | [Rosé Pine Dawn](https://rosepinetheme.com/) |
+| `brown` | Warm tan | [Gruvbox Material Light Soft](https://github.com/sainnhe/gruvbox-material) |
+| `amber` | Orange-yellow | [Solarized Light](https://ethanschoonover.com/solarized/) |
 
 Per-component CSS (import tokens first):
 

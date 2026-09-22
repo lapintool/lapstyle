@@ -361,11 +361,13 @@ export function initSlider(root) {
     const list = resolveMarkerLabels(c);
     const switchSide = root.classList.contains("switch-markers");
     if (!list) {
-      if (markersBuiltFor !== "") {
+      // Always hide when there are no labels; the first pass starts with markersBuiltFor === ""
+      // and would otherwise leave the empty 24px row visible.
+      if (!dom.markerLabels.hidden) {
         dom.markerLabels.hidden = true;
         dom.markerLabels.textContent = "";
-        markersBuiltFor = "";
       }
+      markersBuiltFor = "";
       return;
     }
     const key = `${c.min}:${c.max}:${c.vertical}:${c.reverse}:${switchSide}:${JSON.stringify(list.map((item) => [item.value, item.label]))}`;

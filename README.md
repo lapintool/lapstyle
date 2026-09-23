@@ -32,6 +32,26 @@ For pages without a bundler, use the auto entry:
 
 `<html data-ls-no-auto>` skips automatic `enhance`. You can still call `window.Lapstyle.enhance` yourself.
 
+## Create an app
+
+The package is not on npm yet. Scaffold a Vite + Vue app from GitHub:
+
+```bash
+npm create https://github.com/lapintool/lapstyle my-app
+pnpm dlx https://github.com/lapintool/create-lapstyle my-app
+```
+
+The app opens on a button page with a sidebar. Menu items and routes both come from `src/views.ts`. `src/main.ts` imports `lapstyle/index.css` and calls `enhance(document)`. The dependency is `git+https://github.com/lapintool/lapstyle.git#v0.4.1-alpha`.
+
+Add an empty page, then paste an example into it:
+
+```bash
+pnpm add-view Expand
+pnpm add-view Expand 展开面板
+```
+
+That creates `src/views/ExpandView.vue` and a sidebar item. `Expand` and `ExpandView` are the same name. The official demo’s **Copy example** button matches this file: overwrite the file, or paste the template contents into its root. Do not copy the Playground editor — that preview rewrites the import to a virtual `./lapstyle.js`. Dialog examples use an `open` ref (`:hidden="!open"`), not the DOM `hidden` property.
+
 Dark is the default theme. Set `data-theme` on the root:
 
 ```html
@@ -170,4 +190,4 @@ Full API: `src/lapstyle.d.ts`. Component source lives in `src/js/`.
 
 ## Playground
 
-The official demo **View code** button opens **Playground** (`@vue/repl`). The editor shows a **Vue SFC skeleton** you can copy into an app (`script setup` + `enhance` + author markup).
+The official demo **View code** button opens **Playground** (`@vue/repl`) so you can try the example. Use the **Copy example** button when you want code that drops into an app created above. Playground rewrites `lapstyle` to virtual files for the preview only.

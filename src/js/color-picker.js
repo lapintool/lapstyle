@@ -117,7 +117,7 @@ export function initColorPicker(picker) {
       if (!next) return;
       const rgb = hexToRgb(next);
       const hsv = rgbToHsv(rgb.r, rgb.g, rgb.b);
-      h = hsv.s < 1e-4 ? h : hsv.h;
+      h = hsv.s < 0.02 || hsv.v < 0.02 ? h : hsv.h;
       s = hsv.s;
       v = hsv.v;
       renderPicker(picker, next, h, s, v);
@@ -132,16 +132,43 @@ export function initColorPicker(picker) {
       }
       picker.dispatchEvent(new CustomEvent("ls-color-picker:change", { detail: { value: next }, bubbles: true }));
     });
+    trackListener(cleanups, hexInput, "keydown", (e) => {
+      if (e.key !== "Enter") return;
+      e.preventDefault();
+      const next = parseHex(hexInput.value);
+      if (!next) {
+        const cur = picker.style.getPropertyValue("--ls-cp-value") || "#888888";
+        renderPicker(picker, cur, h, s, v);
+        return;
+      }
+      picker.dispatchEvent(new CustomEvent("ls-color-picker:change", { detail: { value: next }, bubbles: true }));
+      hexInput.blur();
+    });
   }
 
   const state = {
     setHsv(nh, ns, nv, hex, opts) {
-      // 灰阶 / 近灰时保留当前色相，避免色相滑块跳回 0
-      h = ns < 1e-4 ? h : nh;
-      s = ns;
-      v = nv;
-      renderPicker(picker, hex, h, s, v);
-      if (!opts?.silent) emitValue(picker, hex);
+      const nextHex = String(hex).toLowerCase();
+      const curHex = (picker.style.getPropertyValue("--ls-cp-value") || "").trim().toLowerCase();
+      // 自己 emit 后又被 v-model / 外层 watch 写回同一 hex：保留当前 H（SV 拖动时绝不能从 RGB 反算色相）
+      if (curHex === nextHex) {
+        renderPicker(picker, nextHex, h, s, v);
+        if (!opts?.silent) emitValue(picker, nextHex);
+        return;
+      }
+      // 外层设成近灰 / 近黑，或用当前色相编码出同一 hex：也别改 H
+      const keptRgb = hsvToRgb(h, ns, nv);
+      const kept = rgbToHex(keptRgb.r, keptRgb.g, keptRgb.b);
+      if (ns < 0.02 || nv < 0.02 || kept === nextHex) {
+        s = ns;
+        v = nv;
+      } else {
+        h = nh;
+        s = ns;
+        v = nv;
+      }
+      renderPicker(picker, nextHex, h, s, v);
+      if (!opts?.silent) emitValue(picker, nextHex);
     },
     destroy() {
       cleanups.forEach((remove) => remove());

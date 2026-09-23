@@ -25,7 +25,7 @@
   padding: var(--ls-menu-item-pad-y) var(--ls-menu-item-pad-right) var(--ls-menu-item-pad-y) var(--ls-menu-item-pad-x);
   border: 0;
   border-radius: 4px;
-  background: transparent;
+  background-color: transparent;
   color: var(--ls-text);
   font: inherit;
   font-size: var(--ls-menu-font-size, 0.8125rem);
@@ -48,19 +48,19 @@
   color: inherit;
 }
 
-.ls-menu .item:hover:not(:disabled):not(.is-active) {
-  background: var(--ls-btn-hover);
+/* hover 与选中无关：无背景模式选中后仍可渐变显示 hover 底 */
+.ls-menu .item:hover:not(:disabled) {
+  background-color: var(--ls-btn-hover);
 }
 
 .ls-menu .item.is-active {
-  background: transparent;
   color: var(--ls-menu-item-active-text);
   font-weight: 700;
 }
 
 .ls-menu.fill .item.is-active,
 .ls-menu.fill .item.is-active:hover:not(:disabled) {
-  background: var(--ls-menu-item-active-bg);
+  background-color: var(--ls-menu-item-active-bg);
   font-weight: inherit;
 }
 

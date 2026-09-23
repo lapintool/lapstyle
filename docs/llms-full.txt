@@ -1,0 +1,1052 @@
+# Lapstyle — full AI pack
+
+# Getting started
+
+Lapstyle is a **desktop Vue UI kit**. Default path: `Ls*` / `ls-*` components with `v-model`, events, and slots.
+
+Do **not** start from class HTML + `enhance()` unless the app has no Vue.
+
+## Install
+
+```bash
+pnpm add github:lapintool/lapstyle#v0.5.0-alpha
+```
+
+Peer: `vue` `^3.4` (required only when using `lapstyle/vue`).
+
+## Setup
+
+```ts
+import { createApp } from "vue";
+import { LapstyleVue } from "lapstyle/vue";
+import "lapstyle/index.css";
+import App from "./App.vue";
+
+const app = createApp(App);
+app.use(LapstyleVue);
+app.mount("#app");
+```
+
+On demand:
+
+```ts
+import { LsBtn, LsDialog } from "lapstyle/vue";
+```
+
+Scaffold: `pnpm dlx https://github.com/lapintool/create-lapstyle my-app`
+
+## Theme
+
+Set `data-theme` on `<html>`: `dark` (default) | `light` | `mint` | `sky` | `pink` | `brown` | `amber`.
+See `docs/theming.md`.
+
+## How to use these docs
+
+1. This file for install.
+2. `docs/llms.txt` as the index.
+3. `docs/components/<tag>.md` for one component (props / events / slots / pitfalls).
+4. `docs/llms-full.txt` to ingest everything at once.
+5. TypeScript: `lapstyle/vue` (`src/vue/index.d.ts`).
+6. Source (`src/vue/*.vue`, `src/js/*.js`) only if the docs and types are not enough.
+
+Tags are kebab-case (`<ls-dialog>`); exports are PascalCase (`LsDialog`).
+
+---
+
+# Theming
+
+Set the theme on the document:
+
+```html
+<html data-theme="dark">
+```
+
+Values: `dark` | `light` | `mint` | `sky` | `pink` | `brown` | `amber`.
+`dark` is charcoal; the others are light surfaces.
+
+Import tokens once:
+
+```ts
+import "lapstyle/index.css";
+```
+
+Or per-file (tokens first):
+
+```ts
+import "lapstyle/tokens.css";
+import "lapstyle/button.css";
+```
+
+Default `<ls-btn>` (no color word) uses `--ls-accent` / `--ls-accent-on` for the **current theme**. `.gray` / `color="gray"` is a fixed gray, not the accent.
+
+Do not invent Quasar / other-library token names. Customize via `--ls-*` in `src/tokens.css`.
+
+---
+
+# LsBtn (`ls-btn`)
+
+Button. Props map to the same modifier classes as .ls-btn.
+
+Import: `import { LsBtn } from "lapstyle/vue"` (or `app.use(LapstyleVue)`).
+
+## Minimal usage
+
+```vue
+<ls-btn color="blue">Save</ls-btn>
+<ls-btn color="cyan" variant="fill">Fill</ls-btn>
+<ls-btn size="sm" dense>Dense</ls-btn>
+```
+
+### Props
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `color` | `"" \| "blue" \| "cyan" \| "magenta" \| "green" \| "red" \| "yellow" \| "dark" \| "gray" \| "white" \| "black"` | `""` | Omit for theme accent. Else: blue \| cyan \| magenta \| green \| red \| yellow \| dark \| gray \| white \| black |
+| `variant` | `"" \| "fill" \| "push" \| "flat" \| "ghost" \| "outline"` | `""` | fill \| push \| flat \| ghost \| outline (empty = outline) |
+| `size` | `"" \| "sm" \| "md" \| "lg"` | `""` | sm \| md \| lg (empty = md) |
+| `dense` | `boolean` | `false` | Compact padding |
+| `rounded` | `boolean` | `false` | Pill radius |
+| `round` | `boolean` | `false` | Circle |
+| `icon` | `boolean` | `false` | Square icon button |
+| `stack` | `boolean` | `false` | Icon above, label below |
+| `noCaps` | `boolean` | `false` | Disable uppercase |
+| `type` | `string` | `"button"` | Native button type |
+| `disabled` | `boolean` | `false` | Disabled state |
+| `href` | `string` | `""` | Render as <a> when set |
+| `tag` | `string` | `"button"` | Root tag; "a" also forces a link |
+
+### Events
+
+| Name | Payload | Description |
+| --- | --- | --- |
+| `click` | `MouseEvent` | Native click (bubbles) |
+
+### Slots
+
+| Name | Description |
+| --- | --- |
+| `default` | Label, icons |
+
+## CSS root
+
+`.ls-btn` — look layer. Prefer the Vue tag in apps.
+
+If this page is not enough, read `src/vue/LsBtn.vue` next. Do not copy class-only demo HTML unless you are on the framework-free path (`docs/enhance.md`).
+
+---
+
+# LsGroup (`ls-group`)
+
+Join adjacent buttons into one group.
+
+Import: `import { LsGroup } from "lapstyle/vue"` (or `app.use(LapstyleVue)`).
+
+## Minimal usage
+
+```vue
+<ls-group>
+  <ls-btn>One</ls-btn>
+  <ls-btn>Two</ls-btn>
+</ls-group>
+```
+
+### Props
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `spread` | `boolean` | `false` | Equal-width children |
+| `outline` | `boolean` | `false` | Shared outline on the group |
+| `vertical` | `boolean` | `false` | Stack vertically |
+| `dense` | `boolean` | `false` | Compact padding |
+
+### Slots
+
+| Name | Description |
+| --- | --- |
+| `default` | ls-btn (or other) children |
+
+## CSS root
+
+`.ls-btn-group` — look layer. Prefer the Vue tag in apps.
+
+If this page is not enough, read `src/vue/LsGroup.vue` next. Do not copy class-only demo HTML unless you are on the framework-free path (`docs/enhance.md`).
+
+---
+
+# LsBtnDropdown (`ls-btn-dropdown`)
+
+Menu button: simple (one trigger) or split (main + arrow).
+
+Import: `import { LsBtnDropdown } from "lapstyle/vue"` (or `app.use(LapstyleVue)`).
+
+## Minimal usage
+
+```vue
+<ls-btn-dropdown color="blue" label="Actions">
+  <button type="button" class="item" data-value="new"><span class="label">New</span></button>
+</ls-btn-dropdown>
+```
+
+### Props
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `split` | `boolean` | `false` | Main button + separate arrow |
+| `color` | `"" \| "blue" \| "cyan" \| "magenta" \| "green" \| "red" \| "yellow" \| "dark" \| "gray" \| "white" \| "black"` | `""` | Omit for theme accent. Else: blue \| cyan \| magenta \| green \| red \| yellow \| dark \| gray \| white \| black |
+| `variant` | `"" \| "fill" \| "push" \| "flat" \| "ghost" \| "outline"` | `""` | fill \| push \| flat \| ghost \| outline (empty = outline) |
+| `size` | `"" \| "sm" \| "md" \| "lg"` | `""` | sm \| md \| lg (empty = md) |
+| `dense` | `boolean` | `false` | Compact padding |
+| `label` | `string` | `"Dropdown"` | Trigger text when #label is empty |
+| `disabled` | `boolean` | `false` | Disabled state |
+
+### Events
+
+| Name | Payload | Description |
+| --- | --- | --- |
+| `select` | `{ value, label, item }` | Menu leaf selected |
+| `click` | `MouseEvent` | Main button click when split |
+
+### Slots
+
+| Name | Description |
+| --- | --- |
+| `default` | Menu .item buttons |
+| `label` | Trigger label |
+
+## CSS root
+
+`.ls-btn-dropdown` — look layer. Prefer the Vue tag in apps.
+
+If this page is not enough, read `src/vue/LsBtnDropdown.vue` next. Do not copy class-only demo HTML unless you are on the framework-free path (`docs/enhance.md`).
+
+---
+
+# LsInput (`ls-input`)
+
+Text field with v-model.
+
+Import: `import { LsInput } from "lapstyle/vue"` (or `app.use(LapstyleVue)`).
+
+## Minimal usage
+
+```vue
+<ls-input v-model="name" placeholder="Enter a name" />
+```
+
+### Props
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `modelValue` | `string \| number` | `""` | v-model |
+| `type` | `string` | `"text"` | Native input type |
+| `size` | `"" \| "sm" \| "md" \| "lg"` | `""` | sm \| md \| lg (empty = md) |
+| `dense` | `boolean` | `false` | Compact padding |
+| `outlined` | `boolean` | `false` | Outline look |
+| `filled` | `boolean` | `false` | Filled look |
+| `borderless` | `boolean` | `false` | No border |
+| `clearable` | `boolean` | `false` | Reserved; not yet wired in the wrapper |
+| `placeholder` | `string` | `""` | Placeholder |
+| `disabled` | `boolean` | `false` | Disabled |
+| `readonly` | `boolean` | `false` | Read-only |
+| `autocomplete` | `string` | `"off"` | autocomplete attribute |
+
+### Events
+
+| Name | Payload | Description |
+| --- | --- | --- |
+| `update:modelValue` | `string \| number` | v-model |
+
+## CSS root
+
+`.ls-input` — look layer. Prefer the Vue tag in apps.
+
+If this page is not enough, read `src/vue/LsInput.vue` next. Do not copy class-only demo HTML unless you are on the framework-free path (`docs/enhance.md`).
+
+---
+
+# LsField (`ls-field`)
+
+Label wrapper around a control (usually ls-input).
+
+Import: `import { LsField } from "lapstyle/vue"` (or `app.use(LapstyleVue)`).
+
+## Minimal usage
+
+```vue
+<ls-field label="Name">
+  <ls-input v-model="name" />
+</ls-field>
+```
+
+### Props
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `label` | `string` | `""` | Label text |
+| `size` | `"" \| "sm" \| "md" \| "lg"` | `""` | sm \| md \| lg (empty = md) |
+| `forId` | `string` | `""` | for= on the label |
+
+### Slots
+
+| Name | Description |
+| --- | --- |
+| `default` | Control inside the field |
+| `label` | Custom label |
+
+## CSS root
+
+`.ls-field` — look layer. Prefer the Vue tag in apps.
+
+If this page is not enough, read `src/vue/LsField.vue` next. Do not copy class-only demo HTML unless you are on the framework-free path (`docs/enhance.md`).
+
+---
+
+# LsRadio (`ls-radio`)
+
+Radio with shared v-model across the group.
+
+Import: `import { LsRadio } from "lapstyle/vue"` (or `app.use(LapstyleVue)`).
+
+## Minimal usage
+
+```vue
+<ls-radio v-model="choice" value="a" label="Option A" name="demo" />
+<ls-radio v-model="choice" value="b" label="Option B" name="demo" />
+```
+
+### Props
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `modelValue` | `string \| number \| boolean \| null` | — | v-model (group) |
+| `value` | `string \| number \| boolean` | required | Option value |
+| `label` | `string` | `""` | Label text |
+| `name` | `string` | `""` | Native name (group) |
+| `size` | `"" \| "sm" \| "md" \| "lg"` | `""` | sm \| md \| lg (empty = md) |
+| `dense` | `boolean` | `false` | Compact |
+| `disabled` | `boolean` | `false` | Disabled |
+
+### Events
+
+| Name | Payload | Description |
+| --- | --- | --- |
+| `update:modelValue` | `string \| number \| boolean` | v-model |
+
+### Slots
+
+| Name | Description |
+| --- | --- |
+| `default` | Label content |
+
+## CSS root
+
+`.ls-radio` — look layer. Prefer the Vue tag in apps.
+
+If this page is not enough, read `src/vue/LsRadio.vue` next. Do not copy class-only demo HTML unless you are on the framework-free path (`docs/enhance.md`).
+
+---
+
+# LsCheckbox (`ls-checkbox`)
+
+Checkbox. Switch / round / button looks are extra classes on the host.
+
+Import: `import { LsCheckbox } from "lapstyle/vue"` (or `app.use(LapstyleVue)`).
+
+## Minimal usage
+
+```vue
+<ls-checkbox v-model="on" label="Enable" />
+<ls-checkbox v-model="on" class="switch cyan" label="Switch" />
+```
+
+### Props
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `modelValue` | `boolean \| unknown[]` | `false` | v-model (boolean or array) |
+| `value` | `string \| number \| boolean` | `true` | Value when used in array mode |
+| `label` | `string` | `""` | Label text |
+| `name` | `string` | `""` | Native name |
+| `size` | `"" \| "sm" \| "md" \| "lg"` | `""` | sm \| md \| lg (empty = md) |
+| `dense` | `boolean` | `false` | Compact |
+| `disabled` | `boolean` | `false` | Disabled |
+
+### Events
+
+| Name | Payload | Description |
+| --- | --- | --- |
+| `update:modelValue` | `boolean \| unknown[]` | v-model |
+
+### Slots
+
+| Name | Description |
+| --- | --- |
+| `default` | Label content |
+
+### Pitfalls
+
+- Add class="switch" / "round" / "btn" / a color word on <ls-checkbox>.
+
+## CSS root
+
+`.ls-checkbox` — look layer. Prefer the Vue tag in apps.
+
+If this page is not enough, read `src/vue/LsCheckbox.vue` next. Do not copy class-only demo HTML unless you are on the framework-free path (`docs/enhance.md`).
+
+---
+
+# LsTabs (`ls-tabs`)
+
+Tab bar. v-model is the active LsTab value.
+
+Import: `import { LsTabs } from "lapstyle/vue"` (or `app.use(LapstyleVue)`).
+
+## Minimal usage
+
+```vue
+<ls-tabs v-model="tab">
+  <ls-tab value="a" label="Overview" />
+  <ls-tab value="b" label="Files" closable />
+  <template #panels>
+    <div class="panel" role="tabpanel">Panel for {{ tab }}</div>
+  </template>
+</ls-tabs>
+```
+
+### Props
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `modelValue` | `string \| number \| null` | — | Active tab value |
+| `barOnly` | `boolean` | `false` | Bar only, no panels region |
+| `color` | `"" \| "blue" \| "cyan" \| "magenta" \| "green" \| "red" \| "yellow" \| "dark" \| "gray" \| "white" \| "black"` | `""` | Accent class on the bar |
+
+### Events
+
+| Name | Payload | Description |
+| --- | --- | --- |
+| `update:modelValue` | `string \| number` | Active tab changed |
+| `change` | `{ value, tab, index }` | After switch |
+| `close` | `{ value, tab, index, event }` | Close clicked; event.preventDefault() keeps the tab |
+
+### Slots
+
+| Name | Description |
+| --- | --- |
+| `default` | LsTab items (also #tabs) |
+| `tabs` | Alias for tab items |
+| `panels` | Tab panels |
+
+## CSS root
+
+`.ls-tabs` — look layer. Prefer the Vue tag in apps.
+
+If this page is not enough, read `src/vue/LsTabs.vue` next. Do not copy class-only demo HTML unless you are on the framework-free path (`docs/enhance.md`).
+
+---
+
+# LsTab (`ls-tab`)
+
+One tab inside LsTabs.
+
+Import: `import { LsTab } from "lapstyle/vue"` (or `app.use(LapstyleVue)`).
+
+## Minimal usage
+
+```vue
+<ls-tab value="a" label="Overview" />
+```
+
+### Props
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `value` | `string \| number` | required | Tab id (v-model of LsTabs) |
+| `label` | `string` | `""` | Tab text |
+| `closable` | `boolean` | `false` | Show close control |
+| `disabled` | `boolean` | `false` | Disabled tab |
+
+### Slots
+
+| Name | Description |
+| --- | --- |
+| `default` | Label override |
+| `icon` | Leading icon |
+
+## CSS root
+
+`.ls-tabs .tab` — look layer. Prefer the Vue tag in apps.
+
+If this page is not enough, read `src/vue/LsTab.vue` next. Do not copy class-only demo HTML unless you are on the framework-free path (`docs/enhance.md`).
+
+---
+
+# LsDropdown (`ls-dropdown`)
+
+Select-style dropdown. v-model + options, or slot .item rows.
+
+Import: `import { LsDropdown } from "lapstyle/vue"` (or `app.use(LapstyleVue)`).
+
+## Minimal usage
+
+```vue
+<ls-dropdown
+  v-model="lang"
+  :options="['JavaScript', 'TypeScript', 'Python']"
+/>
+```
+
+### Props
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `modelValue` | `string \| number \| null` | — | Selected value (v-model) |
+| `options` | `Array<string \| { value?: unknown, label?: unknown }> \| null` | `null` | Data-driven items; omit when using the default slot |
+| `placeholder` | `string` | `"Select"` | Trigger text when empty |
+| `disabled` | `boolean` | `false` | Disabled |
+| `size` | `"" \| "sm" \| "md" \| "lg"` | `""` | sm \| md \| lg (empty = md) |
+| `dense` | `boolean` | `false` | Compact |
+| `end` | `boolean` | `false` | Align menu to the right |
+| `menuClass` | `string` | `""` | Extra classes on the menu |
+
+### Events
+
+| Name | Payload | Description |
+| --- | --- | --- |
+| `update:modelValue` | `string \| number \| null` | Selection changed |
+| `select` | `{ value, label, item }` | Leaf item selected |
+
+### Slots
+
+| Name | Description |
+| --- | --- |
+| `default` | Custom .item buttons instead of options |
+
+### Pitfalls
+
+- Custom menu: omit options and put <button type="button" class="item" data-value="…"> in the default slot.
+
+## CSS root
+
+`.ls-dropdown` — look layer. Prefer the Vue tag in apps.
+
+If this page is not enough, read `src/vue/LsDropdown.vue` next. Do not copy class-only demo HTML unless you are on the framework-free path (`docs/enhance.md`).
+
+---
+
+# LsDialog (`ls-dialog`)
+
+Modal / modeless dialog. v-model is open. Action buttons close by default.
+
+Import: `import { LsDialog } from "lapstyle/vue"` (or `app.use(LapstyleVue)`).
+
+## Minimal usage
+
+```vue
+<ls-btn color="blue" @click="open = true">Open</ls-btn>
+<ls-dialog v-model="open" title="New file">
+  <ls-field label="File name">
+    <ls-input v-model="name" />
+  </ls-field>
+  <template #actions>
+    <ls-btn color="red">Cancel</ls-btn>
+    <ls-btn color="blue">OK</ls-btn>
+  </template>
+</ls-dialog>
+```
+
+### Props
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `modelValue` | `boolean` | `false` | Open state (v-model) |
+| `title` | `string` | `""` | Default head title |
+| `persistent` | `boolean` | `false` | Backdrop / Esc do not close |
+| `modeless` | `boolean` | `false` | No overlay; page stays clickable |
+| `draggable` | `boolean` | `false` | Drag from the title band |
+| `kind` | `"" \| "warning" \| "error"` | `""` | warning \| error (title icon color) |
+
+### Events
+
+| Name | Payload | Description |
+| --- | --- | --- |
+| `update:modelValue` | `boolean` | Open / close |
+| `action` | `{ button, dialog }` | Before close from #actions; preventDefault() to keep open |
+| `close` | — | After the dialog becomes hidden |
+
+### Slots
+
+| Name | Description |
+| --- | --- |
+| `default` | Body |
+| `head` | Custom header (overrides title) |
+| `actions` | Footer buttons; clicks close unless prevented |
+
+### Pitfalls
+
+- Validate on OK: @action — if the OK button is invalid, call event.preventDefault().
+
+## CSS root
+
+`.ls-dialog` — look layer. Prefer the Vue tag in apps.
+
+If this page is not enough, read `src/vue/LsDialog.vue` next. Do not copy class-only demo HTML unless you are on the framework-free path (`docs/enhance.md`).
+
+---
+
+# LsTooltip (`ls-tooltip`)
+
+Tooltip inside a hoverable host. Prefers top and flips to stay in view.
+
+Import: `import { LsTooltip } from "lapstyle/vue"` (or `app.use(LapstyleVue)`).
+
+## Minimal usage
+
+```vue
+<ls-btn color="blue">
+  Hover
+  <ls-tooltip>Shown on hover</ls-tooltip>
+</ls-btn>
+```
+
+### Props
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `text` | `string` | `""` | Fallback text when the slot is empty |
+| `placement` | `"" \| "top" \| "bottom" \| "left" \| "right"` | `""` | Optional lock: top \| bottom \| left \| right |
+
+### Slots
+
+| Name | Description |
+| --- | --- |
+| `default` | Tooltip content |
+
+## CSS root
+
+`.ls-tooltip` — look layer. Prefer the Vue tag in apps.
+
+If this page is not enough, read `src/vue/LsTooltip.vue` next. Do not copy class-only demo HTML unless you are on the framework-free path (`docs/enhance.md`).
+
+---
+
+# LsIcon (`ls-icon`)
+
+Icon host. Lapstyle does not ship fonts; put SVG or glyphs in the slot.
+
+Import: `import { LsIcon } from "lapstyle/vue"` (or `app.use(LapstyleVue)`).
+
+## Minimal usage
+
+```vue
+<ls-icon size="sm" name="close" />
+<ls-icon><svg viewBox="0 0 24 24" width="24" height="24">…</svg></ls-icon>
+```
+
+### Props
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `name` | `string` | `""` | Optional built-in glyph class (e.g. close) |
+| `size` | `"" \| "sm" \| "md" \| "lg"` | `""` | sm \| md \| lg (empty = md) |
+| `filled` | `boolean` | `false` | Filled variant when applicable |
+
+### Slots
+
+| Name | Description |
+| --- | --- |
+| `default` | Custom SVG / font glyph |
+
+### Pitfalls
+
+- The kit does not bundle icon fonts. Import Material Symbols / your SVG yourself.
+
+## CSS root
+
+`.ls-icon` — look layer. Prefer the Vue tag in apps.
+
+If this page is not enough, read `src/vue/LsIcon.vue` next. Do not copy class-only demo HTML unless you are on the framework-free path (`docs/enhance.md`).
+
+---
+
+# LsMenu (`ls-menu`)
+
+Standalone menu. Leaf clicks emit select and update v-model when data-value is set.
+
+Import: `import { LsMenu } from "lapstyle/vue"` (or `app.use(LapstyleVue)`).
+
+## Minimal usage
+
+```vue
+<ls-menu v-model="sel" icons fill>
+  <button type="button" class="item" data-value="a"><span class="label">A</span></button>
+  <button type="button" class="item" data-value="b"><span class="label">B</span></button>
+</ls-menu>
+```
+
+### Props
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `modelValue` | `string \| number \| null` | — | Selected value |
+| `icons` | `boolean` | `false` | Reserve icon column |
+| `fill` | `boolean` | `false` | Filled items |
+| `plain` | `boolean` | `false` | No card chrome |
+| `collapsed` | `boolean` | `false` | Collapsed / rail |
+| `card` | `boolean` | `true` | Wrap with .ls-card |
+
+### Events
+
+| Name | Payload | Description |
+| --- | --- | --- |
+| `update:modelValue` | `string \| number \| null` | Selection |
+| `select` | `{ value, label, item }` | Leaf selected |
+
+### Slots
+
+| Name | Description |
+| --- | --- |
+| `default` | .item rows and nested structure |
+
+## CSS root
+
+`.ls-menu` — look layer. Prefer the Vue tag in apps.
+
+If this page is not enough, read `src/vue/LsMenu.vue` next. Do not copy class-only demo HTML unless you are on the framework-free path (`docs/enhance.md`).
+
+---
+
+# LsCard (`ls-card`)
+
+Surface container. note is a dashed callout.
+
+Import: `import { LsCard } from "lapstyle/vue"` (or `app.use(LapstyleVue)`).
+
+## Minimal usage
+
+```vue
+<ls-card>Content</ls-card>
+<ls-card note>Hint text</ls-card>
+```
+
+### Props
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `note` | `boolean` | `false` | Dashed callout |
+| `dense` | `boolean` | `false` | Compact padding |
+| `flat` | `boolean` | `false` | No elevation |
+| `tag` | `string` | `"div"` | Root element |
+
+### Slots
+
+| Name | Description |
+| --- | --- |
+| `default` | Card body |
+
+## CSS root
+
+`.ls-card` — look layer. Prefer the Vue tag in apps.
+
+If this page is not enough, read `src/vue/LsCard.vue` next. Do not copy class-only demo HTML unless you are on the framework-free path (`docs/enhance.md`).
+
+---
+
+# LsTable (`ls-table`)
+
+Table shell. Put a native <table> inside.
+
+Import: `import { LsTable } from "lapstyle/vue"` (or `app.use(LapstyleVue)`).
+
+## Minimal usage
+
+```vue
+<ls-table dense hover>
+  <table>
+    <thead><tr><th>A</th><th>B</th></tr></thead>
+    <tbody><tr><td>1</td><td>2</td></tr></tbody>
+  </table>
+</ls-table>
+```
+
+### Props
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `dense` | `boolean` | `false` | Tighten cell padding |
+| `hover` | `boolean` | `false` | Highlight the body row under the pointer |
+| `plain` | `boolean` | `false` | No cell or shell lines |
+| `noFrame` | `boolean` | `false` | Drop the outer border; inner lines stay |
+
+### Slots
+
+| Name | Description |
+| --- | --- |
+| `default` | Native <table> markup |
+
+## CSS root
+
+`.ls-table` — look layer. Prefer the Vue tag in apps.
+
+If this page is not enough, read `src/vue/LsTable.vue` next. Do not copy class-only demo HTML unless you are on the framework-free path (`docs/enhance.md`).
+
+---
+
+# LsSlider (`ls-slider`)
+
+Range control. Track UI is built by enhance inside the component.
+
+Import: `import { LsSlider } from "lapstyle/vue"` (or `app.use(LapstyleVue)`).
+
+## Minimal usage
+
+```vue
+<ls-slider v-model="n" :min="0" :max="100" label />
+```
+
+### Props
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `modelValue` | `number` | `0` | Current value (v-model) |
+| `min` | `number \| string` | `0` | Minimum |
+| `max` | `number \| string` | `100` | Maximum |
+| `step` | `number \| string` | `1` | Step |
+| `color` | `"" \| "blue" \| "cyan" \| "magenta" \| "green" \| "red" \| "yellow" \| "dark" \| "gray" \| "white" \| "black"` | `""` | Omit for theme accent. Else: blue \| cyan \| magenta \| green \| red \| yellow \| dark \| gray \| white \| black |
+| `size` | `"" \| "sm" \| "md" \| "lg"` | `""` | sm \| md \| lg (empty = md) |
+| `dense` | `boolean` | `false` | Compact |
+| `label` | `boolean` | `false` | Show value label |
+| `input` | `boolean` | `false` | Numeric input beside the track |
+| `vertical` | `boolean` | `false` | Vertical orientation |
+| `reverse` | `boolean` | `false` | Reverse direction |
+| `disabled` | `boolean` | `false` | Disabled |
+| `ariaLabel` | `string` | `""` | Accessibility label |
+
+### Events
+
+| Name | Payload | Description |
+| --- | --- | --- |
+| `update:modelValue` | `number` | While dragging / stepping |
+| `input` | `number` | Same as continuous update |
+| `change` | `number` | Committed value |
+
+## CSS root
+
+`.ls-slider` — look layer. Prefer the Vue tag in apps.
+
+If this page is not enough, read `src/vue/LsSlider.vue` next. Do not copy class-only demo HTML unless you are on the framework-free path (`docs/enhance.md`).
+
+---
+
+# LsProgress (`ls-progress`)
+
+Linear progress. v-model sets aria-valuenow / --ls-progress.
+
+Import: `import { LsProgress } from "lapstyle/vue"` (or `app.use(LapstyleVue)`).
+
+## Minimal usage
+
+```vue
+<ls-progress v-model="pct" color="cyan" />
+<ls-progress indeterminate />
+```
+
+### Props
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `modelValue` | `number \| null` | — | 0–100 (or null for CSS-only) |
+| `buffer` | `number \| string \| null` | — | Buffer percent |
+| `indeterminate` | `boolean` | `false` | Indeterminate animation |
+| `color` | `"" \| "blue" \| "cyan" \| "magenta" \| "green" \| "red" \| "yellow" \| "dark" \| "gray" \| "white" \| "black"` | `""` | Omit for theme accent. Else: blue \| cyan \| magenta \| green \| red \| yellow \| dark \| gray \| white \| black |
+
+### Events
+
+| Name | Payload | Description |
+| --- | --- | --- |
+| `update:modelValue` | `number \| null` | When the value is written |
+
+## CSS root
+
+`.ls-progress` — look layer. Prefer the Vue tag in apps.
+
+If this page is not enough, read `src/vue/LsProgress.vue` next. Do not copy class-only demo HTML unless you are on the framework-free path (`docs/enhance.md`).
+
+---
+
+# LsExpand (`ls-expand`)
+
+Corner / edge / float expand panel. v-model is expanded state.
+
+Import: `import { LsExpand } from "lapstyle/vue"` (or `app.use(LapstyleVue)`).
+
+## Minimal usage
+
+```vue
+<ls-expand v-model="open" expand="tr" title="Panel">
+  <p>Body</p>
+</ls-expand>
+```
+
+### Props
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `modelValue` | `boolean` | `false` | Expanded (v-model) |
+| `expand` | `"tr" \| "tl" \| "br" \| "bl" \| "t" \| "b" \| "l" \| "r"` | `"tr"` | Dock: tr \| tl \| br \| bl \| t \| b \| l \| r |
+| `collapse` | `string` | `""` | Collapsed-edge target |
+| `floatAnchor` | `string` | `""` | Float pin (data-ls-float-anchor) |
+| `title` | `string` | `""` | Head title |
+
+### Events
+
+| Name | Payload | Description |
+| --- | --- | --- |
+| `update:modelValue` | `boolean` | Open state |
+| `change` | `boolean` | After toggle |
+
+### Slots
+
+| Name | Description |
+| --- | --- |
+| `head` | Custom head content |
+| `default` | Panel body |
+
+## CSS root
+
+`.ls-expand` — look layer. Prefer the Vue tag in apps.
+
+If this page is not enough, read `src/vue/LsExpand.vue` next. Do not copy class-only demo HTML unless you are on the framework-free path (`docs/enhance.md`).
+
+---
+
+# LsSplitter (`ls-splitter`)
+
+Two-pane splitter. Put two .pane children in the default slot.
+
+Import: `import { LsSplitter } from "lapstyle/vue"` (or `app.use(LapstyleVue)`).
+
+## Minimal usage
+
+```vue
+<ls-splitter v-model="size" :min="20" :max="80">
+  <div class="pane">Left</div>
+  <div class="pane">Right</div>
+</ls-splitter>
+```
+
+### Props
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `modelValue` | `number \| null` | — | First pane size % |
+| `vertical` | `boolean` | `false` | Stack panes vertically |
+| `min` | `number \| string` | `0` | Percent lower bound |
+| `max` | `number \| string` | `100` | Percent upper bound |
+
+### Events
+
+| Name | Payload | Description |
+| --- | --- | --- |
+| `update:modelValue` | `number` | While resizing |
+| `resize` | `number` | Size changed |
+
+### Slots
+
+| Name | Description |
+| --- | --- |
+| `default` | Two .pane children |
+
+## CSS root
+
+`.ls-splitter` — look layer. Prefer the Vue tag in apps.
+
+If this page is not enough, read `src/vue/LsSplitter.vue` next. Do not copy class-only demo HTML unless you are on the framework-free path (`docs/enhance.md`).
+
+---
+
+# LsColorPicker (`ls-color-picker`)
+
+SV + hue + HEX. v-model is the hex string.
+
+Import: `import { LsColorPicker } from "lapstyle/vue"` (or `app.use(LapstyleVue)`).
+
+## Minimal usage
+
+```vue
+<ls-color-picker v-model="hex" />
+```
+
+### Props
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `modelValue` | `string` | `"#248df4"` | HEX color (v-model) |
+
+### Events
+
+| Name | Payload | Description |
+| --- | --- | --- |
+| `update:modelValue` | `string` | While dragging |
+| `input` | `string` | Same as continuous update |
+| `change` | `string` | Committed color |
+
+### Slots
+
+| Name | Description |
+| --- | --- |
+| `default` | Optional; overrides the built-in SV panel, hue bar and HEX field markup |
+
+## CSS root
+
+`.ls-color-picker` — look layer. Prefer the Vue tag in apps.
+
+If this page is not enough, read `src/vue/LsColorPicker.vue` next. Do not copy class-only demo HTML unless you are on the framework-free path (`docs/enhance.md`).
+
+---
+
+# Scrollbar (`.ls-scroll`)
+
+CSS-only. There is **no** `LsScroll` / `<ls-scroll>` component.
+
+```html
+<div class="ls-scroll" style="max-height: 160px">
+  …overflowing content…
+</div>
+```
+
+Class: `.ls-scroll` — thin scrollbar, fades in on hover.
+
+In Vue, put `class="ls-scroll"` on any overflowing host (including `ls-menu` / dropdown menus, which already include it where needed).
+
+---
+
+# Framework-free path (enhance)
+
+Use this only when there is **no Vue**. Vue apps should import `lapstyle/vue`; those wrappers call `enhance` internally.
+
+```ts
+import "lapstyle/index.css";
+import { enhance, destroy } from "lapstyle";
+
+enhance(document);
+// SPA unmount:
+destroy(document);
+```
+
+Without a bundler:
+
+```html
+<script type="module">
+  import "lapstyle/index.css";
+  import "lapstyle/auto";
+</script>
+```
+
+`<html data-ls-no-auto>` skips automatic `enhance`. You can still call `window.Lapstyle.enhance`.
+
+Markup is CSS classes (`.ls-btn`, `.ls-dialog`, …), not `<ls-*>` tags. Interactive widgets listen for custom events such as `ls-dialog:action`, `ls-menu:select`, `ls-tabs:change`, `ls-slider:change`.
+
+Scrollbar: add `class="ls-scroll"` to an overflowing container. There is no `LsScroll` component.
+
+If you need a Vue example, leave this file and read `docs/components/*.md`.

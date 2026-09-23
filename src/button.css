@@ -1,9 +1,11 @@
 .ls-btn {
   --ls-control-height: var(--ls-size-md-control);
   --ls-btn-icon-size: var(--ls-size-md-icon);
-  --ls-btn-color: var(--ls-color-gray);
-  --ls-btn-on: var(--ls-text);
-  --ls-btn-hover: var(--ls-color-gray-hover);
+  --ls-btn-color: var(--ls-accent);
+  --ls-btn-on: var(--ls-accent-on);
+  --ls-btn-fill: var(--ls-accent);
+  --ls-btn-hover: var(--ls-accent-hover);
+  --ls-btn-fill-hover: var(--ls-accent-hover);
   --ls-btn-ledge: color-mix(in srgb, #000 var(--ls-btn-ledge-mix), var(--ls-btn-fill));
   --ls-btn-focus-ring: var(--ls-input-focus);
   box-sizing: border-box;

@@ -337,9 +337,67 @@ function initPopoverMenu(menu) {
   };
 }
 
+function menuItemLabel(item) {
+  return (
+    item.querySelector(":scope > .label")?.textContent?.replace(/\s+/g, " ").trim() ||
+    item.textContent?.replace(/\s+/g, " ").trim() ||
+    ""
+  );
+}
+
+function emitMenuSelect(root, item) {
+  const label = menuItemLabel(item);
+  const value = item.getAttribute("data-value") || label;
+  return root.dispatchEvent(
+    new CustomEvent("ls-menu:select", {
+      bubbles: true,
+      cancelable: true,
+      detail: { item, label, value, menu: root },
+    }),
+  );
+}
+
+let collapseBound = false;
+let collapseCleanups = [];
+
+function resolveCollapseTarget(sel) {
+  if (!sel) return null;
+  try {
+    const el = document.querySelector(sel);
+    return el instanceof HTMLElement ? el : null;
+  } catch {
+    return null;
+  }
+}
+
+function ensureMenuCollapseBinding() {
+  if (collapseBound || typeof document === "undefined") return;
+  collapseBound = true;
+
+  const onClick = (event) => {
+    const t = event.target;
+    if (!(t instanceof Element)) return;
+    const btn = t.closest("[data-ls-collapse]");
+    if (!(btn instanceof HTMLElement)) return;
+    const target = resolveCollapseTarget(btn.getAttribute("data-ls-collapse"));
+    if (!target) return;
+    event.preventDefault();
+    const collapsed = target.classList.toggle("collapsed");
+    btn.setAttribute("aria-expanded", String(!collapsed));
+    btn.setAttribute("aria-pressed", String(collapsed));
+    const labelOn = btn.getAttribute("data-ls-label-expanded");
+    const labelOff = btn.getAttribute("data-ls-label-collapsed");
+    if (labelOn && labelOff) btn.textContent = collapsed ? labelOff : labelOn;
+  };
+
+  trackListener(collapseCleanups, document, "click", onClick);
+}
+
 export function initMenu(root) {
   const existing = menuState.get(root);
   if (existing?.bound) return;
+
+  ensureMenuCollapseBinding();
 
   const state = getMenuMeta(root);
   state.bound = true;
@@ -356,6 +414,7 @@ export function initMenu(root) {
       if (el !== item) el.classList.remove("is-active");
     });
     item.classList.add("is-active");
+    emitMenuSelect(root, item);
   };
 
   const cleanups = [];

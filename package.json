@@ -1,7 +1,7 @@
 {
   "name": "lapstyle",
-  "version": "0.4.1-alpha",
-  "description": "A desktop UI kit with a defined look, optional JS enhancement, and no Vue / React binding. Class conventions + enhance(); native elements first.",
+  "version": "0.5.0-alpha",
+  "description": "A desktop Vue UI kit with Lapstyle look: Ls* components (v-model / events / slots), CSS tokens, and optional enhance() for framework-free pages.",
   "license": "MIT",
   "type": "module",
   "main": "./src/lapstyle.js",
@@ -9,10 +9,12 @@
   "types": "./src/lapstyle.d.ts",
   "style": "./src/index.css",
   "scripts": {
-    "test": "node --test test/**/*.test.js"
+    "test": "node --test test/**/*.test.js",
+    "docs": "node scripts/render-ai-docs.mjs"
   },
   "files": [
     "src",
+    "docs",
     "CHANGELOG.md"
   ],
   "exports": {
@@ -20,6 +22,11 @@
       "types": "./src/lapstyle.d.ts",
       "import": "./src/lapstyle.js",
       "default": "./src/lapstyle.js"
+    },
+    "./vue": {
+      "types": "./src/vue/index.d.ts",
+      "import": "./src/vue/index.js",
+      "default": "./src/vue/index.js"
     },
     "./auto": {
       "types": "./src/lapstyle.d.ts",
@@ -36,7 +43,15 @@
     "./package.json": "./package.json",
     "./*": "./src/*"
   },
-  "sideEffects": ["*.css", "./src/lapstyle.auto.js"],
+  "sideEffects": ["*.css", "./src/lapstyle.auto.js", "*.vue"],
+  "peerDependencies": {
+    "vue": "^3.4.0"
+  },
+  "peerDependenciesMeta": {
+    "vue": {
+      "optional": true
+    }
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/lapintool/lapstyle.git"

@@ -1,9 +1,34 @@
-# Changelog
+﻿# Changelog
+
+## 0.5.0-alpha
+
+### Breaking (default path)
+
+- **Vue is the default authoring path.** Import `Ls*` from `lapstyle/vue` or `app.use(LapstyleVue)`. Components own `enhance` / `destroy` on their root; apps should not call `enhance(document)` for page content.
+- Package description and docs push Vue first. Class markup + `enhance()` remain the look / framework-free kernel.
+
+### Added
+
+- `lapstyle/vue` export: `LsBtn`, `LsDropdown`, `LsDialog`, `LsSlider`, `LsBtnDropdown`, `LsTabs` / `LsTab`, `LsProgress`, `LsExpand`, `LsMenu`, `LsSplitter`, `LsColorPicker`, `LsTooltip`, `LsInput`, `LsField`, `LsCheckbox`, `LsRadio`, `LsCard`, `LsTable`, `LsIcon`, `LsGroup`, and the `LapstyleVue` plugin.
+- `peerDependencies.vue` `^3.4` (optional for CSS-only / enhance-only consumers).
+- Official demo: per-component API tables (props / events / slots), Vue-first home copy, Playground copies Vue starters, REPL embeds `lapstyle/vue`.
+- `create-lapstyle` registers `LapstyleVue` and demos `<ls-btn>`.
+- Default `.ls-btn` (no color class) uses `--ls-accent` so it follows the current theme. `.gray` stays the fixed gray.
+- AI-facing docs in `docs/` (`llms.txt`, `llms-full.txt`, per-component markdown) and real Vue prop types in `src/vue/index.d.ts`. Regenerated with `pnpm docs`.
+
+### Kept
+
+- Root `enhance()` / `destroy()` and all CSS class conventions for no-framework pages.
+- Dialog / dropdown / tabs / menu open-close ownership inside enhance (from 0.4.1).
 
 ## 0.4.1-alpha
 
+- `.ls-card.note` is a dashed, unfilled callout for hints and extra context.
 - Menu selection is bold accent text with no fill. `.fill` opts into the active background. `.highlight` is removed.
-- Draggable dialogs no longer jump on open, and dragging follows the pointer.
+- Draggable dialogs no longer jump on open, and dragging follows the pointer. Dialog open/close and drag live in one `dialog.js` module.
+- `enhance()` opens and closes Dropdown, Button-dropdown, and Dialog (`data-ls-open`, backdrop, Esc, actions). Pages listen for `ls-menu:select` and `ls-dialog:action`.
+- Tabs: `enhance()` switches tabs and emits `ls-tabs:change` / `ls-tabs:close` (cancelable).
+- Menu icon rail: `data-ls-collapse="#id"` toggles `.collapsed`.
 - Splitter handles use smooth SVG resize cursors, with the system cursor as fallback.
 - A tooltip with `data-theme` uses that theme's elevated background and text.
 

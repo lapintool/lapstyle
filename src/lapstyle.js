@@ -5,7 +5,18 @@
 // to detach the listeners and observers that enhance() added.
 
 import { destroyColorPicker, initColorPicker, setPickerValue } from "./js/color-picker.js";
-import { destroyDialogDrag, initDialogDrag } from "./js/dialog-drag.js";
+import {
+  destroyDialog,
+  destroyDialogDrag,
+  initDialog,
+  initDialogDrag,
+  setDialogOpen,
+} from "./js/dialog.js";
+import {
+  destroyDropdown,
+  initDropdown,
+  setDropdownOpen,
+} from "./js/dropdown.js";
 import { destroyExpand, initExpand, setExpandOpen } from "./js/expand.js";
 import { destroyMenu, initMenu } from "./js/menu.js";
 import {
@@ -30,7 +41,9 @@ function forEachMatch(root, selector, fn) {
 
 export function enhance(root = document) {
   forEachMatch(root, ".ls-color-picker", initColorPicker);
-  forEachMatch(root, ".ls-dialog .draggable", initDialogDrag);
+  forEachMatch(root, ".ls-dialog", initDialog);
+  forEachMatch(root, ".ls-dropdown", initDropdown);
+  forEachMatch(root, ".ls-btn-dropdown", initDropdown);
   forEachMatch(root, ".ls-tabs", initTabs);
   forEachMatch(root, ".ls-slider", initSlider);
   forEachMatch(root, ".ls-splitter", initSplitter);
@@ -42,7 +55,9 @@ export function enhance(root = document) {
 
 export function destroy(root = document) {
   forEachMatch(root, ".ls-color-picker", destroyColorPicker);
-  forEachMatch(root, ".ls-dialog .draggable", destroyDialogDrag);
+  forEachMatch(root, ".ls-dialog", destroyDialog);
+  forEachMatch(root, ".ls-dropdown", destroyDropdown);
+  forEachMatch(root, ".ls-btn-dropdown", destroyDropdown);
   forEachMatch(root, ".ls-tabs", destroyTabs);
   forEachMatch(root, ".ls-slider", destroySlider);
   forEachMatch(root, ".ls-splitter", destroySplitter);
@@ -58,8 +73,14 @@ const Lapstyle = {
   setPickerValue,
   initColorPicker,
   destroyColorPicker,
+  initDialog,
+  destroyDialog,
+  setDialogOpen,
   initDialogDrag,
   destroyDialogDrag,
+  initDropdown,
+  destroyDropdown,
+  setDropdownOpen,
   initTabs,
   destroyTabs,
   initSlider,
@@ -84,8 +105,14 @@ export {
   setPickerValue,
   initColorPicker,
   destroyColorPicker,
+  initDialog,
+  destroyDialog,
+  setDialogOpen,
   initDialogDrag,
   destroyDialogDrag,
+  initDropdown,
+  destroyDropdown,
+  setDropdownOpen,
   initTabs,
   destroyTabs,
   initSlider,

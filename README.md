@@ -1,18 +1,57 @@
 # Lapstyle
 
-A desktop UI kit with a defined look, optional JS enhancement, and no Vue / React binding. Author native elements with class conventions; call `enhance()` when you need interaction.
+A desktop **Vue UI kit** with a defined Lapstyle look. Use `Ls*` components (`v-model` / events / slots). CSS tokens and class conventions remain the look layer; `enhance()` is for framework-free pages.
 
-Current version **0.4.1-alpha**. License: MIT. Repository: https://github.com/lapintool/lapstyle
+Current version **0.5.0-alpha**. License: MIT. Repository: https://github.com/lapintool/lapstyle
 
 English is the default language for docs and the official demo.
+
+## For coding agents
+
+Do not scrape `src/vue/*.vue` first. Read the packaged docs:
+
+1. `docs/llms.txt` — index and rules
+2. `docs/getting-started.md` — install / `LapstyleVue`
+3. `docs/components/<tag>.md` — one component (props / events / slots)
+4. `docs/llms-full.txt` — everything in one file
+5. `src/vue/index.d.ts` — TypeScript props
+
+Prefer `<ls-*>` from `lapstyle/vue`. Class HTML + `enhance()` is the framework-free path (`docs/enhance.md`).
 
 ## Install
 
 ```bash
-pnpm add github:lapintool/lapstyle#v0.4.1-alpha
+pnpm add github:lapintool/lapstyle#v0.5.0-alpha
 ```
 
-Bundler / SPA (recommended; call `enhance` yourself):
+### Vue (recommended)
+
+```ts
+import { createApp } from "vue";
+import { LapstyleVue } from "lapstyle/vue";
+import "lapstyle/index.css";
+import App from "./App.vue";
+
+const app = createApp(App);
+app.use(LapstyleVue);
+app.mount("#app");
+```
+
+Or import components on demand:
+
+```ts
+import { LsBtn, LsDropdown, LsDialog } from "lapstyle/vue";
+```
+
+```vue
+<template>
+  <ls-btn color="blue">Save</ls-btn>
+  <ls-dropdown v-model="lang" :options="['JS', 'TS']" />
+  <ls-dialog v-model="open" title="Confirm">…</ls-dialog>
+</template>
+```
+
+### Framework-free (class + enhance)
 
 ```ts
 import "lapstyle/index.css";
@@ -41,7 +80,7 @@ npm create https://github.com/lapintool/lapstyle my-app
 pnpm dlx https://github.com/lapintool/create-lapstyle my-app
 ```
 
-The app opens on a button page with a sidebar. Menu items and routes both come from `src/views.ts`. `src/main.ts` imports `lapstyle/index.css` and calls `enhance(document)`. The dependency is `git+https://github.com/lapintool/lapstyle.git#v0.4.1-alpha`.
+The app opens on a button page with a sidebar. `src/main.ts` imports `lapstyle/index.css`, registers `LapstyleVue`, and still calls `enhance(document)` for shell chrome that uses class markup. Dependency: `git+https://github.com/lapintool/lapstyle.git#v0.5.0-alpha`.
 
 Add an empty page, then paste an example into it:
 
@@ -50,7 +89,7 @@ pnpm add-view Expand
 pnpm add-view Expand 展开面板
 ```
 
-That creates `src/views/ExpandView.vue` and a sidebar item. `Expand` and `ExpandView` are the same name. The official demo’s **Copy example** button matches this file: overwrite the file, or paste the template contents into its root. Do not copy the Playground editor — that preview rewrites the import to a virtual `./lapstyle.js`. Dialog examples use an `open` ref (`:hidden="!open"`), not the DOM `hidden` property.
+That creates `src/views/ExpandView.vue` and a sidebar item. The official demo’s **Copy example** button emits a Vue `Ls*` starter SFC.
 
 Dark is the default theme. Set `data-theme` on the root:
 
@@ -78,116 +117,25 @@ import "lapstyle/slider.css";
 import "lapstyle/progress.css";
 ```
 
-> Use public paths such as `lapstyle/index.css` or `lapstyle/progress.css`. Do not import `lapstyle/src/...`.
-
-### Browser baseline
-
-Needs a recent desktop browser. Tooltip visibility depends on CSS `:has()` (Firefox ≥ 121, Chrome ≥ 105, Safari ≥ 15.4). Without it, hover tooltips may not show.
-
-### 0.3 token prefix
-
-Theme and surface variables are all `--ls-*`. Examples:
-
-| Old | New |
-| --- | --- |
-| `--bg` / `--text` / `--border` | `--ls-bg` / `--ls-text` / `--ls-border` |
-| `--color-blue` | `--ls-color-blue` |
-| `--btn-fill` / `--input-bg` | `--ls-btn-fill` / `--ls-input-bg` |
-| `--duration` / `--ease-out` | `--ls-duration` / `--ls-ease-out` |
-
-There are no unprefixed aliases. Full list: [CHANGELOG.md](./CHANGELOG.md).
-
-JSR (`@lapintool/lapstyle`) cannot register CSS as module entries; styles still use in-package file paths.
-
-## Components
-
-| Component | Root class | enhance |
-| --- | --- | --- |
-| Button | `.ls-btn` | No |
-| Button group / dropdown button | `.ls-btn-group` / `.ls-btn-dropdown` | Popover menus |
-| Input | `.ls-input` | No |
-| Radio | `.ls-radio` | No |
-| Checkbox / switch | `.ls-checkbox` | No |
-| Tabs | `.ls-tabs` | Yes |
-| Dropdown | `.ls-dropdown` | Popover menus |
-| Dialog | `.ls-dialog` | `.draggable` only |
-| Tooltip | `.ls-tooltip` | Yes |
-| Scrollbar | `.ls-scroll` | No |
-| Icon | `.ls-icon` | No |
-| Menu | `.ls-menu` | Yes (auto flip) |
-| Card | `.ls-card` | No |
-| Table | `.ls-table` | No |
-| Slider | `.ls-slider` | Yes |
-| Progress | `.ls-progress` | Recommended (aria / CSS sync) |
-| Splitter | `.ls-splitter` | Yes |
-| Expand | `.ls-expand` | Yes |
-| Color picker | `.ls-color-picker` | Yes |
-
-Write popover menus as `.ls-card.ls-menu`: the card is the surface, the menu owns geometry and open/close. Without a locked `.top` / `.bottom` / `.start` / `.end`, the menu flips when there is not enough room.
-
-## Size and density
-
-Control size with `.sm` / `.md` (default) / `.lg`, driven by tokens:
-
-```css
---ls-size-sm-font / --ls-size-sm-icon / --ls-size-sm-control
---ls-size-md-font / --ls-size-md-icon / --ls-size-md-control
---ls-size-lg-font / --ls-size-lg-icon / --ls-size-lg-control
-```
-
-`.dense` only shrinks padding / height (`--ls-dense-shrink`) and can stack with size classes.
-
-## Product rules
-
-| Item | Meaning |
-| --- | --- |
-| Minimum HTML | Author-written roots / a small subtree |
-| Library-generated | Nodes, aria, and CSS variables added by `enhance()` |
-| CSS customization | Stable part classes + `--ls-*` variables |
-| Change state | `data-*` / `setSliderValue` / `setProgressValue` / `setExpandOpen` / events |
-
-## Class naming
-
-1. **Component roots** use global `ls-*`: `.ls-btn`, `.ls-dialog`, `.ls-splitter`.
-2. **Parts** live inside the parent, short names, no prefix: `.ls-dialog .panel`, `.ls-splitter .pane`.
-3. **Modifiers / effects** are global and unprefixed: `.dense`, `.modeless`, `.draggable`.
-4. No BEM `__`. Dragging uses the class `draggable`, not the HTML `draggable` attribute.
-
-## Minimal examples
-
-```html
-<div class="ls-slider blue label" data-value="40" aria-label="Volume"></div>
-<div class="ls-slider blue input" data-value="14" data-min="8" data-max="32" data-suffix="px" aria-label="Font size"></div>
-```
+Or once:
 
 ```ts
-import { enhance, setSliderValue } from "lapstyle";
-enhance(document);
-setSliderValue(document.querySelector(".ls-slider"), 70);
+import "lapstyle/index.css";
 ```
 
-Progress:
+## Docs
 
-```html
-<div
-  class="ls-progress blue"
-  role="progressbar"
-  aria-valuenow="40"
-  aria-valuemin="0"
-  aria-valuemax="100"
-></div>
-```
+Human demo pages (interactive) live in the `lapstyle-ui` repo.
 
-Do not author conflicting `aria-valuenow` and `--ls-progress` at the same time.
+AI / machine docs ship **in this package**:
 
-## enhance / destroy
+- `docs/llms.txt` — index
+- `docs/llms-full.txt` — full pack
+- `docs/getting-started.md`, `docs/theming.md`, `docs/enhance.md`
+- `docs/components/ls-dialog.md` (and every other `ls-*` tag)
 
-The main entry only exports the API. For automatic browser enhancement, import `lapstyle/auto`. Before an SPA unmount, call `destroy(root)` on a local root. `enhance(root)` / `destroy(root)` also handle **the root itself** when it matches a selector, not only descendants.
+Local demo server also mirrors them at `/llms.txt` and `/docs/…`.
 
-Scripted values: `setSliderValue`, `setProgressValue` / `syncProgress`, `setExpandOpen`, `setPickerValue`. Common events: `ls-slider:input`, `ls-progress:change`, `ls-splitter:resize`, `ls-color-picker:input` / `change`.
+## Peer dependency
 
-Full API: `src/lapstyle.d.ts`. Component source lives in `src/js/`.
-
-## Playground
-
-The official demo **View code** button opens **Playground** (`@vue/repl`) so you can try the example. Use the **Copy example** button when you want code that drops into an app created above. Playground rewrites `lapstyle` to virtual files for the preview only.
+`vue` `^3.4` is required only when using `lapstyle/vue`. CSS-only and `enhance()` consumers can omit it (`peerDependenciesMeta.optional`).

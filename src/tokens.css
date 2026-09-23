@@ -350,8 +350,8 @@
 /* Brown — Gruvbox Material Light Soft */
 [data-theme="brown"] {
   --ls-bg: #fffaea;
-  --ls-bg-elevated: #ffeec2;
-  --ls-border: #c9b99a;
+  --ls-bg-elevated: #ffe3a5;
+  --ls-border: #eac67f;
   --ls-text: #654735;
   --ls-text-dim: #665c54;
   --ls-text-muted: #a89984;
@@ -364,8 +364,8 @@
   --ls-popover-text: #654735;
   --ls-popover-active: #c35e0a;
   --ls-btn-fill: #f9f5d7;
-  --ls-menu-item-active-bg: #ddc9a0;
-  --ls-menu-item-active-text: #9d5408;
+  --ls-menu-item-active-bg: #f4d089;
+  --ls-menu-item-active-text: #9f560b;
   --ls-input-bg: #f9f5d7;
   --ls-input-focus: color-mix(in srgb, var(--ls-accent) 58%, #ffffff);
   --ls-tabs-bar-bg: #ebdbb2;
@@ -373,9 +373,9 @@
 
 /* Amber — Solarized Light */
 [data-theme="amber"] {
-  --ls-bg: #fdf6e3;
-  --ls-bg-elevated: #ffe286;
-  --ls-border: #ffb54f;
+  --ls-bg: #fdf2e3;
+  --ls-bg-elevated: #ffedc4;
+  --ls-border: #ffdaa7;
   --ls-text: #6a5000;
   --ls-text-dim: #966412;
   --ls-text-muted: #d1b500;
@@ -388,8 +388,8 @@
   --ls-popover-text: #3c849b;
   --ls-popover-active: #ecbb22;
   --ls-btn-fill: #fdf6e3;
-  --ls-menu-item-active-bg: #f1d25d;
-  --ls-menu-item-active-text: #b58900;
+  --ls-menu-item-active-bg: #eed4a1;
+  --ls-menu-item-active-text: #1f1700;
   --ls-input-bg: #fff7d8;
   --ls-input-focus: color-mix(in srgb, var(--ls-accent) 58%, #ffffff);
   --ls-tabs-bar-bg: #eee8d5;

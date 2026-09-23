@@ -6,3 +6,13 @@
   background: var(--ls-bg-elevated);
   color: var(--ls-text);
 }
+
+.ls-card.note {
+  padding: 12px 14px;
+  border-style: dashed;
+  background: transparent;
+  color: var(--ls-text-dim);
+  overflow-wrap: anywhere;
+  font-size: 13px;
+  line-height: 1.5;
+}

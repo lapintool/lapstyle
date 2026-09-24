@@ -46,11 +46,30 @@ export function initSplitter(root) {
     return vertical ? target.offsetHeight : target.offsetWidth;
   }
 
-  function apply(size) {
+  function apply(size, opts) {
     target.style.flexGrow = "0";
     target.style.flexShrink = "0";
     target.style.flexBasis = `${size}px`;
-    emit(size);
+    if (!opts?.silent) emit(size);
+  }
+
+  // 隐藏容器里可用尺寸为 0，此时夹紧只会得到 0；先记下，等有尺寸再应用
+  let pending = null;
+
+  function hasRoom() {
+    return splitAvailableSize(root, handle, vertical) > 0;
+  }
+
+  function setSize(size, opts) {
+    if (size == null || Number.isNaN(Number(size))) return undefined;
+    if (!hasRoom()) {
+      pending = Number(size);
+      return undefined;
+    }
+    pending = null;
+    const next = clamp(Number(size));
+    apply(next, opts);
+    return next;
   }
 
   function emit(size) {
@@ -115,7 +134,7 @@ export function initSplitter(root) {
     emit(currentSize());
   }
 
-  if (hasInitial) apply(clamp(parseNum(root.dataset.initial, currentSize())));
+  if (hasInitial) setSize(parseNum(root.dataset.initial, currentSize()));
 
   const cleanups = [];
   trackListener(cleanups, handle, "pointerdown", onPointerDown);
@@ -127,7 +146,13 @@ export function initSplitter(root) {
 
   // 容器尺寸变化时把当前尺寸重新夹回 min/max 可用区间
   const ro = new ResizeObserver(() => {
-    if (dragging) return;
+    if (dragging || !hasRoom()) return;
+    if (pending != null) {
+      const next = pending;
+      pending = null;
+      apply(clamp(next));
+      return;
+    }
     const size = currentSize();
     const clamped = clamp(size);
     if (clamped !== size && (target.style.flexBasis || hasInitial)) apply(clamped);
@@ -135,6 +160,7 @@ export function initSplitter(root) {
   ro.observe(root);
 
   const state = {
+    setSize,
     destroy() {
       cleanups.forEach((remove) => remove());
       ro.disconnect();
@@ -144,6 +170,16 @@ export function initSplitter(root) {
   };
   splitterState.set(root, state);
   splitterState.set(handle, state);
+}
+
+export function setSplitterSize(root, size, opts) {
+  const state = splitterState.get(root);
+  if (typeof state?.setSize === "function") {
+    return state.setSize(size, opts);
+  }
+  if (size != null && !Number.isNaN(Number(size))) root.dataset.initial = String(size);
+  initSplitter(root);
+  return splitterState.get(root)?.setSize?.(size, opts);
 }
 
 export function destroySplitter(root) {

@@ -17,7 +17,14 @@ import {
   initDropdown,
   setDropdownOpen,
 } from "./js/dropdown.js";
-import { destroyExpand, initExpand, setExpandOpen } from "./js/expand.js";
+import {
+  destroyExpand,
+  initExpand,
+  normalizeExpandConfig,
+  refreshExpand,
+  setExpandOpen,
+  warnExpandIssues,
+} from "./js/expand.js";
 import { destroyMenu, initMenu } from "./js/menu.js";
 import {
   destroyProgress,
@@ -26,7 +33,7 @@ import {
   syncProgress,
 } from "./js/progress.js";
 import { destroySlider, initSlider, setSliderValue } from "./js/slider.js";
-import { destroySplitter, initSplitter } from "./js/splitter.js";
+import { destroySplitter, initSplitter, setSplitterSize } from "./js/splitter.js";
 import { destroyTabs, initTabs } from "./js/tabs.js";
 import { destroyTooltip, initTooltip } from "./js/tooltip.js";
 
@@ -88,6 +95,7 @@ const Lapstyle = {
   setSliderValue,
   initSplitter,
   destroySplitter,
+  setSplitterSize,
   initProgress,
   destroyProgress,
   setProgressValue,
@@ -97,6 +105,9 @@ const Lapstyle = {
   initExpand,
   destroyExpand,
   setExpandOpen,
+  refreshExpand,
+  normalizeExpandConfig,
+  warnExpandIssues,
   initMenu,
   destroyMenu,
 };
@@ -120,6 +131,7 @@ export {
   setSliderValue,
   initSplitter,
   destroySplitter,
+  setSplitterSize,
   initProgress,
   destroyProgress,
   setProgressValue,
@@ -129,6 +141,9 @@ export {
   initExpand,
   destroyExpand,
   setExpandOpen,
+  refreshExpand,
+  normalizeExpandConfig,
+  warnExpandIssues,
   initMenu,
   destroyMenu,
 };

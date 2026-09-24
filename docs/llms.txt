@@ -2,7 +2,7 @@
 
 > Desktop Vue UI kit. Use Ls* / ls-* components (v-model, events, slots). CSS tokens are the look layer.
 
-Install: `pnpm add github:lapintool/lapstyle#v0.5.0-alpha`
+Install: `pnpm add github:lapintool/lapstyle#v0.5.1-alpha`
 Setup: `app.use(LapstyleVue)` and `import "lapstyle/index.css"`.
 Theme: `<html data-theme="dark|light|mint|sky|pink|brown|amber">`.
 
@@ -13,7 +13,7 @@ Read these files in the installed package (paths relative to the package root):
 - Full pack: docs/llms-full.txt
 - Types: src/vue/index.d.ts
 - LsBtn (ls-btn): docs/components/ls-btn.md
-- LsGroup (ls-group): docs/components/ls-group.md
+- LsBtnGroup (ls-btn-group): docs/components/ls-btn-group.md
 - LsBtnDropdown (ls-btn-dropdown): docs/components/ls-btn-dropdown.md
 - LsInput (ls-input): docs/components/ls-input.md
 - LsField (ls-field): docs/components/ls-field.md
@@ -26,6 +26,8 @@ Read these files in the installed package (paths relative to the package root):
 - LsTooltip (ls-tooltip): docs/components/ls-tooltip.md
 - LsIcon (ls-icon): docs/components/ls-icon.md
 - LsMenu (ls-menu): docs/components/ls-menu.md
+- LsMenuGroup (ls-menu-group): docs/components/ls-menu-group.md
+- LsMenuItem (ls-menu-item): docs/components/ls-menu-item.md
 - LsCard (ls-card): docs/components/ls-card.md
 - LsTable (ls-table): docs/components/ls-table.md
 - LsSlider (ls-slider): docs/components/ls-slider.md

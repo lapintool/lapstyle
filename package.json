@@ -1,6 +1,6 @@
 {
   "name": "lapstyle",
-  "version": "0.5.0-alpha",
+  "version": "0.5.1-alpha",
   "description": "A desktop Vue UI kit with Lapstyle look: Ls* components (v-model / events / slots), CSS tokens, and optional enhance() for framework-free pages.",
   "license": "MIT",
   "type": "module",

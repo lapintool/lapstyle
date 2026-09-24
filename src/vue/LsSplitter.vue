@@ -1,18 +1,19 @@
 <script setup>
 import { computed, onMounted, onUnmounted, ref, watch } from "vue";
-import { destroy, enhance } from "../lapstyle.js";
+import { destroy, enhance, setSplitterSize } from "../lapstyle.js";
 
 const model = defineModel({ type: Number, default: null });
 
 const props = defineProps({
   vertical: { type: Boolean, default: false },
-  min: { type: [Number, String], default: 0 },
-  max: { type: [Number, String], default: 100 },
+  min: { type: [Number, String], default: undefined },
+  max: { type: [Number, String], default: undefined },
 });
 
 const emit = defineEmits(["resize"]);
 
 const root = ref(null);
+let syncing = false;
 
 const hostClass = computed(() => ({
   vertical: props.vertical,
@@ -20,20 +21,35 @@ const hostClass = computed(() => ({
 
 function onResize(ev) {
   const size = ev.detail?.size;
-  if (typeof size === "number") {
-    model.value = size;
-    emit("resize", size);
-  }
+  if (typeof size !== "number") return;
+  syncing = true;
+  model.value = size;
+  emit("resize", size);
+  queueMicrotask(() => {
+    syncing = false;
+  });
 }
 
 watch(model, (next) => {
-  if (!(root.value instanceof HTMLElement) || next == null) return;
-  root.value.style.setProperty("--ls-splitter-size", `${next}%`);
+  if (syncing || !(root.value instanceof HTMLElement) || next == null) return;
+  const applied = setSplitterSize(root.value, next, { silent: true });
+  if (typeof applied === "number" && applied !== next) {
+    syncing = true;
+    model.value = applied;
+    queueMicrotask(() => {
+      syncing = false;
+    });
+  }
 });
 
 onMounted(() => {
   if (!(root.value instanceof HTMLElement)) return;
+  // 双击复位回到挂载时的 v-model 值
+  if (model.value != null && root.value.dataset.initial === undefined) {
+    root.value.dataset.initial = String(model.value);
+  }
   enhance(root.value);
+  if (model.value != null) setSplitterSize(root.value, model.value, { silent: true });
   root.value.addEventListener("ls-splitter:resize", onResize);
 });
 
@@ -51,7 +67,6 @@ onUnmounted(() => {
     :class="hostClass"
     :data-min="min"
     :data-max="max"
-    :style="model != null ? { '--ls-splitter-size': `${model}%` } : undefined"
   >
     <slot />
   </div>

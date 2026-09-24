@@ -222,6 +222,42 @@
   flex-direction: row;
 }
 
+/*
+ * 满高 / 满宽：动画结束后由 JS 加上 data-ls-expand-stretch=*，再用对边 inset 贴齐。
+ * 不要在 .is-expanded 上直接 height:auto !important，否则会和 WAAPI 抢属性、位置乱跳。
+ */
+.ls-expand[data-ls-expand-stretch^="v"] {
+  height: auto;
+}
+
+.ls-expand[data-ls-expand-stretch="v-bottom"] {
+  bottom: 0;
+}
+
+.ls-expand[data-ls-expand-stretch="v-top"] {
+  top: 0;
+}
+
+.ls-expand[data-ls-expand-stretch^="h"] {
+  width: auto;
+}
+
+.ls-expand[data-ls-expand-stretch="h-left"] {
+  left: 0;
+}
+
+.ls-expand[data-ls-expand-stretch="h-right"] {
+  right: 0;
+}
+
+.ls-expand[data-ls-expand-stretch^="v"] .frame {
+  height: 100%;
+}
+
+.ls-expand[data-ls-expand-stretch^="h"] .frame {
+  width: 100%;
+}
+
 .ls-expand[data-collapse="t"] .frame {
   top: 0;
   bottom: auto;

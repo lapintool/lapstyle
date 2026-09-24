@@ -1,4 +1,22 @@
-﻿# Changelog
+# Changelog
+
+## 0.5.1-alpha
+
+### Added
+
+- `LsMenuItem` / `LsMenuGroup` shorthand inside `LsMenu` (icons, `href`, group `open` as initial state).
+- Expand Vue props: `openWidth`, `openHeight`, `expand`, `collapse`, `floatAnchor`, `title`, plus `#icon` / `#head` slots.
+- `setSplitterSize` so `LsSplitter` `v-model` is pixels, not a CSS percentage.
+
+### Changed
+
+- `LsGroup` is now `LsBtnGroup` (`<ls-btn-group>`).
+- Expand: animate in px, then settle to stretch; invalid expand/collapse pairs are normalized (with a warning).
+- Menu caret matches the initial expanded state (`is-expanded` / `.sub[hidden]`).
+
+### Fixed
+
+- Splitter size waits until the host has room, so a hidden pane no longer reports `0`.
 
 ## 0.5.0-alpha
 

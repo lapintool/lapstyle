@@ -7,7 +7,7 @@ Import: `import { LsSplitter } from "lapstyle/vue"` (or `app.use(LapstyleVue)`).
 ## Minimal usage
 
 ```vue
-<ls-splitter v-model="size" :min="20" :max="80">
+<ls-splitter v-model="size" :min="120" :max="420">
   <div class="pane">Left</div>
   <div class="pane">Right</div>
 </ls-splitter>
@@ -17,10 +17,10 @@ Import: `import { LsSplitter } from "lapstyle/vue"` (or `app.use(LapstyleVue)`).
 
 | Name | Type | Default | Description |
 | --- | --- | --- | --- |
-| `modelValue` | `number \| null` | — | First pane size % |
+| `modelValue` | `number \| null` | — | Target pane size in px (default: end/right pane) |
 | `vertical` | `boolean` | `false` | Stack panes vertically |
-| `min` | `number \| string` | `0` | Percent lower bound |
-| `max` | `number \| string` | `100` | Percent upper bound |
+| `min` | `number \| string` | — | Min size in px (data-min; default 80) |
+| `max` | `number \| string` | — | Max size in px (data-max) |
 
 ### Events
 

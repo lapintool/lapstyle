@@ -9,7 +9,7 @@ Do **not** start from class HTML + `enhance()` unless the app has no Vue.
 ## Install
 
 ```bash
-pnpm add github:lapintool/lapstyle#v0.5.0-alpha
+pnpm add github:lapintool/lapstyle#v0.5.1-alpha
 ```
 
 Peer: `vue` `^3.4` (required only when using `lapstyle/vue`).
@@ -135,19 +135,19 @@ If this page is not enough, read `src/vue/LsBtn.vue` next. Do not copy class-onl
 
 ---
 
-# LsGroup (`ls-group`)
+# LsBtnGroup (`ls-btn-group`)
 
 Join adjacent buttons into one group.
 
-Import: `import { LsGroup } from "lapstyle/vue"` (or `app.use(LapstyleVue)`).
+Import: `import { LsBtnGroup } from "lapstyle/vue"` (or `app.use(LapstyleVue)`).
 
 ## Minimal usage
 
 ```vue
-<ls-group>
+<ls-btn-group>
   <ls-btn>One</ls-btn>
   <ls-btn>Two</ls-btn>
-</ls-group>
+</ls-btn-group>
 ```
 
 ### Props
@@ -169,7 +169,7 @@ Import: `import { LsGroup } from "lapstyle/vue"` (or `app.use(LapstyleVue)`).
 
 `.ls-btn-group` — look layer. Prefer the Vue tag in apps.
 
-If this page is not enough, read `src/vue/LsGroup.vue` next. Do not copy class-only demo HTML unless you are on the framework-free path (`docs/enhance.md`).
+If this page is not enough, read `src/vue/LsBtnGroup.vue` next. Do not copy class-only demo HTML unless you are on the framework-free path (`docs/enhance.md`).
 
 ---
 
@@ -671,16 +671,19 @@ If this page is not enough, read `src/vue/LsIcon.vue` next. Do not copy class-on
 
 # LsMenu (`ls-menu`)
 
-Standalone menu. Leaf clicks emit select and update v-model when data-value is set.
+Standalone menu. Compose LsMenuItem / LsMenuGroup; v-model is the selected item value.
 
 Import: `import { LsMenu } from "lapstyle/vue"` (or `app.use(LapstyleVue)`).
 
 ## Minimal usage
 
 ```vue
-<ls-menu v-model="sel" icons fill>
-  <button type="button" class="item" data-value="a"><span class="label">A</span></button>
-  <button type="button" class="item" data-value="b"><span class="label">B</span></button>
+<ls-menu v-model="sel">
+  <ls-menu-group label="DNS" open>
+    <ls-menu-item label="Records" value="records" />
+    <ls-menu-item label="Settings" value="settings" />
+  </ls-menu-group>
+  <ls-menu-item label="Email" value="mail" />
 </ls-menu>
 ```
 
@@ -689,7 +692,7 @@ Import: `import { LsMenu } from "lapstyle/vue"` (or `app.use(LapstyleVue)`).
 | Name | Type | Default | Description |
 | --- | --- | --- | --- |
 | `modelValue` | `string \| number \| null` | — | Selected value |
-| `icons` | `boolean` | `false` | Reserve icon column |
+| `icons` | `boolean` | `false` | Reserve icon column. Turned on automatically when any item has an icon |
 | `fill` | `boolean` | `false` | Filled items |
 | `plain` | `boolean` | `false` | No card chrome |
 | `collapsed` | `boolean` | `false` | Collapsed / rail |
@@ -706,13 +709,100 @@ Import: `import { LsMenu } from "lapstyle/vue"` (or `app.use(LapstyleVue)`).
 
 | Name | Description |
 | --- | --- |
-| `default` | .item rows and nested structure |
+| `default` | LsMenuItem / LsMenuGroup, or hand-written .item rows |
+
+### Pitfalls
+
+- Hand-written <button class="item"> rows still work and can be mixed with LsMenuItem / LsMenuGroup.
+- Highlight follows v-model: an item is active when its value (or label, if no value) equals the model.
 
 ## CSS root
 
 `.ls-menu` — look layer. Prefer the Vue tag in apps.
 
 If this page is not enough, read `src/vue/LsMenu.vue` next. Do not copy class-only demo HTML unless you are on the framework-free path (`docs/enhance.md`).
+
+---
+
+# LsMenuGroup (`ls-menu-group`)
+
+Expandable row with nested items. Collapsed by default; caret and submenu are generated.
+
+Import: `import { LsMenuGroup } from "lapstyle/vue"` (or `app.use(LapstyleVue)`).
+
+## Minimal usage
+
+```vue
+<ls-menu-group label="Analytics" :icon="ChartIcon" open>
+  <ls-menu-item label="Usage" />
+</ls-menu-group>
+```
+
+### Props
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `open` | `boolean` | `false` | Expanded (v-model:open) |
+| `label` | `string` | `""` | Row text |
+| `icon` | `string \| Component \| null` | `null` | Icon component or an LsIcon name |
+| `disabled` | `boolean` | `false` | Disable the row |
+
+### Events
+
+| Name | Payload | Description |
+| --- | --- | --- |
+| `update:open` | `boolean` | Expanded / collapsed |
+
+### Slots
+
+| Name | Description |
+| --- | --- |
+| `default` | Nested LsMenuItem / LsMenuGroup |
+| `label` | Custom label content |
+| `icon` | Custom icon; wrapped in LsIcon for you |
+
+## CSS root
+
+`.ls-menu .item` — look layer. Prefer the Vue tag in apps.
+
+If this page is not enough, read `src/vue/LsMenuGroup.vue` next. Do not copy class-only demo HTML unless you are on the framework-free path (`docs/enhance.md`).
+
+---
+
+# LsMenuItem (`ls-menu-item`)
+
+Leaf row inside LsMenu or LsMenuGroup.
+
+Import: `import { LsMenuItem } from "lapstyle/vue"` (or `app.use(LapstyleVue)`).
+
+## Minimal usage
+
+```vue
+<ls-menu-item label="Records" value="records" :icon="ListIcon" />
+```
+
+### Props
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `label` | `string` | `""` | Row text (or use the default slot) |
+| `value` | `string \| number \| null` | `null` | Selection value; falls back to label |
+| `icon` | `string \| Component \| null` | `null` | Icon component (e.g. a lucide icon) or an LsIcon name |
+| `href` | `string` | `""` | Render as a link |
+| `disabled` | `boolean` | `false` | Disable the row |
+
+### Slots
+
+| Name | Description |
+| --- | --- |
+| `default` | Label content |
+| `icon` | Custom icon (SVG or glyph); wrapped in LsIcon for you |
+
+## CSS root
+
+`.ls-menu .item` — look layer. Prefer the Vue tag in apps.
+
+If this page is not enough, read `src/vue/LsMenuItem.vue` next. Do not copy class-only demo HTML unless you are on the framework-free path (`docs/enhance.md`).
 
 ---
 
@@ -883,8 +973,8 @@ Import: `import { LsExpand } from "lapstyle/vue"` (or `app.use(LapstyleVue)`).
 ## Minimal usage
 
 ```vue
-<ls-expand v-model="open" expand="tr" title="Panel">
-  <p>Body</p>
+<ls-expand v-model="open" collapse="tr" :open-width="240" :open-height="180" title="Panel">
+  Notes, a form, or a list.
 </ls-expand>
 ```
 
@@ -893,10 +983,12 @@ Import: `import { LsExpand } from "lapstyle/vue"` (or `app.use(LapstyleVue)`).
 | Name | Type | Default | Description |
 | --- | --- | --- | --- |
 | `modelValue` | `boolean` | `false` | Expanded (v-model) |
-| `expand` | `"tr" \| "tl" \| "br" \| "bl" \| "t" \| "b" \| "l" \| "r"` | `"tr"` | Dock: tr \| tl \| br \| bl \| t \| b \| l \| r |
-| `collapse` | `string` | `""` | Collapsed-edge target |
-| `floatAnchor` | `string` | `""` | Float pin (data-ls-float-anchor) |
-| `title` | `string` | `""` | Head title |
+| `collapse` | `"" \| "tl" \| "tr" \| "bl" \| "br" \| "t" \| "r" \| "b" \| "l" \| "float"` | `""` | Where the collapsed button docks. Empty: derived from expand, else tr |
+| `expand` | `"" \| "tl" \| "tr" \| "bl" \| "br" \| "t" \| "r" \| "b" \| "l" \| "float"` | `""` | Open shape. Corner collapse: same corner or an adjacent edge. Edge collapse: same edge. Empty: same as collapse |
+| `floatAnchor` | `"" \| "tl" \| "tr" \| "bl" \| "br"` | `""` | Float only: pinned corner (default br) |
+| `openWidth` | `number \| string \| null` | `null` | Open width in px (default 216). Ignored for expand t / b (full width) |
+| `openHeight` | `number \| string \| null` | `null` | Open height in px (default 208). Ignored for expand l / r (full height) |
+| `title` | `string` | `""` | Head title (also the head aria-label) |
 
 ### Events
 
@@ -909,8 +1001,15 @@ Import: `import { LsExpand } from "lapstyle/vue"` (or `app.use(LapstyleVue)`).
 
 | Name | Description |
 | --- | --- |
-| `head` | Custom head content |
-| `default` | Panel body |
+| `icon` | Collapsed-button icon (default: square) |
+| `head` | Replace the whole head (title + icon) |
+| `default` | Panel body (already wrapped in .body) |
+
+### Pitfalls
+
+- Invalid combinations never render: unknown values are dropped, a mismatched expand falls back to collapse, float forces both to float. Each correction logs one console.warn.
+- Sizes are clamped between the collapsed size (28px) and the host box. The host needs position: relative and a size.
+- Do not wrap the default slot in <div class="body">; the component already does.
 
 ## CSS root
 
@@ -929,7 +1028,7 @@ Import: `import { LsSplitter } from "lapstyle/vue"` (or `app.use(LapstyleVue)`).
 ## Minimal usage
 
 ```vue
-<ls-splitter v-model="size" :min="20" :max="80">
+<ls-splitter v-model="size" :min="120" :max="420">
   <div class="pane">Left</div>
   <div class="pane">Right</div>
 </ls-splitter>
@@ -939,10 +1038,10 @@ Import: `import { LsSplitter } from "lapstyle/vue"` (or `app.use(LapstyleVue)`).
 
 | Name | Type | Default | Description |
 | --- | --- | --- | --- |
-| `modelValue` | `number \| null` | — | First pane size % |
+| `modelValue` | `number \| null` | — | Target pane size in px (default: end/right pane) |
 | `vertical` | `boolean` | `false` | Stack panes vertically |
-| `min` | `number \| string` | `0` | Percent lower bound |
-| `max` | `number \| string` | `100` | Percent upper bound |
+| `min` | `number \| string` | — | Min size in px (data-min; default 80) |
+| `max` | `number \| string` | — | Max size in px (data-max) |
 
 ### Events
 

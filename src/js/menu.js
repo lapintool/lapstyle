@@ -54,14 +54,27 @@ function nextMenuSub(item) {
   return el && el.classList.contains("sub") ? el : null;
 }
 
-function toggleMenuExpand(item) {
+function applyMenuExpand(item, open) {
   const sub = nextMenuSub(item);
-  const open = !item.classList.contains("is-expanded");
   item.classList.toggle("is-expanded", open);
   item.setAttribute("aria-expanded", open ? "true" : "false");
   if (!sub) return;
   if (open) sub.removeAttribute("hidden");
   else sub.setAttribute("hidden", "");
+}
+
+function syncMenuExpandState(item) {
+  if (!isMenuExpander(item)) return;
+  const sub = nextMenuSub(item);
+  const open = item.classList.contains("is-expanded") || (Boolean(sub) && !sub.hasAttribute("hidden"));
+  applyMenuExpand(item, open);
+}
+
+function toggleMenuExpand(item) {
+  if (!isMenuExpander(item)) return;
+  const open = !item.classList.contains("is-expanded");
+  applyMenuExpand(item, open);
+  item.dispatchEvent(new CustomEvent("ls-menu:toggle", { detail: { open, item }, bubbles: true }));
 }
 
 function menuRailLabels(root) {
@@ -401,6 +414,10 @@ export function initMenu(root) {
 
   const state = getMenuMeta(root);
   state.bound = true;
+
+  root.querySelectorAll(".item").forEach((item) => {
+    if (item instanceof HTMLElement) syncMenuExpandState(item);
+  });
 
   const onClick = (event) => {
     const item = event.target.closest(".item");

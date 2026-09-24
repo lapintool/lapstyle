@@ -1,16 +1,16 @@
-# LsGroup (`ls-group`)
+# LsBtnGroup (`ls-btn-group`)
 
 Join adjacent buttons into one group.
 
-Import: `import { LsGroup } from "lapstyle/vue"` (or `app.use(LapstyleVue)`).
+Import: `import { LsBtnGroup } from "lapstyle/vue"` (or `app.use(LapstyleVue)`).
 
 ## Minimal usage
 
 ```vue
-<ls-group>
+<ls-btn-group>
   <ls-btn>One</ls-btn>
   <ls-btn>Two</ls-btn>
-</ls-group>
+</ls-btn-group>
 ```
 
 ### Props
@@ -32,4 +32,4 @@ Import: `import { LsGroup } from "lapstyle/vue"` (or `app.use(LapstyleVue)`).
 
 `.ls-btn-group` — look layer. Prefer the Vue tag in apps.
 
-If this page is not enough, read `src/vue/LsGroup.vue` next. Do not copy class-only demo HTML unless you are on the framework-free path (`docs/enhance.md`).
+If this page is not enough, read `src/vue/LsBtnGroup.vue` next. Do not copy class-only demo HTML unless you are on the framework-free path (`docs/enhance.md`).

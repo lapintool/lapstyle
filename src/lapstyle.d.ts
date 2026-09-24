@@ -26,6 +26,11 @@ export function setSliderValue(
 ): void;
 export function initSplitter(root: HTMLElement): void;
 export function destroySplitter(root: HTMLElement): void;
+export function setSplitterSize(
+  root: HTMLElement,
+  size: number | null,
+  opts?: { silent?: boolean },
+): number | undefined;
 export function initProgress(el: HTMLElement): void;
 export function destroyProgress(el: HTMLElement): void;
 export function syncProgress(el: HTMLElement): void;
@@ -43,6 +48,27 @@ export function setExpandOpen(
   open: boolean,
   instant?: boolean,
 ): void;
+export function refreshExpand(root: HTMLElement): void;
+export type ExpandCorner = "tl" | "tr" | "bl" | "br";
+export type ExpandEdge = "t" | "r" | "b" | "l";
+export type ExpandMode = ExpandCorner | ExpandEdge | "float";
+export interface ExpandConfigInput {
+  expand?: string | null;
+  collapse?: string | null;
+  floatAnchor?: string | null;
+  openWidth?: number | string | null;
+  openHeight?: number | string | null;
+}
+export interface ExpandConfig {
+  expand: ExpandMode;
+  collapse: ExpandMode;
+  floatAnchor: ExpandCorner | "";
+  openWidth: number | null;
+  openHeight: number | null;
+  issues: string[];
+}
+export function normalizeExpandConfig(input?: ExpandConfigInput): ExpandConfig;
+export function warnExpandIssues(el: Element, issues: string[]): void;
 export function initMenu(root: HTMLElement): void;
 export function destroyMenu(root: HTMLElement): void;
 export const Lapstyle: {
@@ -66,6 +92,7 @@ export const Lapstyle: {
   setSliderValue: typeof setSliderValue;
   initSplitter: typeof initSplitter;
   destroySplitter: typeof destroySplitter;
+  setSplitterSize: typeof setSplitterSize;
   initProgress: typeof initProgress;
   destroyProgress: typeof destroyProgress;
   setProgressValue: typeof setProgressValue;
@@ -75,6 +102,9 @@ export const Lapstyle: {
   initExpand: typeof initExpand;
   destroyExpand: typeof destroyExpand;
   setExpandOpen: typeof setExpandOpen;
+  refreshExpand: typeof refreshExpand;
+  normalizeExpandConfig: typeof normalizeExpandConfig;
+  warnExpandIssues: typeof warnExpandIssues;
   initMenu: typeof initMenu;
   destroyMenu: typeof destroyMenu;
 };

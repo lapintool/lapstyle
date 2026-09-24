@@ -1,4 +1,4 @@
-import type { App, Plugin, DefineComponent } from "vue";
+import type { App, Component, DefineComponent } from "vue";
 
 export interface LsBtnProps {
   color?: "" | "blue" | "cyan" | "magenta" | "green" | "red" | "yellow" | "dark" | "gray" | "white" | "black";
@@ -26,20 +26,20 @@ export interface LsBtnSlots {
 
 export declare const LsBtn: DefineComponent<LsBtnProps>;
 
-export interface LsGroupProps {
+export interface LsBtnGroupProps {
   spread?: boolean;
   outline?: boolean;
   vertical?: boolean;
   dense?: boolean;
 }
 
-export type LsGroupEmits = Record<string, never>;
+export type LsBtnGroupEmits = Record<string, never>;
 
-export interface LsGroupSlots {
+export interface LsBtnGroupSlots {
   default?: () => unknown;
 }
 
-export declare const LsGroup: DefineComponent<LsGroupProps>;
+export declare const LsBtnGroup: DefineComponent<LsBtnGroupProps>;
 
 export interface LsBtnDropdownProps {
   split?: boolean;
@@ -271,6 +271,42 @@ export interface LsMenuSlots {
 
 export declare const LsMenu: DefineComponent<LsMenuProps>;
 
+export interface LsMenuGroupProps {
+  open?: boolean;
+  label?: string;
+  icon?: string | Component | null;
+  disabled?: boolean;
+}
+
+export type LsMenuGroupEmits = {
+  (e: "update:open", value: boolean): void;
+};
+
+export interface LsMenuGroupSlots {
+  default?: () => unknown;
+  label?: () => unknown;
+  icon?: () => unknown;
+}
+
+export declare const LsMenuGroup: DefineComponent<LsMenuGroupProps>;
+
+export interface LsMenuItemProps {
+  label?: string;
+  value?: string | number | null;
+  icon?: string | Component | null;
+  href?: string;
+  disabled?: boolean;
+}
+
+export type LsMenuItemEmits = Record<string, never>;
+
+export interface LsMenuItemSlots {
+  default?: () => unknown;
+  icon?: () => unknown;
+}
+
+export declare const LsMenuItem: DefineComponent<LsMenuItemProps>;
+
 export interface LsCardProps {
   note?: boolean;
   dense?: boolean;
@@ -348,9 +384,11 @@ export declare const LsProgress: DefineComponent<LsProgressProps>;
 
 export interface LsExpandProps {
   modelValue?: boolean;
-  expand?: "tr" | "tl" | "br" | "bl" | "t" | "b" | "l" | "r";
-  collapse?: string;
-  floatAnchor?: string;
+  collapse?: "" | "tl" | "tr" | "bl" | "br" | "t" | "r" | "b" | "l" | "float";
+  expand?: "" | "tl" | "tr" | "bl" | "br" | "t" | "r" | "b" | "l" | "float";
+  floatAnchor?: "" | "tl" | "tr" | "bl" | "br";
+  openWidth?: number | string | null;
+  openHeight?: number | string | null;
   title?: string;
 }
 
@@ -360,6 +398,7 @@ export type LsExpandEmits = {
 };
 
 export interface LsExpandSlots {
+  icon?: () => unknown;
   head?: () => unknown;
   default?: () => unknown;
 }
@@ -402,7 +441,7 @@ export declare const LsColorPicker: DefineComponent<LsColorPickerProps>;
 
 export declare const components: {
   LsBtn: typeof LsBtn;
-  LsGroup: typeof LsGroup;
+  LsBtnGroup: typeof LsBtnGroup;
   LsBtnDropdown: typeof LsBtnDropdown;
   LsInput: typeof LsInput;
   LsField: typeof LsField;
@@ -415,6 +454,8 @@ export declare const components: {
   LsTooltip: typeof LsTooltip;
   LsIcon: typeof LsIcon;
   LsMenu: typeof LsMenu;
+  LsMenuGroup: typeof LsMenuGroup;
+  LsMenuItem: typeof LsMenuItem;
   LsCard: typeof LsCard;
   LsTable: typeof LsTable;
   LsSlider: typeof LsSlider;
@@ -424,7 +465,7 @@ export declare const components: {
   LsColorPicker: typeof LsColorPicker;
 };
 
-export declare const LapstyleVue: Plugin & {
+export declare const LapstyleVue: {
   install(app: App): void;
 };
 

@@ -2,7 +2,7 @@
 
 A desktop **Vue UI kit** with a defined Lapstyle look. Use `Ls*` components (`v-model` / events / slots). CSS tokens and class conventions remain the look layer; `enhance()` is for framework-free pages.
 
-Current version **0.5.0-alpha**. License: MIT. Repository: https://github.com/lapintool/lapstyle
+Current version **0.5.1-alpha**. License: MIT. Repository: https://github.com/lapintool/lapstyle
 
 English is the default language for docs and the official demo.
 
@@ -21,7 +21,7 @@ Prefer `<ls-*>` from `lapstyle/vue`. Class HTML + `enhance()` is the framework-f
 ## Install
 
 ```bash
-pnpm add github:lapintool/lapstyle#v0.5.0-alpha
+pnpm add github:lapintool/lapstyle#v0.5.1-alpha
 ```
 
 ### Vue (recommended)
@@ -80,7 +80,7 @@ npm create https://github.com/lapintool/lapstyle my-app
 pnpm dlx https://github.com/lapintool/create-lapstyle my-app
 ```
 
-The app opens on a button page with a sidebar. `src/main.ts` imports `lapstyle/index.css`, registers `LapstyleVue`, and still calls `enhance(document)` for shell chrome that uses class markup. Dependency: `git+https://github.com/lapintool/lapstyle.git#v0.5.0-alpha`.
+The app opens on a button page with a sidebar. `src/main.ts` imports `lapstyle/index.css` and registers `LapstyleVue`. The shell uses `<ls-menu>` / `<ls-btn-dropdown>`. Dependency: `git+https://github.com/lapintool/lapstyle.git#v0.5.1-alpha`.
 
 Add an empty page, then paste an example into it:
 

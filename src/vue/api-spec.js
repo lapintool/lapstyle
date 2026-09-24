@@ -59,16 +59,16 @@ export const vueComponents = {
     events: [{ name: "click", payload: "MouseEvent", desc: "Native click (bubbles)" }],
     slots: [{ name: "default", desc: "Label, icons" }],
   },
-  LsGroup: {
-    name: "LsGroup",
-    tag: "ls-group",
+  LsBtnGroup: {
+    name: "LsBtnGroup",
+    tag: "ls-btn-group",
     page: "btngroup",
     summary: "Join adjacent buttons into one group.",
     cssRoot: ".ls-btn-group",
-    minimal: `<ls-group>
+    minimal: `<ls-btn-group>
   <ls-btn>One</ls-btn>
   <ls-btn>Two</ls-btn>
-</ls-group>`,
+</ls-btn-group>`,
     props: [
       { name: "spread", type: "boolean", default: "false", desc: "Equal-width children" },
       { name: "outline", type: "boolean", default: "false", desc: "Shared outline on the group" },
@@ -356,15 +356,23 @@ export const vueComponents = {
     name: "LsMenu",
     tag: "ls-menu",
     page: "menu",
-    summary: "Standalone menu. Leaf clicks emit select and update v-model when data-value is set.",
+    summary: "Standalone menu. Compose LsMenuItem / LsMenuGroup; v-model is the selected item value.",
     cssRoot: ".ls-menu",
-    minimal: `<ls-menu v-model="sel" icons fill>
-  <button type="button" class="item" data-value="a"><span class="label">A</span></button>
-  <button type="button" class="item" data-value="b"><span class="label">B</span></button>
+    minimal: `<ls-menu v-model="sel">
+  <ls-menu-group label="DNS" open>
+    <ls-menu-item label="Records" value="records" />
+    <ls-menu-item label="Settings" value="settings" />
+  </ls-menu-group>
+  <ls-menu-item label="Email" value="mail" />
 </ls-menu>`,
     props: [
       { name: "modelValue", type: "string | number | null", desc: "Selected value" },
-      { name: "icons", type: "boolean", default: "false", desc: "Reserve icon column" },
+      {
+        name: "icons",
+        type: "boolean",
+        default: "false",
+        desc: "Reserve icon column. Turned on automatically when any item has an icon",
+      },
       { name: "fill", type: "boolean", default: "false", desc: "Filled items" },
       { name: "plain", type: "boolean", default: "false", desc: "No card chrome" },
       { name: "collapsed", type: "boolean", default: "false", desc: "Collapsed / rail" },
@@ -374,7 +382,63 @@ export const vueComponents = {
       { name: "update:modelValue", payload: "string | number | null", desc: "Selection" },
       { name: "select", payload: "{ value, label, item }", desc: "Leaf selected" },
     ],
-    slots: [{ name: "default", desc: ".item rows and nested structure" }],
+    slots: [{ name: "default", desc: "LsMenuItem / LsMenuGroup, or hand-written .item rows" }],
+    patterns: [
+      "Hand-written <button class=\"item\"> rows still work and can be mixed with LsMenuItem / LsMenuGroup.",
+      "Highlight follows v-model: an item is active when its value (or label, if no value) equals the model.",
+    ],
+  },
+  LsMenuItem: {
+    name: "LsMenuItem",
+    tag: "ls-menu-item",
+    page: "menu",
+    summary: "Leaf row inside LsMenu or LsMenuGroup.",
+    cssRoot: ".ls-menu .item",
+    minimal: `<ls-menu-item label="Records" value="records" :icon="ListIcon" />`,
+    props: [
+      { name: "label", type: "string", default: '""', desc: "Row text (or use the default slot)" },
+      { name: "value", type: "string | number | null", default: "null", desc: "Selection value; falls back to label" },
+      {
+        name: "icon",
+        type: "string | Component | null",
+        default: "null",
+        desc: "Icon component (e.g. a lucide icon) or an LsIcon name",
+      },
+      { name: "href", type: "string", default: '""', desc: "Render as a link" },
+      { name: "disabled", type: "boolean", default: "false", desc: "Disable the row" },
+    ],
+    events: [],
+    slots: [
+      { name: "default", desc: "Label content" },
+      { name: "icon", desc: "Custom icon (SVG or glyph); wrapped in LsIcon for you" },
+    ],
+  },
+  LsMenuGroup: {
+    name: "LsMenuGroup",
+    tag: "ls-menu-group",
+    page: "menu",
+    summary: "Expandable row with nested items. Collapsed by default; caret and submenu are generated.",
+    cssRoot: ".ls-menu .item",
+    minimal: `<ls-menu-group label="Analytics" :icon="ChartIcon" open>
+  <ls-menu-item label="Usage" />
+</ls-menu-group>`,
+    props: [
+      { name: "open", type: "boolean", default: "false", desc: "Expanded (v-model:open)" },
+      { name: "label", type: "string", default: '""', desc: "Row text" },
+      {
+        name: "icon",
+        type: "string | Component | null",
+        default: "null",
+        desc: "Icon component or an LsIcon name",
+      },
+      { name: "disabled", type: "boolean", default: "false", desc: "Disable the row" },
+    ],
+    events: [{ name: "update:open", payload: "boolean", desc: "Expanded / collapsed" }],
+    slots: [
+      { name: "default", desc: "Nested LsMenuItem / LsMenuGroup" },
+      { name: "label", desc: "Custom label content" },
+      { name: "icon", desc: "Custom icon; wrapped in LsIcon for you" },
+    ],
   },
   LsCard: {
     name: "LsCard",
@@ -466,28 +530,56 @@ export const vueComponents = {
     page: "expand",
     summary: "Corner / edge / float expand panel. v-model is expanded state.",
     cssRoot: ".ls-expand",
-    minimal: `<ls-expand v-model="open" expand="tr" title="Panel">
-  <p>Body</p>
+    minimal: `<ls-expand v-model="open" collapse="tr" :open-width="240" :open-height="180" title="Panel">
+  Notes, a form, or a list.
 </ls-expand>`,
     props: [
       { name: "modelValue", type: "boolean", default: "false", desc: "Expanded (v-model)" },
       {
-        name: "expand",
-        type: '"tr" | "tl" | "br" | "bl" | "t" | "b" | "l" | "r"',
-        default: '"tr"',
-        desc: "Dock: tr | tl | br | bl | t | b | l | r",
+        name: "collapse",
+        type: '"" | "tl" | "tr" | "bl" | "br" | "t" | "r" | "b" | "l" | "float"',
+        default: '""',
+        desc: "Where the collapsed button docks. Empty: derived from expand, else tr",
       },
-      { name: "collapse", type: "string", default: '""', desc: "Collapsed-edge target" },
-      { name: "floatAnchor", type: "string", default: '""', desc: "Float pin (data-ls-float-anchor)" },
-      { name: "title", type: "string", default: '""', desc: "Head title" },
+      {
+        name: "expand",
+        type: '"" | "tl" | "tr" | "bl" | "br" | "t" | "r" | "b" | "l" | "float"',
+        default: '""',
+        desc: "Open shape. Corner collapse: same corner or an adjacent edge. Edge collapse: same edge. Empty: same as collapse",
+      },
+      {
+        name: "floatAnchor",
+        type: '"" | "tl" | "tr" | "bl" | "br"',
+        default: '""',
+        desc: "Float only: pinned corner (default br)",
+      },
+      {
+        name: "openWidth",
+        type: "number | string | null",
+        default: "null",
+        desc: "Open width in px (default 216). Ignored for expand t / b (full width)",
+      },
+      {
+        name: "openHeight",
+        type: "number | string | null",
+        default: "null",
+        desc: "Open height in px (default 208). Ignored for expand l / r (full height)",
+      },
+      { name: "title", type: "string", default: '""', desc: "Head title (also the head aria-label)" },
     ],
     events: [
       { name: "update:modelValue", payload: "boolean", desc: "Open state" },
       { name: "change", payload: "boolean", desc: "After toggle" },
     ],
     slots: [
-      { name: "head", desc: "Custom head content" },
-      { name: "default", desc: "Panel body" },
+      { name: "icon", desc: "Collapsed-button icon (default: square)" },
+      { name: "head", desc: "Replace the whole head (title + icon)" },
+      { name: "default", desc: "Panel body (already wrapped in .body)" },
+    ],
+    patterns: [
+      "Invalid combinations never render: unknown values are dropped, a mismatched expand falls back to collapse, float forces both to float. Each correction logs one console.warn.",
+      "Sizes are clamped between the collapsed size (28px) and the host box. The host needs position: relative and a size.",
+      "Do not wrap the default slot in <div class=\"body\">; the component already does.",
     ],
   },
   LsSplitter: {
@@ -496,15 +588,15 @@ export const vueComponents = {
     page: "splitter",
     summary: "Two-pane splitter. Put two .pane children in the default slot.",
     cssRoot: ".ls-splitter",
-    minimal: `<ls-splitter v-model="size" :min="20" :max="80">
+    minimal: `<ls-splitter v-model="size" :min="120" :max="420">
   <div class="pane">Left</div>
   <div class="pane">Right</div>
 </ls-splitter>`,
     props: [
-      { name: "modelValue", type: "number | null", desc: "First pane size %" },
+      { name: "modelValue", type: "number | null", desc: "Target pane size in px (default: end/right pane)" },
       { name: "vertical", type: "boolean", default: "false", desc: "Stack panes vertically" },
-      { name: "min", type: "number | string", default: "0", desc: "Percent lower bound" },
-      { name: "max", type: "number | string", default: "100", desc: "Percent upper bound" },
+      { name: "min", type: "number | string", desc: "Min size in px (data-min; default 80)" },
+      { name: "max", type: "number | string", desc: "Max size in px (data-max)" },
     ],
     events: [
       { name: "update:modelValue", payload: "number", desc: "While resizing" },
@@ -537,9 +629,9 @@ export const pages = {
   btngroup: {
     id: "btngroup",
     title: "Button group",
-    components: ["LsGroup", "LsBtnDropdown"],
-    summary: "Join buttons (LsGroup) or a menu button (LsBtnDropdown simple / split).",
-    minimal: `${vueComponents.LsGroup.minimal}
+    components: ["LsBtnGroup", "LsBtnDropdown"],
+    summary: "Join buttons (LsBtnGroup) or a menu button (LsBtnDropdown simple / split).",
+    minimal: `${vueComponents.LsBtnGroup.minimal}
 ${vueComponents.LsBtnDropdown.minimal}`,
   },
   input: {
@@ -562,7 +654,12 @@ ${vueComponents.LsBtnDropdown.minimal}`,
   dialog: { id: "dialog", title: "Dialog", components: ["LsDialog"] },
   tooltip: { id: "tooltip", title: "Tooltip", components: ["LsTooltip"] },
   icon: { id: "icon", title: "Icon", components: ["LsIcon"] },
-  menu: { id: "menu", title: "Menu", components: ["LsMenu"] },
+  menu: {
+    id: "menu",
+    title: "Menu",
+    components: ["LsMenu", "LsMenuGroup", "LsMenuItem"],
+    minimal: vueComponents.LsMenu.minimal,
+  },
   card: { id: "card", title: "Card", components: ["LsCard"] },
   table: { id: "table", title: "Table", components: ["LsTable"] },
   slider: { id: "slider", title: "Slider", components: ["LsSlider"] },
@@ -574,7 +671,7 @@ ${vueComponents.LsBtnDropdown.minimal}`,
 
 export const COMPONENT_ORDER = [
   "LsBtn",
-  "LsGroup",
+  "LsBtnGroup",
   "LsBtnDropdown",
   "LsInput",
   "LsField",
@@ -587,6 +684,8 @@ export const COMPONENT_ORDER = [
   "LsTooltip",
   "LsIcon",
   "LsMenu",
+  "LsMenuGroup",
+  "LsMenuItem",
   "LsCard",
   "LsTable",
   "LsSlider",

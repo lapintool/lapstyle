@@ -16,8 +16,9 @@ Desktop.ini
 # 本包无依赖；本地 pnpm 生成的 lock 不要误提交
 pnpm-lock.yaml
 
-# 一次性本地脚本
-scripts/
+# 一次性本地脚本（文档生成脚本除外，package.json 的 docs 依赖它）
+scripts/*
+!scripts/render-ai-docs.mjs
 
 # 独立仓库：npm create github:lapintool/create-lapstyle
 /create-lapstyle/

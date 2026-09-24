@@ -7,10 +7,12 @@ import LsDialog from "./LsDialog.vue";
 import LsDropdown from "./LsDropdown.vue";
 import LsExpand from "./LsExpand.vue";
 import LsField from "./LsField.vue";
-import LsGroup from "./LsGroup.vue";
+import LsBtnGroup from "./LsBtnGroup.vue";
 import LsIcon from "./LsIcon.vue";
 import LsInput from "./LsInput.vue";
 import LsMenu from "./LsMenu.vue";
+import LsMenuGroup from "./LsMenuGroup.vue";
+import LsMenuItem from "./LsMenuItem.vue";
 import LsProgress from "./LsProgress.vue";
 import LsRadio from "./LsRadio.vue";
 import LsSlider from "./LsSlider.vue";
@@ -30,10 +32,12 @@ export {
   LsDropdown,
   LsExpand,
   LsField,
-  LsGroup,
+  LsBtnGroup,
   LsIcon,
   LsInput,
   LsMenu,
+  LsMenuGroup,
+  LsMenuItem,
   LsProgress,
   LsRadio,
   LsSlider,
@@ -55,10 +59,12 @@ export const components = {
   LsDropdown,
   LsExpand,
   LsField,
-  LsGroup,
+  LsBtnGroup,
   LsIcon,
   LsInput,
   LsMenu,
+  LsMenuGroup,
+  LsMenuItem,
   LsProgress,
   LsRadio,
   LsSlider,

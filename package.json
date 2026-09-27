@@ -10,7 +10,9 @@
   "style": "./src/index.css",
   "scripts": {
     "test": "node --test test/**/*.test.js",
-    "docs": "node scripts/render-ai-docs.mjs"
+    "docs": "node scripts/render-ai-docs.mjs",
+    "changelog-section": "node scripts/changelog-section.mjs",
+    "github-release": "node scripts/github-release.mjs"
   },
   "files": [
     "src",

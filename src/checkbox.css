@@ -243,7 +243,8 @@
 .ls-checkbox.switch {
   --ls-switch-color: var(--ls-switch-dot-off);
   min-height: var(--ls-checkbox-size);
-  padding-inline: var(--ls-switch-track-w) 8px;
+  /* Track is absolute; leave the same 8px gap before the label as checkbox/radio. */
+  padding-inline: calc(var(--ls-switch-track-w) + 8px) 8px;
 }
 
 .ls-checkbox.switch:has(:checked) {

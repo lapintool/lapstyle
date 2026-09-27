@@ -461,7 +461,7 @@ export const vueComponents = {
     name: "LsTable",
     tag: "ls-table",
     page: "table",
-    summary: "Table shell. Put a native <table> inside. Columns size to content; the shell stays content-tall unless fill.",
+    summary: "Table shell. Put a native <table> inside. Columns size to content; the shell stays content-tall.",
     cssRoot: ".ls-table",
     minimal: `<ls-table dense hover>
   <table>
@@ -475,13 +475,14 @@ export const vueComponents = {
       { name: "plain", type: "boolean", default: "false", desc: "No cell or shell lines" },
       { name: "noFrame", type: "boolean", default: "false", desc: "Drop the outer border; inner lines stay" },
       { name: "fixed", type: "boolean", default: "false", desc: "Equal-width columns (table-layout: fixed)" },
-      { name: "fill", type: "boolean", default: "false", desc: "Grow to the remaining height in a flex/grid pane" },
+      { name: "square", type: "boolean", default: "false", desc: "Square corners (no border-radius)" },
+      { name: "kv", type: "boolean", default: "false", desc: "Key-value table; first column is the key" },
     ],
     events: [],
     slots: [{ name: "default", desc: "Native <table> markup" }],
     patterns: [
       "Default table-layout is auto. Use fixed (class .fixed) when you want equal columns or have long unbreakable strings.",
-      "The shell does not stretch with flex-1. Use fill (class .fill) when the table should occupy the remaining pane and scroll inside.",
+      "The shell stays content-tall and does not stretch with flex. For a scroll pane, set max-height on the shell (overflow is already auto).",
     ],
   },
   LsSlider: {

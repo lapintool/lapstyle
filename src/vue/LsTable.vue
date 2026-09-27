@@ -8,7 +8,8 @@ const props = defineProps({
   plain: { type: Boolean, default: false },
   noFrame: { type: Boolean, default: false },
   fixed: { type: Boolean, default: false },
-  fill: { type: Boolean, default: false },
+  square: { type: Boolean, default: false },
+  kv: { type: Boolean, default: false },
 });
 
 const classes = computed(() =>
@@ -18,7 +19,8 @@ const classes = computed(() =>
     plain: props.plain,
     "no-frame": props.noFrame,
     fixed: props.fixed,
-    fill: props.fill,
+    square: props.square,
+    kv: props.kv,
   }),
 );
 </script>

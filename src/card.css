@@ -2,7 +2,7 @@
   box-sizing: border-box;
   padding: 0.875rem;
   border: 1px solid var(--ls-border);
-  border-radius: 0.5rem;
+  border-radius: var(--ls-card-radius);
   background: var(--ls-bg-elevated);
   color: var(--ls-text);
 }

@@ -48,9 +48,15 @@
 
   /* Semantic type sizes (follow data-ls-scale via rem). Not colors — those are --ls-text*. */
   --ls-font-title: 1.125rem; /* 18px @ md */
-  --ls-font-body: var(--ls-size-md-font); /* 14px @ md — primary prose */
+  --ls-font-body: 0.875rem; /* 14px @ md — primary prose */
   --ls-font-secondary: 0.8125rem; /* 13px @ md — notes, menus, tables */
-  --ls-font-caption: var(--ls-size-sm-font); /* 12px @ md — hints, tooltips */
+  --ls-font-caption: 0.75rem; /* 12px @ md — hints, tooltips */
+
+  /* Shared chrome radii (surfaces + tabs). */
+  --ls-card-radius: 0.3rem;
+  --ls-table-radius: 0.3rem;
+  --ls-dialog-radius: 0.5rem;
+  --ls-tabs-radius: 0.3rem;
 
   /* Dense only shrinks chrome; font/icon stay on the current size step. */
   --ls-dense-shrink: 0.25rem;
@@ -305,7 +311,7 @@ html[data-ls-scale] {
   --ls-scrollbar-fade-duration: 0.7s;
 }
 
-/* Mint — Radix Colors Green + Everforest accents */
+/* Mint — Radix Colors Green + Everforest accents (surfaces kept pale) */
 [data-theme="mint"] {
   --ls-bg: #f4fbf6;
   --ls-bg-elevated: #e6f6eb;
@@ -329,7 +335,7 @@ html[data-ls-scale] {
   --ls-tabs-bar-bg: #e6f6eb;
 }
 
-/* Sky — Tailwind Sky surfaces + Nord Frost accents */
+/* Sky — Tailwind Sky surfaces + Nord Frost accents (surfaces kept pale) */
 [data-theme="sky"] {
   --ls-bg: #f0f9ff;
   --ls-bg-elevated: #e0f2fe;
@@ -398,7 +404,7 @@ html[data-ls-scale] {
   --ls-menu-item-active-text: #9f560b;
   --ls-input-bg: #f9f5d7;
   --ls-input-focus: color-mix(in srgb, var(--ls-accent) 58%, #ffffff);
-  --ls-tabs-bar-bg: #ebdbb2;
+  --ls-tabs-bar-bg: #ffe090;
 }
 
 /* Amber — Solarized Light */

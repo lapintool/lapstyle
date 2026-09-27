@@ -20,7 +20,7 @@
   background: var(--ls-bg-elevated);
   color: var(--ls-text);
   border: 1px solid var(--ls-border);
-  border-radius: 0.5rem;
+  border-radius: var(--ls-dialog-radius);
   box-shadow: var(--ls-popover-shadow);
 }
 

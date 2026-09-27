@@ -7,7 +7,6 @@
   --ls-tabs-color: var(--ls-text-dim);
   --ls-tabs-active: var(--ls-tabs-active-text);
   --ls-tabs-hover: var(--ls-text);
-  --ls-tabs-radius: 0.5rem;
   --ls-tabs-tab-radius: 0.25rem;
   --ls-tabs-bar-pad: 0.1875rem;
   box-sizing: border-box;
@@ -256,6 +255,10 @@
 
 .ls-tabs.bar-only .bar {
   border-radius: 0;
+  border-top: 1px solid var(--ls-border);
+  border-right: 1px solid var(--ls-border);
+  border-left: 1px solid var(--ls-border);
+  /* 底边仍用 inset box-shadow，激活标签底色可盖住断线 */
 }
 
 .ls-tabs.bar-only .panel {

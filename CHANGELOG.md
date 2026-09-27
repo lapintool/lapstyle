@@ -2,12 +2,25 @@
 
 ## Unreleased
 
+### Added
+
+- `pnpm github-release` publishes a GitHub Release from the matching `CHANGELOG.md` section (`--all` backfills tagged versions).
+- `LsTable` props `square` and `kv` (same as the CSS modifiers).
+
+### Changed
+
+- Mint and sky surfaces are paler (`--ls-bg` / `--ls-bg-elevated` / border).
+
+### Removed
+
+- `LsTable` `fill` / `.ls-table.fill`. The shell stays content-tall; use `max-height` on the shell when you need an internal scroll pane.
+
 ## 0.5.2-alpha
 
 ### Added
 
-- Whole-app type scale: \`data-ls-scale="sm|md|lg|xl"\` on \`<html>\` (root 14/16/18/20px). Omit for the browser default (same as \`md\`). Kit sizes use \`rem\` so type, icons, and controls scale together.
-- Semantic type tokens: \`--ls-font-title\` / \`--ls-font-body\` / \`--ls-font-secondary\` / \`--ls-font-caption\` (18/14/13/12px @ md). Use these for page prose so it follows \`data-ls-scale\`.
+- Whole-app type scale: `data-ls-scale="sm|md|lg|xl"` on `<html>` (root 14/16/18/20px). Omit for the browser default (same as `md`). Kit sizes use `rem` so type, icons, and controls scale together.
+- Semantic type tokens: `--ls-font-title` / `--ls-font-body` / `--ls-font-secondary` / `--ls-font-caption` (18/14/13/12px @ md). Use these for page prose so it follows `data-ls-scale`.
 
 ### Changed
 

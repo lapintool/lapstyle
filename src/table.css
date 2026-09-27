@@ -1,17 +1,19 @@
 /* 表格：圆角外框画在外壳上，格子只画内部的线，避免圆角被 overflow 裁掉。
-   默认高度跟内容（不吃 flex/grid 拉伸）；.fill 才铺满剩余高度。
+   高度永远跟内容（不吃 flex/grid 拉伸）。需要滚动时给外壳设 max-height。
    默认斑马纹；.dense 收紧单元格；.kv 键值表（首列作 key）。 */
 
 .ls-table {
   box-sizing: border-box;
   width: 100%;
-  max-height: 100%;
   height: fit-content;
+  max-height: 100%;
   align-self: start;
+  flex: 0 0 auto;
   overflow: auto;
   border: 1px solid var(--ls-border);
-  border-radius: 0.5rem;
-  background: var(--ls-bg-elevated);
+  border-radius: var(--ls-table-radius);
+  /* Soft surface: stay near page bg; full elevated is too strong on tinted themes. */
+  background: color-mix(in srgb, var(--ls-bg-elevated) 22%, var(--ls-bg));
   color: var(--ls-text);
 }
 
@@ -24,13 +26,6 @@
 
 .ls-table.fixed > table {
   table-layout: fixed;
-}
-
-.ls-table.fill {
-  align-self: stretch;
-  flex: 1 1 auto;
-  min-height: 0;
-  height: auto;
 }
 
 .ls-table th,
@@ -62,7 +57,7 @@
 }
 
 .ls-table th {
-  background: color-mix(in srgb, var(--ls-text) 8%, var(--ls-bg-elevated));
+  background: color-mix(in srgb, var(--ls-text) 8%, var(--ls-bg));
   font-weight: 600;
 }
 

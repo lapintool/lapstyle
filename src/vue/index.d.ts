@@ -328,7 +328,8 @@ export interface LsTableProps {
   plain?: boolean;
   noFrame?: boolean;
   fixed?: boolean;
-  fill?: boolean;
+  square?: boolean;
+  kv?: boolean;
 }
 
 export type LsTableEmits = Record<string, never>;

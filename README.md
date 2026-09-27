@@ -145,3 +145,19 @@ Local demo server also mirrors them at `/llms.txt` and `/docs/…`.
 ## Peer dependency
 
 `vue` `^3.4` is required only when using `lapstyle/vue`. CSS-only and `enhance()` consumers can omit it (`peerDependenciesMeta.optional`).
+
+## Releases
+
+Version history lives in [`CHANGELOG.md`](./CHANGELOG.md). GitHub Releases mirror each tagged section:
+
+https://github.com/lapintool/lapstyle/releases
+
+After tagging (`v0.x.y` must already exist on the remote):
+
+```bash
+pnpm github-release              # package.json version
+pnpm github-release -- --all     # backfill every CHANGELOG version that has a matching tag
+pnpm github-release -- --dry-run
+```
+
+Requires [GitHub CLI](https://cli.github.com/) (`gh auth login`).

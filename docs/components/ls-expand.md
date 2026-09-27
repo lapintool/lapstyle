@@ -42,7 +42,7 @@ Import: `import { LsExpand } from "lapstyle/vue"` (or `app.use(LapstyleVue)`).
 ### Pitfalls
 
 - Invalid combinations never render: unknown values are dropped, a mismatched expand falls back to collapse, float forces both to float. Each correction logs one console.warn.
-- Sizes are clamped between the collapsed size (28px) and the host box. The host needs position: relative and a size.
+- Sizes are clamped between the collapsed size and the host box. The host needs position: relative and a size.
 - Do not wrap the default slot in <div class="body">; the component already does.
 
 ## CSS root

@@ -1,18 +1,18 @@
 .ls-card {
   box-sizing: border-box;
-  padding: 14px;
+  padding: 0.875rem;
   border: 1px solid var(--ls-border);
-  border-radius: 8px;
+  border-radius: 0.5rem;
   background: var(--ls-bg-elevated);
   color: var(--ls-text);
 }
 
 .ls-card.note {
-  padding: 12px 14px;
+  padding: 0.75rem 0.875rem;
   border-style: dashed;
   background: transparent;
   color: var(--ls-text-dim);
   overflow-wrap: anywhere;
-  font-size: 13px;
+  font-size: var(--ls-font-secondary);
   line-height: 1.5;
 }

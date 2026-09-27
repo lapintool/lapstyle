@@ -9,7 +9,7 @@ Do **not** start from class HTML + `enhance()` unless the app has no Vue.
 ## Install
 
 ```bash
-pnpm add github:lapintool/lapstyle#v0.5.1-alpha
+pnpm add github:lapintool/lapstyle#v0.5.2-alpha
 ```
 
 Peer: `vue` `^3.4` (required only when using `lapstyle/vue`).
@@ -40,6 +40,13 @@ Scaffold: `pnpm dlx https://github.com/lapintool/create-lapstyle my-app`
 Set `data-theme` on `<html>`: `dark` (default) | `light` | `mint` | `sky` | `pink` | `brown` | `amber`.
 See `docs/theming.md`.
 
+## Type scale
+
+Set `data-ls-scale` on `<html>`: `sm` (14px) | `md` (16px, default) | `lg` (18px) | `xl` (20px).
+This sets the root `font-size`. Kit sizes use `rem`, so type, icons, and controls scale together.
+Omit the attribute to keep the browser root (same as `md`).
+Semantic sizes: `--ls-font-title` / `--ls-font-body` / `--ls-font-secondary` / `--ls-font-caption` (18/14/13/12px @ md).
+
 ## How to use these docs
 
 1. This file for install.
@@ -63,6 +70,34 @@ Set the theme on the document:
 
 Values: `dark` | `light` | `mint` | `sky` | `pink` | `brown` | `amber`.
 `dark` is charcoal; the others are light surfaces.
+
+## Type scale
+
+Set the root type size on `<html>`:
+
+```html
+<html data-ls-scale="lg">
+```
+
+Values: `sm` (14px) | `md` (16px) | `lg` (18px) | `xl` (20px).
+Default is the browser root (16px), same as `md`. Kit chrome is `rem`, so fonts, icons, and controls scale together. Put `data-ls-scale` on `<html>` only (`rem` is relative to the root).
+
+Semantic type sizes (also `rem`, follow the root scale):
+
+| Token | @ md | Use |
+| --- | --- | --- |
+| `--ls-font-title` | 18px | Section / dialog titles |
+| `--ls-font-body` | 14px | Primary prose (matches md control font) |
+| `--ls-font-secondary` | 13px | Notes, menus, tables |
+| `--ls-font-caption` | 12px | Hints, tooltips |
+
+```css
+h2 { font-size: var(--ls-font-title); }
+p  { font-size: var(--ls-font-body); }
+.hint { font-size: var(--ls-font-secondary); color: var(--ls-text-dim); }
+```
+
+The kit does **not** set `body { font-size }`. Apps that want prose to follow scale should set `font-size: var(--ls-font-body)` themselves.
 
 Import tokens once:
 
@@ -844,7 +879,7 @@ If this page is not enough, read `src/vue/LsCard.vue` next. Do not copy class-on
 
 # LsTable (`ls-table`)
 
-Table shell. Put a native <table> inside.
+Table shell. Put a native <table> inside. Columns size to content; the shell stays content-tall unless fill.
 
 Import: `import { LsTable } from "lapstyle/vue"` (or `app.use(LapstyleVue)`).
 
@@ -867,12 +902,19 @@ Import: `import { LsTable } from "lapstyle/vue"` (or `app.use(LapstyleVue)`).
 | `hover` | `boolean` | `false` | Highlight the body row under the pointer |
 | `plain` | `boolean` | `false` | No cell or shell lines |
 | `noFrame` | `boolean` | `false` | Drop the outer border; inner lines stay |
+| `fixed` | `boolean` | `false` | Equal-width columns (table-layout: fixed) |
+| `fill` | `boolean` | `false` | Grow to the remaining height in a flex/grid pane |
 
 ### Slots
 
 | Name | Description |
 | --- | --- |
 | `default` | Native <table> markup |
+
+### Pitfalls
+
+- Default table-layout is auto. Use fixed (class .fixed) when you want equal columns or have long unbreakable strings.
+- The shell does not stretch with flex-1. Use fill (class .fill) when the table should occupy the remaining pane and scroll inside.
 
 ## CSS root
 
@@ -1008,7 +1050,7 @@ Import: `import { LsExpand } from "lapstyle/vue"` (or `app.use(LapstyleVue)`).
 ### Pitfalls
 
 - Invalid combinations never render: unknown values are dropped, a mismatched expand falls back to collapse, float forces both to float. Each correction logs one console.warn.
-- Sizes are clamped between the collapsed size (28px) and the host box. The host needs position: relative and a size.
+- Sizes are clamped between the collapsed size and the host box. The host needs position: relative and a size.
 - Do not wrap the default slot in <div class="body">; the component already does.
 
 ## CSS root

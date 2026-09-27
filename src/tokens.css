@@ -46,6 +46,12 @@
   --ls-size-lg-icon: 1.5rem; /* 24px */
   --ls-size-lg-control: 2.25rem; /* 36px */
 
+  /* Semantic type sizes (follow data-ls-scale via rem). Not colors — those are --ls-text*. */
+  --ls-font-title: 1.125rem; /* 18px @ md */
+  --ls-font-body: var(--ls-size-md-font); /* 14px @ md — primary prose */
+  --ls-font-secondary: 0.8125rem; /* 13px @ md — notes, menus, tables */
+  --ls-font-caption: var(--ls-size-sm-font); /* 12px @ md — hints, tooltips */
+
   /* Dense only shrinks chrome; font/icon stay on the current size step. */
   --ls-dense-shrink: 0.25rem;
 
@@ -68,10 +74,34 @@
 
   /* Tooltip / icon defaults (overridable) */
   --ls-tooltip-delay: 0.28s;
-  --ls-tooltip-offset: 8px;
+  --ls-tooltip-offset: 0.5rem;
   --ls-icon-grad: 0;
   --ls-icon-opsz: 24;
   --ls-icon-wght: 400;
+
+  /* Whole-app type/chrome scale. Set data-ls-scale on <html>.
+     Omit the attribute to leave the browser root (same as md / 16px). */
+  --ls-root-font: 16px;
+}
+
+html[data-ls-scale="sm"] {
+  --ls-root-font: 14px;
+}
+
+html[data-ls-scale="md"] {
+  --ls-root-font: 16px;
+}
+
+html[data-ls-scale="lg"] {
+  --ls-root-font: 18px;
+}
+
+html[data-ls-scale="xl"] {
+  --ls-root-font: 20px;
+}
+
+html[data-ls-scale] {
+  font-size: var(--ls-root-font);
 }
 
 :root:not([data-theme]),
@@ -111,15 +141,15 @@
   --ls-btn-press: 0.1em;
   --ls-btn-ledge-width: 0.143em;
   --ls-btn-ledge-mix: 52%;
-  --ls-radio-size: 40px;
+  --ls-radio-size: 2.5rem;
   --ls-radio-unchecked: rgb(255 255 255 / 0.7);
   --ls-radio-ripple: 0.32;
-  --ls-checkbox-size: 40px;
+  --ls-checkbox-size: 2.5rem;
   --ls-checkbox-unchecked: rgb(255 255 255 / 0.7);
-  --ls-checkbox-radius: 3px;
-  --ls-switch-track-w: 34px;
-  --ls-switch-track-h: 14px;
-  --ls-switch-dot: 20px;
+  --ls-checkbox-radius: 0.1875rem;
+  --ls-switch-track-w: 2.125rem;
+  --ls-switch-track-h: 0.875rem;
+  --ls-switch-dot: 1.25rem;
   --ls-switch-track-off: rgb(255 255 255 / 0.42);
   --ls-switch-dot-off: #bdbdbd;
   --ls-btn-hover: rgba(255, 255, 255, 0.06);
@@ -175,15 +205,15 @@
   --ls-btn-radius-push: 0.5em;
   --ls-btn-padding-block: 0.143em;
   --ls-btn-padding: var(--ls-btn-padding-block) 0.857em;
-  --ls-radio-size: 40px;
+  --ls-radio-size: 2.5rem;
   --ls-radio-unchecked: rgb(0 0 0 / 0.54);
   --ls-radio-ripple: 0.12;
-  --ls-checkbox-size: 40px;
+  --ls-checkbox-size: 2.5rem;
   --ls-checkbox-unchecked: rgb(0 0 0 / 0.54);
-  --ls-checkbox-radius: 3px;
-  --ls-switch-track-w: 34px;
-  --ls-switch-track-h: 14px;
-  --ls-switch-dot: 20px;
+  --ls-checkbox-radius: 0.1875rem;
+  --ls-switch-track-w: 2.125rem;
+  --ls-switch-track-h: 0.875rem;
+  --ls-switch-dot: 1.25rem;
   --ls-switch-track-off: rgb(0 0 0 / 0.38);
   --ls-switch-dot-off: #fafafa;
   --ls-btn-font-size: var(--ls-size-md-font);
@@ -235,15 +265,15 @@
   --ls-btn-radius-push: 0.5em;
   --ls-btn-padding-block: 0.143em;
   --ls-btn-padding: var(--ls-btn-padding-block) 0.857em;
-  --ls-radio-size: 40px;
+  --ls-radio-size: 2.5rem;
   --ls-radio-unchecked: rgb(0 0 0 / 0.54);
   --ls-radio-ripple: 0.12;
-  --ls-checkbox-size: 40px;
+  --ls-checkbox-size: 2.5rem;
   --ls-checkbox-unchecked: rgb(0 0 0 / 0.54);
-  --ls-checkbox-radius: 3px;
-  --ls-switch-track-w: 34px;
-  --ls-switch-track-h: 14px;
-  --ls-switch-dot: 20px;
+  --ls-checkbox-radius: 0.1875rem;
+  --ls-switch-track-w: 2.125rem;
+  --ls-switch-track-h: 0.875rem;
+  --ls-switch-dot: 1.25rem;
   --ls-switch-track-off: rgb(0 0 0 / 0.38);
   --ls-switch-dot-off: #fafafa;
   --ls-btn-font-size: var(--ls-size-md-font);

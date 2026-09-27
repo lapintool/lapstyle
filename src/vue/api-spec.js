@@ -461,7 +461,7 @@ export const vueComponents = {
     name: "LsTable",
     tag: "ls-table",
     page: "table",
-    summary: "Table shell. Put a native <table> inside.",
+    summary: "Table shell. Put a native <table> inside. Columns size to content; the shell stays content-tall unless fill.",
     cssRoot: ".ls-table",
     minimal: `<ls-table dense hover>
   <table>
@@ -474,9 +474,15 @@ export const vueComponents = {
       { name: "hover", type: "boolean", default: "false", desc: "Highlight the body row under the pointer" },
       { name: "plain", type: "boolean", default: "false", desc: "No cell or shell lines" },
       { name: "noFrame", type: "boolean", default: "false", desc: "Drop the outer border; inner lines stay" },
+      { name: "fixed", type: "boolean", default: "false", desc: "Equal-width columns (table-layout: fixed)" },
+      { name: "fill", type: "boolean", default: "false", desc: "Grow to the remaining height in a flex/grid pane" },
     ],
     events: [],
     slots: [{ name: "default", desc: "Native <table> markup" }],
+    patterns: [
+      "Default table-layout is auto. Use fixed (class .fixed) when you want equal columns or have long unbreakable strings.",
+      "The shell does not stretch with flex-1. Use fill (class .fill) when the table should occupy the remaining pane and scroll inside.",
+    ],
   },
   LsSlider: {
     name: "LsSlider",
@@ -578,7 +584,7 @@ export const vueComponents = {
     ],
     patterns: [
       "Invalid combinations never render: unknown values are dropped, a mismatched expand falls back to collapse, float forces both to float. Each correction logs one console.warn.",
-      "Sizes are clamped between the collapsed size (28px) and the host box. The host needs position: relative and a size.",
+      "Sizes are clamped between the collapsed size and the host box. The host needs position: relative and a size.",
       "Do not wrap the default slot in <div class=\"body\">; the component already does.",
     ],
   },

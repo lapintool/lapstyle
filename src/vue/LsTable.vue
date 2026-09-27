@@ -7,6 +7,8 @@ const props = defineProps({
   hover: { type: Boolean, default: false },
   plain: { type: Boolean, default: false },
   noFrame: { type: Boolean, default: false },
+  fixed: { type: Boolean, default: false },
+  fill: { type: Boolean, default: false },
 });
 
 const classes = computed(() =>
@@ -15,6 +17,8 @@ const classes = computed(() =>
     hover: props.hover,
     plain: props.plain,
     "no-frame": props.noFrame,
+    fixed: props.fixed,
+    fill: props.fill,
   }),
 );
 </script>

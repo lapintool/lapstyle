@@ -5,22 +5,22 @@
   --ls-cp-v: 1;
   --ls-cp-h: 0;
   display: grid;
-  gap: 10px;
-  width: 220px;
-  padding: 12px;
+  gap: 0.625rem;
+  width: 13.75rem;
+  padding: 0.75rem;
   border: 1px solid var(--ls-border);
-  border-radius: 8px;
+  border-radius: 0.5rem;
   background: var(--ls-bg-elevated);
   color: var(--ls-text);
   box-shadow: var(--ls-popover-shadow);
-  font-size: 0.8125rem;
+  font-size: var(--ls-font-secondary);
 }
 
 .ls-color-picker .sv {
   position: relative;
   width: 100%;
-  height: 140px;
-  border-radius: 4px;
+  height: 8.75rem;
+  border-radius: 0.25rem;
   background:
     linear-gradient(to top, #000, transparent),
     linear-gradient(to right, #fff, var(--ls-cp-hue));
@@ -31,7 +31,7 @@
 .ls-color-picker .hue {
   position: relative;
   width: 100%;
-  height: 12px;
+  height: 0.75rem;
   border-radius: 99px;
   background: linear-gradient(
     to right,
@@ -50,8 +50,8 @@
 .ls-color-picker .thumb {
   position: absolute;
   box-sizing: border-box;
-  width: 12px;
-  height: 12px;
+  width: 0.75rem;
+  height: 0.75rem;
   border: 2px solid #fff;
   border-radius: 50%;
   box-shadow: 0 0 0 1px rgb(0 0 0 / 0.45);
@@ -82,9 +82,9 @@
 }
 
 .ls-color-picker .preview {
-  width: 28px;
-  height: 28px;
+  width: 1.75rem;
+  height: 1.75rem;
   border: 1px solid var(--ls-border);
-  border-radius: 4px;
+  border-radius: 0.25rem;
   background: var(--ls-cp-value);
 }

@@ -1,11 +1,16 @@
 /* 表格：圆角外框画在外壳上，格子只画内部的线，避免圆角被 overflow 裁掉。
+   默认高度跟内容（不吃 flex/grid 拉伸）；.fill 才铺满剩余高度。
    默认斑马纹；.dense 收紧单元格；.kv 键值表（首列作 key）。 */
 
 .ls-table {
   box-sizing: border-box;
+  width: 100%;
+  max-height: 100%;
+  height: fit-content;
+  align-self: start;
   overflow: auto;
   border: 1px solid var(--ls-border);
-  border-radius: 8px;
+  border-radius: 0.5rem;
   background: var(--ls-bg-elevated);
   color: var(--ls-text);
 }
@@ -13,14 +18,25 @@
 .ls-table > table {
   width: 100%;
   border-collapse: collapse;
+  table-layout: auto;
+  font-size: var(--ls-font-secondary);
+}
+
+.ls-table.fixed > table {
   table-layout: fixed;
-  font-size: 0.8125rem;
+}
+
+.ls-table.fill {
+  align-self: stretch;
+  flex: 1 1 auto;
+  min-height: 0;
+  height: auto;
 }
 
 .ls-table th,
 .ls-table td {
   box-sizing: border-box;
-  padding: 8px 10px;
+  padding: 0.5rem 0.625rem;
   border: 1px solid var(--ls-border);
   vertical-align: top;
   word-wrap: break-word;
@@ -56,7 +72,7 @@
 
 .ls-table.dense th,
 .ls-table.dense td {
-  padding: 4px 8px;
+  padding: 0.25rem 0.5rem;
 }
 
 .ls-table.square {

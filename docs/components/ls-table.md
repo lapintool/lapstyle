@@ -1,6 +1,6 @@
 # LsTable (`ls-table`)
 
-Table shell. Put a native <table> inside.
+Table shell. Put a native <table> inside. Columns size to content; the shell stays content-tall unless fill.
 
 Import: `import { LsTable } from "lapstyle/vue"` (or `app.use(LapstyleVue)`).
 
@@ -23,12 +23,19 @@ Import: `import { LsTable } from "lapstyle/vue"` (or `app.use(LapstyleVue)`).
 | `hover` | `boolean` | `false` | Highlight the body row under the pointer |
 | `plain` | `boolean` | `false` | No cell or shell lines |
 | `noFrame` | `boolean` | `false` | Drop the outer border; inner lines stay |
+| `fixed` | `boolean` | `false` | Equal-width columns (table-layout: fixed) |
+| `fill` | `boolean` | `false` | Grow to the remaining height in a flex/grid pane |
 
 ### Slots
 
 | Name | Description |
 | --- | --- |
 | `default` | Native <table> markup |
+
+### Pitfalls
+
+- Default table-layout is auto. Use fixed (class .fixed) when you want equal columns or have long unbreakable strings.
+- The shell does not stretch with flex-1. Use fill (class .fill) when the table should occupy the remaining pane and scroll inside.
 
 ## CSS root
 

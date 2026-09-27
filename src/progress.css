@@ -6,11 +6,11 @@
 .ls-progress {
   --ls-progress: 0%;
   --ls-progress-buffer: 0%;
-  --ls-progress-size: 4px;
+  --ls-progress-size: 0.25rem;
   --ls-progress-speed: 0.3s;
   --ls-progress-color: var(--ls-accent);
   --ls-progress-track: rgb(255 255 255 / 0.22);
-  --ls-progress-stripe-size: 40px;
+  --ls-progress-stripe-size: 2.5rem;
   box-sizing: border-box;
   position: relative;
   display: flex;
@@ -22,7 +22,7 @@
   background: var(--ls-progress-track);
   color: var(--ls-progress-color);
   font: inherit;
-  font-size: 0.75rem;
+  font-size: var(--ls-font-caption);
   font-weight: 500;
   line-height: 1;
   text-align: center;

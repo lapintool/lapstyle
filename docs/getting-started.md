@@ -7,7 +7,7 @@ Do **not** start from class HTML + `enhance()` unless the app has no Vue.
 ## Install
 
 ```bash
-pnpm add github:lapintool/lapstyle#v0.5.1-alpha
+pnpm add github:lapintool/lapstyle#v0.5.2-alpha
 ```
 
 Peer: `vue` `^3.4` (required only when using `lapstyle/vue`).
@@ -37,6 +37,13 @@ Scaffold: `pnpm dlx https://github.com/lapintool/create-lapstyle my-app`
 
 Set `data-theme` on `<html>`: `dark` (default) | `light` | `mint` | `sky` | `pink` | `brown` | `amber`.
 See `docs/theming.md`.
+
+## Type scale
+
+Set `data-ls-scale` on `<html>`: `sm` (14px) | `md` (16px, default) | `lg` (18px) | `xl` (20px).
+This sets the root `font-size`. Kit sizes use `rem`, so type, icons, and controls scale together.
+Omit the attribute to keep the browser root (same as `md`).
+Semantic sizes: `--ls-font-title` / `--ls-font-body` / `--ls-font-secondary` / `--ls-font-caption` (18/14/13/12px @ md).
 
 ## How to use these docs
 

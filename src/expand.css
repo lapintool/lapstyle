@@ -7,10 +7,10 @@
  */
 
 .ls-expand {
-  --ls-expand-collapsed-w: 28px;
-  --ls-expand-collapsed-h: 28px;
-  --ls-expand-open-w: 216px;
-  --ls-expand-open-h: 208px;
+  --ls-expand-collapsed-w: 1.75rem;
+  --ls-expand-collapsed-h: 1.75rem;
+  --ls-expand-open-w: 13.5rem;
+  --ls-expand-open-h: 13rem;
   --ls-expand-duration: 0.5s;
   --ls-expand-ease: var(--ls-ease);
   --ls-expand-radius: 0.5rem;
@@ -77,7 +77,7 @@
   min-height: var(--ls-expand-collapsed-h);
   overflow: hidden;
   color: var(--ls-text);
-  font-size: 0.8125rem;
+  font-size: var(--ls-font-secondary);
   background: var(--ls-expand-bg, var(--ls-bg-elevated));
   border: 0;
   border-radius: 0;

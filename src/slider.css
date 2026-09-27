@@ -3,8 +3,8 @@
   --ls-slider-track: rgb(255 255 255 / 0.1);
   --ls-slider-inner: rgb(255 255 255 / 0.1);
   --ls-slider-markers: rgb(255 255 255 / 0.3);
-  --ls-slider-track-size: 4px;
-  --ls-slider-thumb-size: 20px;
+  --ls-slider-track-size: 0.25rem;
+  --ls-slider-thumb-size: 1.25rem;
   --ls-slider-ripple-size: calc(var(--ls-slider-thumb-size) * 1.6);
   --ls-slider-label-on: #fff;
   position: relative;
@@ -101,7 +101,7 @@
 
 .ls-slider.input .suffix {
   color: var(--ls-text-dim);
-  font-size: 12px;
+  font-size: var(--ls-font-caption);
   line-height: 1;
   white-space: nowrap;
   user-select: none;
@@ -446,7 +446,7 @@
 
 .ls-slider .text {
   color: var(--ls-slider-label-on);
-  font-size: 12px;
+  font-size: var(--ls-font-caption);
   line-height: 1.4;
 }
 
@@ -488,7 +488,7 @@
 
 .ls-slider .marker-label {
   position: absolute;
-  font-size: 12px;
+  font-size: var(--ls-font-caption);
   line-height: 1.2;
   color: var(--ls-text-dim);
   white-space: nowrap;

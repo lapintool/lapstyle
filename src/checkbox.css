@@ -24,7 +24,7 @@
   outline: 0;
   color: var(--ls-text);
   font: inherit;
-  font-size: 0.875rem;
+  font-size: var(--ls-font-body);
   line-height: 1.715em;
   cursor: pointer;
   user-select: none;

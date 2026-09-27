@@ -1,5 +1,20 @@
 # Changelog
 
+## Unreleased
+
+## 0.5.2-alpha
+
+### Added
+
+- Whole-app type scale: \`data-ls-scale="sm|md|lg|xl"\` on \`<html>\` (root 14/16/18/20px). Omit for the browser default (same as \`md\`). Kit sizes use \`rem\` so type, icons, and controls scale together.
+- Semantic type tokens: \`--ls-font-title\` / \`--ls-font-body\` / \`--ls-font-secondary\` / \`--ls-font-caption\` (18/14/13/12px @ md). Use these for page prose so it follows \`data-ls-scale\`.
+
+### Changed
+
+- `LsTable`: default `table-layout` is `auto`. Opt into equal columns with `.fixed` / `fixed`.
+- `LsTable`: the shell stays content-tall (`align-self: start`, `height: fit-content`). Opt into a stretching pane with `.fill` / `fill`.
+- Kit component text (dialog, tabs, menu, table, card note, tooltip, …) uses the semantic `--ls-font-*` tokens instead of hardcoded rem.
+
 ## 0.5.1-alpha
 
 ### Added

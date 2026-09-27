@@ -327,6 +327,8 @@ export interface LsTableProps {
   hover?: boolean;
   plain?: boolean;
   noFrame?: boolean;
+  fixed?: boolean;
+  fill?: boolean;
 }
 
 export type LsTableEmits = Record<string, never>;

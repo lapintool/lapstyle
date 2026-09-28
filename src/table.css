@@ -33,7 +33,7 @@
   box-sizing: border-box;
   padding: 0.5rem 0.625rem;
   border: 1px solid var(--ls-border);
-  vertical-align: top;
+  vertical-align: middle;
   word-wrap: break-word;
   line-height: 1.45;
   text-align: left;

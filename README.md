@@ -26,11 +26,23 @@ The optional scaffold version check reads a separate `create-lapstyle` checkout 
 
 ## Install
 
+Lapstyle is available on [npm](https://www.npmjs.com/package/lapstyle). Add it to an existing project:
+
 ```bash
-pnpm add lapstyle@alpha
+npm install lapstyle
 ```
 
+Or with pnpm:
+
+```bash
+pnpm add lapstyle
+```
+
+The current npm release is **0.5.4-alpha**. To follow the alpha release channel, use `npm install lapstyle@alpha`; to pin this release, use `npm install lapstyle@0.5.4-alpha`.
+
 ### Vue (recommended)
+
+Use Vue **3.4 or newer** with a Vue-capable bundler such as Vite. Import the stylesheet once in your application entry and register the components:
 
 ```ts
 import { createApp } from "vue";

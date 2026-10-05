@@ -7,6 +7,7 @@ import {
 } from "./util.js";
 
 const menuState = new WeakMap();
+let activeMenus = 0;
 
 function getMenuMeta(root) {
   let state = menuState.get(root);
@@ -414,6 +415,7 @@ export function initMenu(root) {
 
   const state = getMenuMeta(root);
   state.bound = true;
+  activeMenus++;
 
   root.querySelectorAll(".item").forEach((item) => {
     if (item instanceof HTMLElement) syncMenuExpandState(item);
@@ -443,6 +445,11 @@ export function initMenu(root) {
     state.railDestroy?.();
     state.popoverDestroy?.();
     menuState.delete(root);
+    if (--activeMenus === 0) {
+      collapseCleanups.forEach((remove) => remove());
+      collapseCleanups = [];
+      collapseBound = false;
+    }
   };
 }
 

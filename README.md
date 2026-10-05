@@ -2,7 +2,7 @@
 
 A desktop **Vue UI kit** with a defined Lapstyle look. Use `Ls*` components (`v-model` / events / slots). CSS tokens and class conventions remain the look layer; `enhance()` is for framework-free pages.
 
-Current version **0.5.2-alpha**. License: MIT. Repository: https://github.com/lapintool/lapstyle
+Current version **0.5.4-alpha**. License: MIT. Repository: https://github.com/lapintool/lapstyle
 
 English is the default language for docs and the official demo.
 
@@ -18,10 +18,16 @@ Do not scrape `src/vue/*.vue` first. Read the packaged docs:
 
 Prefer `<ls-*>` from `lapstyle/vue`. Class HTML + `enhance()` is the framework-free path (`docs/enhance.md`).
 
+## Development checks
+
+Run `npm test` for the self-contained library tests and `npm run docs` to regenerate packaged docs and Vue declarations. The official site (`../lapstyle-ui`) links this checkout and runs Vue behavior and TypeScript contract tests with `pnpm test`.
+
+The optional scaffold version check reads a separate `create-lapstyle` checkout only when `LAPSTYLE_SCAFFOLD_ROOT` points to it. For example, `LAPSTYLE_SCAFFOLD_ROOT=../create-lapstyle npm test` on a POSIX shell, or `$env:LAPSTYLE_SCAFFOLD_ROOT = "D:\path\to\create-lapstyle"` followed by `npm test` in PowerShell. Without this variable, that integration check is skipped.
+
 ## Install
 
 ```bash
-pnpm add github:lapintool/lapstyle#v0.5.2-alpha
+pnpm add lapstyle@alpha
 ```
 
 ### Vue (recommended)
@@ -73,14 +79,14 @@ For pages without a bundler, use the auto entry:
 
 ## Create an app
 
-The package is not on npm yet. Scaffold a Vite + Vue app from GitHub:
+Scaffold a Vite + Vue app from GitHub:
 
 ```bash
 npm create https://github.com/lapintool/lapstyle my-app
 pnpm dlx https://github.com/lapintool/create-lapstyle my-app
 ```
 
-The app opens on a button page with a sidebar. `src/main.ts` imports `lapstyle/index.css` and registers `LapstyleVue`. The shell uses `<ls-menu>` / `<ls-btn-dropdown>`. Dependency: `git+https://github.com/lapintool/lapstyle.git#v0.5.2-alpha`.
+The app opens on a button page with a sidebar. `src/main.ts` imports `lapstyle/index.css` and registers `LapstyleVue`. The shell uses `<ls-menu>` / `<ls-btn-dropdown>`. To install this version directly from GitHub: `pnpm add github:lapintool/lapstyle#v0.5.4-alpha`.
 
 Add an empty page, then paste an example into it:
 

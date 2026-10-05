@@ -10,6 +10,10 @@ function panelList(root) {
   return [...root.querySelectorAll(":scope > .panel")];
 }
 
+function isTabDisabled(tab) {
+  return tab.hasAttribute("disabled") || tab.getAttribute("aria-disabled") === "true";
+}
+
 function syncTabsScrolled(root) {
   const panels = panelList(root);
   let scrolled = false;
@@ -24,6 +28,7 @@ function syncTabsScrolled(root) {
 }
 
 function setActiveTab(root, tab, opts = {}) {
+  if (isTabDisabled(tab)) return;
   const tabs = tabList(root);
   const index = tabs.indexOf(tab);
   if (index < 0) return;
@@ -58,6 +63,7 @@ function setActiveTab(root, tab, opts = {}) {
 }
 
 function closeTab(root, tab) {
+  if (isTabDisabled(tab)) return;
   const tabs = tabList(root);
   const index = tabs.indexOf(tab);
   if (index < 0) return;
@@ -84,8 +90,9 @@ function closeTab(root, tab) {
     return;
   }
   if (wasActive) {
-    const next = nextTabs[Math.min(index, nextTabs.length - 1)];
-    setActiveTab(root, next);
+    const enabled = nextTabs.filter((item) => !isTabDisabled(item));
+    const next = enabled.find((item) => nextTabs.indexOf(item) >= index) || enabled.at(-1);
+    if (next) setActiveTab(root, next);
   } else {
     syncTabsScrolled(root);
   }
@@ -133,7 +140,7 @@ export function initTabs(root) {
 
   // Ensure one active tab / panel visibility
   const tabs = tabList(root);
-  const active = tabs.find((el) => el.classList.contains("is-active")) || tabs[0];
+  const active = tabs.find((el) => el.classList.contains("is-active") && !isTabDisabled(el)) || tabs.find((el) => !isTabDisabled(el));
   if (active) setActiveTab(root, active, { silent: true });
   else sync();
 

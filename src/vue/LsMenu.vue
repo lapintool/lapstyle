@@ -1,8 +1,9 @@
 <script setup>
-import { computed, nextTick, onMounted, onUnmounted, provide, ref } from "vue";
+import { computed, nextTick, onMounted, onBeforeUnmount, provide, ref } from "vue";
 import { destroy, enhance } from "../lapstyle.js";
 import { classList } from "./classNames.js";
 import { menuSelectedKey } from "./menuContext.js";
+import { readOptionValue } from "./value.js";
 
 const model = defineModel({ type: [String, Number], default: null });
 
@@ -34,7 +35,7 @@ const hostClass = computed(() =>
 );
 
 function onSelect(ev) {
-  const detail = ev.detail || {};
+  const detail = { ...ev.detail, value: readOptionValue(ev.detail?.item, ev.detail?.value) };
   if (detail.value != null) model.value = detail.value;
   emit("select", detail);
 }
@@ -47,7 +48,7 @@ onMounted(async () => {
   if (root.value) enhance(root.value);
 });
 
-onUnmounted(() => {
+onBeforeUnmount(() => {
   if (root.value) destroy(root.value);
 });
 </script>

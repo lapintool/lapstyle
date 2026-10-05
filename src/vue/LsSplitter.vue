@@ -1,5 +1,5 @@
 <script setup>
-import { computed, onMounted, onUnmounted, ref, watch } from "vue";
+import { computed, onMounted, onBeforeUnmount, ref, watch } from "vue";
 import { destroy, enhance, setSplitterSize } from "../lapstyle.js";
 
 const model = defineModel({ type: Number, default: null });
@@ -53,7 +53,7 @@ onMounted(() => {
   root.value.addEventListener("ls-splitter:resize", onResize);
 });
 
-onUnmounted(() => {
+onBeforeUnmount(() => {
   if (!(root.value instanceof HTMLElement)) return;
   root.value.removeEventListener("ls-splitter:resize", onResize);
   destroy(root.value);

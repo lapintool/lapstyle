@@ -1,5 +1,5 @@
 <script setup>
-import { computed, onMounted, onUnmounted, ref, watch } from "vue";
+import { computed, onMounted, onBeforeUnmount, ref, watch } from "vue";
 import {
   destroy,
   enhance,
@@ -95,7 +95,7 @@ onMounted(() => {
   enhance(root.value);
 });
 
-onUnmounted(() => {
+onBeforeUnmount(() => {
   if (root.value) destroy(root.value);
 });
 </script>

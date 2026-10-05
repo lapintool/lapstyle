@@ -1,4 +1,4 @@
-import { EXPAND_EASING, parseExpandDurationMs, trackListener } from "./util.js";
+import { animateExpandFrames, EXPAND_EASING, parseExpandDurationMs, trackListener } from "./util.js";
 
 const expandState = new WeakMap();
 const expandWarned = new WeakMap();
@@ -393,17 +393,13 @@ function animateExpandBox(el, toWidth, toHeight, durationMs, instant = false, ex
     return;
   }
 
-  const anim = el.animate([keyFrom, keyTo], {
-    duration: durationMs,
-    easing: EXPAND_EASING,
-    fill: "none",
-  });
+  const anim = animateExpandFrames(el, [keyFrom, keyTo], durationMs);
+  if (!anim) {
+    finishStretch();
+    return;
+  }
   if (animFrame) {
-    frame.animate([frameFrom, frameTo], {
-      duration: durationMs,
-      easing: EXPAND_EASING,
-      fill: "none",
-    });
+    animateExpandFrames(frame, [frameFrom, frameTo], durationMs);
   }
   anim.onfinish = finishStretch;
   anim.oncancel = finishStretch;

@@ -2,7 +2,8 @@
 
 > Desktop Vue UI kit. Use Ls* / ls-* components (v-model, events, slots). CSS tokens are the look layer.
 
-Install: `pnpm add github:lapintool/lapstyle#v0.5.2-alpha`
+Install: `pnpm add lapstyle@0.5.4-alpha`
+GitHub alternative: `pnpm add github:lapintool/lapstyle#v0.5.4-alpha`.
 Setup: `app.use(LapstyleVue)` and `import "lapstyle/index.css"`.
 Theme: `<html data-theme="dark|light|mint|sky|pink|brown|amber">`.
 Scale: `<html data-ls-scale="sm|md|lg|xl">` (root font 14/16/18/20px; omit = md).
@@ -24,6 +25,7 @@ Read these files in the installed package (paths relative to the package root):
 - LsTabs (ls-tabs): docs/components/ls-tabs.md
 - LsTab (ls-tab): docs/components/ls-tab.md
 - LsDropdown (ls-dropdown): docs/components/ls-dropdown.md
+- LsDatePicker (ls-date-picker): docs/components/ls-date-picker.md
 - LsDialog (ls-dialog): docs/components/ls-dialog.md
 - LsTooltip (ls-tooltip): docs/components/ls-tooltip.md
 - LsIcon (ls-icon): docs/components/ls-icon.md

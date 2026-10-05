@@ -1,6 +1,11 @@
 <script setup>
-import { computed } from "vue";
+import { computed, onMounted, onBeforeUnmount, ref } from "vue";
 import { classList } from "./classNames.js";
+import { destroyInput, initInput } from "../js/input.js";
+
+const input = ref(null);
+onMounted(() => initInput(input.value));
+onBeforeUnmount(() => destroyInput(input.value));
 
 const model = defineModel({ type: [String, Number], default: "" });
 
@@ -31,6 +36,7 @@ const classes = computed(() =>
 
 <template>
   <input
+    ref="input"
     v-model="model"
     class="ls-input"
     :class="classes"

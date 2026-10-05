@@ -120,15 +120,80 @@
   width: calc(14px * var(--ls-input-spin-size, 1));
   height: calc(22px * var(--ls-input-spin-size, 1));
   background-color: currentColor;
-  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 22'%3E%3Cpath fill='%23000' d='M1 8.2 6 2.4 11 8.2 9.2 8.2 6 4.8 2.8 8.2Z'/%3E%3Cpath fill='%23000' d='M1 13.8 2.8 13.8 6 17.2 9.2 13.8 11 13.8 6 19.6Z'/%3E%3C/svg%3E") center / 10px 18px no-repeat;
-  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 22'%3E%3Cpath fill='%23000' d='M1 8.2 6 2.4 11 8.2 9.2 8.2 6 4.8 2.8 8.2Z'/%3E%3Cpath fill='%23000' d='M1 13.8 2.8 13.8 6 17.2 9.2 13.8 11 13.8 6 19.6Z'/%3E%3C/svg%3E") center / 10px 18px no-repeat;
+  transition: opacity var(--ls-hover), background-color var(--ls-hover), filter var(--ls-hover);
+  /* Match the overlay's two 11px rows and centered 10x9px SVGs exactly. */
+  --ls-spin-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 22'%3E%3Csvg x='2' y='1' width='10' height='9' viewBox='0 0 12 11'%3E%3Cpath d='M1 8.2 6 2.4 11 8.2 9.2 8.2 6 4.8 2.8 8.2Z'/%3E%3C/svg%3E%3Csvg x='2' y='12' width='10' height='9' viewBox='0 0 12 11'%3E%3Cpath d='M1 2.8 2.8 2.8 6 6.2 9.2 2.8 11 2.8 6 8.6Z'/%3E%3C/svg%3E%3C/svg%3E");
+  -webkit-mask: var(--ls-spin-mask) center / 100% 100% no-repeat;
+  mask: var(--ls-spin-mask) center / 100% 100% no-repeat;
   opacity: 0.8;
   cursor: default;
 }
 
-.ls-input[type="number"]::-webkit-inner-spin-button:hover,
-.ls-input[type="number"]::-webkit-inner-spin-button:active {
+.ls-input[type="number"]:hover::-webkit-inner-spin-button {
   opacity: 1;
+}
+
+.ls-input[type="number"].is-spin-overlay::-webkit-inner-spin-button {
+  opacity: 0;
+}
+
+.ls-input-spin-overlay {
+  position: fixed;
+  z-index: var(--ls-z-tooltip, 60);
+  display: flex;
+  flex-direction: column;
+  pointer-events: none;
+}
+
+.ls-input-spin-overlay > span {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  min-height: 0;
+  border-radius: 2px;
+  opacity: 0.8;
+  transition: color var(--ls-hover, 160ms), opacity var(--ls-hover, 160ms);
+}
+
+.ls-input-spin-overlay > span::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background-color: transparent;
+  transition: background-color var(--ls-hover, 160ms);
+}
+
+.ls-input-spin-overlay > .up::before {
+  top: 1px;
+}
+
+.ls-input-spin-overlay > .down::before {
+  bottom: 1px;
+}
+
+.ls-input-spin-overlay svg {
+  width: 71.43%;
+  height: 81.82%;
+  fill: currentColor;
+}
+
+.ls-input-spin-overlay.up-hover > .up,
+.ls-input-spin-overlay.down-hover > .down {
+  color: var(--ls-spin-accent);
+  opacity: 1;
+}
+
+.ls-input-spin-overlay.up-hover > .up::before,
+.ls-input-spin-overlay.down-hover > .down::before {
+  background-color: color-mix(in srgb, var(--ls-spin-accent) 22%, transparent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ls-input-spin-overlay > span,
+  .ls-input-spin-overlay > span::before { transition-duration: 0s; }
 }
 
 .ls-input[type="number"]::-moz-number-spin-box,

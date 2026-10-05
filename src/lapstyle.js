@@ -26,6 +26,7 @@ import {
   warnExpandIssues,
 } from "./js/expand.js";
 import { destroyMenu, initMenu } from "./js/menu.js";
+import { destroyInput, initInput } from "./js/input.js";
 import {
   destroyProgress,
   initProgress,
@@ -47,6 +48,7 @@ function forEachMatch(root, selector, fn) {
 }
 
 export function enhance(root = document) {
+  forEachMatch(root, ".ls-input", initInput);
   forEachMatch(root, ".ls-color-picker", initColorPicker);
   forEachMatch(root, ".ls-dialog", initDialog);
   forEachMatch(root, ".ls-dropdown", initDropdown);
@@ -61,6 +63,7 @@ export function enhance(root = document) {
 }
 
 export function destroy(root = document) {
+  forEachMatch(root, ".ls-input", destroyInput);
   forEachMatch(root, ".ls-color-picker", destroyColorPicker);
   forEachMatch(root, ".ls-dialog", destroyDialog);
   forEachMatch(root, ".ls-dropdown", destroyDropdown);
@@ -113,6 +116,7 @@ const Lapstyle = {
 };
 
 export {
+  Lapstyle,
   setPickerValue,
   initColorPicker,
   destroyColorPicker,

@@ -1,5 +1,5 @@
 <script setup>
-import { computed, onMounted, onUnmounted, ref, watch } from "vue";
+import { computed, onMounted, onBeforeUnmount, ref, watch } from "vue";
 import { destroy, enhance, setProgressValue } from "../lapstyle.js";
 import { classList } from "./classNames.js";
 
@@ -31,7 +31,7 @@ onMounted(() => {
   if (model.value != null) setProgressValue(root.value, model.value, { silent: true });
 });
 
-onUnmounted(() => {
+onBeforeUnmount(() => {
   if (root.value) destroy(root.value);
 });
 </script>

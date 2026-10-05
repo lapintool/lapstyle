@@ -17,6 +17,7 @@ describe("public export surface", () => {
   });
 
   it("default export mirrors the named exports", () => {
+    assert.equal(api.Lapstyle, Lapstyle);
     assert.equal(Lapstyle.enhance, api.enhance);
     assert.equal(Lapstyle.setPickerValue, api.setPickerValue);
     assert.equal(Lapstyle.initColorPicker, api.initColorPicker);

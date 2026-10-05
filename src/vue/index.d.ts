@@ -1,4 +1,9 @@
-import type { App, Component, DefineComponent } from "vue";
+import type { App, Component, ComponentOptionsMixin, DefineComponent, EmitsOptions, EmitsToProps, PublicProps, SlotsType, VNodeChild } from "vue";
+
+type LapstyleComponent<Props, Events extends EmitsOptions, Slots extends Record<string, any>> = DefineComponent<
+  Props, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin,
+  Events, string, PublicProps, Props & EmitsToProps<Events>, {}, SlotsType<Slots>
+>;
 
 export interface LsBtnProps {
   color?: "" | "blue" | "cyan" | "magenta" | "green" | "red" | "yellow" | "dark" | "gray" | "white" | "black";
@@ -21,10 +26,13 @@ export type LsBtnEmits = {
 };
 
 export interface LsBtnSlots {
-  default?: () => unknown;
+  default?: () => VNodeChild;
 }
 
-export declare const LsBtn: DefineComponent<LsBtnProps>;
+type LsBtnEventMap = {
+  "click": (value: MouseEvent) => void;
+};
+export declare const LsBtn: LapstyleComponent<LsBtnProps, LsBtnEventMap, LsBtnSlots>;
 
 export interface LsBtnGroupProps {
   spread?: boolean;
@@ -36,10 +44,13 @@ export interface LsBtnGroupProps {
 export type LsBtnGroupEmits = Record<string, never>;
 
 export interface LsBtnGroupSlots {
-  default?: () => unknown;
+  default?: () => VNodeChild;
 }
 
-export declare const LsBtnGroup: DefineComponent<LsBtnGroupProps>;
+type LsBtnGroupEventMap = {
+
+};
+export declare const LsBtnGroup: LapstyleComponent<LsBtnGroupProps, LsBtnGroupEventMap, LsBtnGroupSlots>;
 
 export interface LsBtnDropdownProps {
   split?: boolean;
@@ -48,20 +59,27 @@ export interface LsBtnDropdownProps {
   size?: "" | "sm" | "md" | "lg";
   dense?: boolean;
   label?: string;
+  arrow?: "chevron" | "triangle";
+  borderless?: boolean;
+  noArrow?: boolean;
   disabled?: boolean;
 }
 
 export type LsBtnDropdownEmits = {
-  (e: "select", value: Record<string, unknown>): void;
+  (e: "select", value: { value: string | number; label: string; item: HTMLElement; menu?: HTMLElement }): void;
   (e: "click", value: MouseEvent): void;
 };
 
 export interface LsBtnDropdownSlots {
-  default?: () => unknown;
-  label?: () => unknown;
+  default?: () => VNodeChild;
+  label?: () => VNodeChild;
 }
 
-export declare const LsBtnDropdown: DefineComponent<LsBtnDropdownProps>;
+type LsBtnDropdownEventMap = {
+  "select": (value: { value: string | number; label: string; item: HTMLElement; menu?: HTMLElement }) => void;
+  "click": (value: MouseEvent) => void;
+};
+export declare const LsBtnDropdown: LapstyleComponent<LsBtnDropdownProps, LsBtnDropdownEventMap, LsBtnDropdownSlots>;
 
 export interface LsInputProps {
   modelValue?: string | number;
@@ -83,10 +101,13 @@ export type LsInputEmits = {
 };
 
 export interface LsInputSlots {
-  default?: () => unknown;
+
 }
 
-export declare const LsInput: DefineComponent<LsInputProps>;
+type LsInputEventMap = {
+  "update:modelValue": (value: string | number) => void;
+};
+export declare const LsInput: LapstyleComponent<LsInputProps, LsInputEventMap, LsInputSlots>;
 
 export interface LsFieldProps {
   label?: string;
@@ -97,11 +118,14 @@ export interface LsFieldProps {
 export type LsFieldEmits = Record<string, never>;
 
 export interface LsFieldSlots {
-  default?: () => unknown;
-  label?: () => unknown;
+  default?: () => VNodeChild;
+  label?: () => VNodeChild;
 }
 
-export declare const LsField: DefineComponent<LsFieldProps>;
+type LsFieldEventMap = {
+
+};
+export declare const LsField: LapstyleComponent<LsFieldProps, LsFieldEventMap, LsFieldSlots>;
 
 export interface LsRadioProps {
   modelValue?: string | number | boolean | null;
@@ -118,10 +142,13 @@ export type LsRadioEmits = {
 };
 
 export interface LsRadioSlots {
-  default?: () => unknown;
+  default?: () => VNodeChild;
 }
 
-export declare const LsRadio: DefineComponent<LsRadioProps>;
+type LsRadioEventMap = {
+  "update:modelValue": (value: string | number | boolean) => void;
+};
+export declare const LsRadio: LapstyleComponent<LsRadioProps, LsRadioEventMap, LsRadioSlots>;
 
 export interface LsCheckboxProps {
   modelValue?: boolean | unknown[];
@@ -138,10 +165,13 @@ export type LsCheckboxEmits = {
 };
 
 export interface LsCheckboxSlots {
-  default?: () => unknown;
+  default?: () => VNodeChild;
 }
 
-export declare const LsCheckbox: DefineComponent<LsCheckboxProps>;
+type LsCheckboxEventMap = {
+  "update:modelValue": (value: boolean | unknown[]) => void;
+};
+export declare const LsCheckbox: LapstyleComponent<LsCheckboxProps, LsCheckboxEventMap, LsCheckboxSlots>;
 
 export interface LsTabsProps {
   modelValue?: string | number | null;
@@ -151,17 +181,22 @@ export interface LsTabsProps {
 
 export type LsTabsEmits = {
   (e: "update:modelValue", value: string | number): void;
-  (e: "change", value: Record<string, unknown>): void;
-  (e: "close", value: Record<string, unknown>): void;
+  (e: "change", value: { value: string | number; tab: HTMLElement; index: number }): void;
+  (e: "close", value: { value: string | number; tab: HTMLElement; index: number; event: CustomEvent }): void;
 };
 
 export interface LsTabsSlots {
-  default?: () => unknown;
-  tabs?: () => unknown;
-  panels?: () => unknown;
+  default?: () => VNodeChild;
+  tabs?: () => VNodeChild;
+  panels?: () => VNodeChild;
 }
 
-export declare const LsTabs: DefineComponent<LsTabsProps>;
+type LsTabsEventMap = {
+  "update:modelValue": (value: string | number) => void;
+  "change": (value: { value: string | number; tab: HTMLElement; index: number }) => void;
+  "close": (value: { value: string | number; tab: HTMLElement; index: number; event: CustomEvent }) => void;
+};
+export declare const LsTabs: LapstyleComponent<LsTabsProps, LsTabsEventMap, LsTabsSlots>;
 
 export interface LsTabProps {
   value: string | number;
@@ -173,16 +208,24 @@ export interface LsTabProps {
 export type LsTabEmits = Record<string, never>;
 
 export interface LsTabSlots {
-  default?: () => unknown;
-  icon?: () => unknown;
+  default?: () => VNodeChild;
+  icon?: () => VNodeChild;
 }
 
-export declare const LsTab: DefineComponent<LsTabProps>;
+type LsTabEventMap = {
+
+};
+export declare const LsTab: LapstyleComponent<LsTabProps, LsTabEventMap, LsTabSlots>;
 
 export interface LsDropdownProps {
   modelValue?: string | number | null;
-  options?: Array<string | { value?: unknown, label?: unknown }> | null;
+  options?: Array<string | number | { value?: string | number, label?: string | number }> | null;
   placeholder?: string;
+  editable?: boolean;
+  arrow?: "chevron" | "triangle";
+  borderless?: boolean;
+  noArrow?: boolean;
+  split?: boolean;
   disabled?: boolean;
   size?: "" | "sm" | "md" | "lg";
   dense?: boolean;
@@ -192,14 +235,49 @@ export interface LsDropdownProps {
 
 export type LsDropdownEmits = {
   (e: "update:modelValue", value: string | number | null): void;
-  (e: "select", value: Record<string, unknown>): void;
+  (e: "select", value: { value: string | number; label: string; item: HTMLElement; menu?: HTMLElement }): void;
 };
 
 export interface LsDropdownSlots {
-  default?: () => unknown;
+  default?: () => VNodeChild;
 }
 
-export declare const LsDropdown: DefineComponent<LsDropdownProps>;
+type LsDropdownEventMap = {
+  "update:modelValue": (value: string | number | null) => void;
+  "select": (value: { value: string | number; label: string; item: HTMLElement; menu?: HTMLElement }) => void;
+};
+export declare const LsDropdown: LapstyleComponent<LsDropdownProps, LsDropdownEventMap, LsDropdownSlots>;
+
+export interface LsDatePickerProps {
+  modelValue?: string;
+  mode?: "date" | "datetime" | "time";
+  locale?: string;
+  size?: "" | "sm" | "md" | "lg";
+  dense?: boolean;
+  disabled?: boolean;
+  readonly?: boolean;
+  placeholder?: string;
+  clearable?: boolean;
+}
+
+export type LsDatePickerEmits = {
+  (e: "update:modelValue", value: string): void;
+  (e: "change", value: string): void;
+  (e: "open"): void;
+  (e: "close"): void;
+};
+
+export interface LsDatePickerSlots {
+
+}
+
+type LsDatePickerEventMap = {
+  "update:modelValue": (value: string) => void;
+  "change": (value: string) => void;
+  "open": () => void;
+  "close": () => void;
+};
+export declare const LsDatePicker: LapstyleComponent<LsDatePickerProps, LsDatePickerEventMap, LsDatePickerSlots>;
 
 export interface LsDialogProps {
   modelValue?: boolean;
@@ -212,17 +290,22 @@ export interface LsDialogProps {
 
 export type LsDialogEmits = {
   (e: "update:modelValue", value: boolean): void;
-  (e: "action", value: Record<string, unknown>): void;
+  (e: "action", value: { button: HTMLElement; dialog: HTMLElement; event: CustomEvent; preventDefault: () => void }): void;
   (e: "close"): void;
 };
 
 export interface LsDialogSlots {
-  default?: () => unknown;
-  head?: () => unknown;
-  actions?: () => unknown;
+  default?: () => VNodeChild;
+  head?: () => VNodeChild;
+  actions?: () => VNodeChild;
 }
 
-export declare const LsDialog: DefineComponent<LsDialogProps>;
+type LsDialogEventMap = {
+  "update:modelValue": (value: boolean) => void;
+  "action": (value: { button: HTMLElement; dialog: HTMLElement; event: CustomEvent; preventDefault: () => void }) => void;
+  "close": () => void;
+};
+export declare const LsDialog: LapstyleComponent<LsDialogProps, LsDialogEventMap, LsDialogSlots>;
 
 export interface LsTooltipProps {
   text?: string;
@@ -232,10 +315,13 @@ export interface LsTooltipProps {
 export type LsTooltipEmits = Record<string, never>;
 
 export interface LsTooltipSlots {
-  default?: () => unknown;
+  default?: () => VNodeChild;
 }
 
-export declare const LsTooltip: DefineComponent<LsTooltipProps>;
+type LsTooltipEventMap = {
+
+};
+export declare const LsTooltip: LapstyleComponent<LsTooltipProps, LsTooltipEventMap, LsTooltipSlots>;
 
 export interface LsIconProps {
   name?: string;
@@ -246,10 +332,13 @@ export interface LsIconProps {
 export type LsIconEmits = Record<string, never>;
 
 export interface LsIconSlots {
-  default?: () => unknown;
+  default?: () => VNodeChild;
 }
 
-export declare const LsIcon: DefineComponent<LsIconProps>;
+type LsIconEventMap = {
+
+};
+export declare const LsIcon: LapstyleComponent<LsIconProps, LsIconEventMap, LsIconSlots>;
 
 export interface LsMenuProps {
   modelValue?: string | number | null;
@@ -262,14 +351,18 @@ export interface LsMenuProps {
 
 export type LsMenuEmits = {
   (e: "update:modelValue", value: string | number | null): void;
-  (e: "select", value: Record<string, unknown>): void;
+  (e: "select", value: { value: string | number; label: string; item: HTMLElement; menu?: HTMLElement }): void;
 };
 
 export interface LsMenuSlots {
-  default?: () => unknown;
+  default?: () => VNodeChild;
 }
 
-export declare const LsMenu: DefineComponent<LsMenuProps>;
+type LsMenuEventMap = {
+  "update:modelValue": (value: string | number | null) => void;
+  "select": (value: { value: string | number; label: string; item: HTMLElement; menu?: HTMLElement }) => void;
+};
+export declare const LsMenu: LapstyleComponent<LsMenuProps, LsMenuEventMap, LsMenuSlots>;
 
 export interface LsMenuGroupProps {
   open?: boolean;
@@ -283,12 +376,15 @@ export type LsMenuGroupEmits = {
 };
 
 export interface LsMenuGroupSlots {
-  default?: () => unknown;
-  label?: () => unknown;
-  icon?: () => unknown;
+  default?: () => VNodeChild;
+  label?: () => VNodeChild;
+  icon?: () => VNodeChild;
 }
 
-export declare const LsMenuGroup: DefineComponent<LsMenuGroupProps>;
+type LsMenuGroupEventMap = {
+  "update:open": (value: boolean) => void;
+};
+export declare const LsMenuGroup: LapstyleComponent<LsMenuGroupProps, LsMenuGroupEventMap, LsMenuGroupSlots>;
 
 export interface LsMenuItemProps {
   label?: string;
@@ -301,11 +397,14 @@ export interface LsMenuItemProps {
 export type LsMenuItemEmits = Record<string, never>;
 
 export interface LsMenuItemSlots {
-  default?: () => unknown;
-  icon?: () => unknown;
+  default?: () => VNodeChild;
+  icon?: () => VNodeChild;
 }
 
-export declare const LsMenuItem: DefineComponent<LsMenuItemProps>;
+type LsMenuItemEventMap = {
+
+};
+export declare const LsMenuItem: LapstyleComponent<LsMenuItemProps, LsMenuItemEventMap, LsMenuItemSlots>;
 
 export interface LsCardProps {
   note?: boolean;
@@ -317,10 +416,13 @@ export interface LsCardProps {
 export type LsCardEmits = Record<string, never>;
 
 export interface LsCardSlots {
-  default?: () => unknown;
+  default?: () => VNodeChild;
 }
 
-export declare const LsCard: DefineComponent<LsCardProps>;
+type LsCardEventMap = {
+
+};
+export declare const LsCard: LapstyleComponent<LsCardProps, LsCardEventMap, LsCardSlots>;
 
 export interface LsTableProps {
   dense?: boolean;
@@ -335,10 +437,13 @@ export interface LsTableProps {
 export type LsTableEmits = Record<string, never>;
 
 export interface LsTableSlots {
-  default?: () => unknown;
+  default?: () => VNodeChild;
 }
 
-export declare const LsTable: DefineComponent<LsTableProps>;
+type LsTableEventMap = {
+
+};
+export declare const LsTable: LapstyleComponent<LsTableProps, LsTableEventMap, LsTableSlots>;
 
 export interface LsSliderProps {
   modelValue?: number;
@@ -363,10 +468,15 @@ export type LsSliderEmits = {
 };
 
 export interface LsSliderSlots {
-  default?: () => unknown;
+
 }
 
-export declare const LsSlider: DefineComponent<LsSliderProps>;
+type LsSliderEventMap = {
+  "update:modelValue": (value: number) => void;
+  "input": (value: number) => void;
+  "change": (value: number) => void;
+};
+export declare const LsSlider: LapstyleComponent<LsSliderProps, LsSliderEventMap, LsSliderSlots>;
 
 export interface LsProgressProps {
   modelValue?: number | null;
@@ -380,10 +490,13 @@ export type LsProgressEmits = {
 };
 
 export interface LsProgressSlots {
-  default?: () => unknown;
+
 }
 
-export declare const LsProgress: DefineComponent<LsProgressProps>;
+type LsProgressEventMap = {
+  "update:modelValue": (value: number | null) => void;
+};
+export declare const LsProgress: LapstyleComponent<LsProgressProps, LsProgressEventMap, LsProgressSlots>;
 
 export interface LsExpandProps {
   modelValue?: boolean;
@@ -401,12 +514,16 @@ export type LsExpandEmits = {
 };
 
 export interface LsExpandSlots {
-  icon?: () => unknown;
-  head?: () => unknown;
-  default?: () => unknown;
+  icon?: () => VNodeChild;
+  head?: () => VNodeChild;
+  default?: () => VNodeChild;
 }
 
-export declare const LsExpand: DefineComponent<LsExpandProps>;
+type LsExpandEventMap = {
+  "update:modelValue": (value: boolean) => void;
+  "change": (value: boolean) => void;
+};
+export declare const LsExpand: LapstyleComponent<LsExpandProps, LsExpandEventMap, LsExpandSlots>;
 
 export interface LsSplitterProps {
   modelValue?: number | null;
@@ -421,10 +538,14 @@ export type LsSplitterEmits = {
 };
 
 export interface LsSplitterSlots {
-  default?: () => unknown;
+  default?: () => VNodeChild;
 }
 
-export declare const LsSplitter: DefineComponent<LsSplitterProps>;
+type LsSplitterEventMap = {
+  "update:modelValue": (value: number) => void;
+  "resize": (value: number) => void;
+};
+export declare const LsSplitter: LapstyleComponent<LsSplitterProps, LsSplitterEventMap, LsSplitterSlots>;
 
 export interface LsColorPickerProps {
   modelValue?: string;
@@ -437,10 +558,15 @@ export type LsColorPickerEmits = {
 };
 
 export interface LsColorPickerSlots {
-  default?: () => unknown;
+  default?: () => VNodeChild;
 }
 
-export declare const LsColorPicker: DefineComponent<LsColorPickerProps>;
+type LsColorPickerEventMap = {
+  "update:modelValue": (value: string) => void;
+  "input": (value: string) => void;
+  "change": (value: string) => void;
+};
+export declare const LsColorPicker: LapstyleComponent<LsColorPickerProps, LsColorPickerEventMap, LsColorPickerSlots>;
 
 export declare const components: {
   LsBtn: typeof LsBtn;
@@ -453,6 +579,7 @@ export declare const components: {
   LsTabs: typeof LsTabs;
   LsTab: typeof LsTab;
   LsDropdown: typeof LsDropdown;
+  LsDatePicker: typeof LsDatePicker;
   LsDialog: typeof LsDialog;
   LsTooltip: typeof LsTooltip;
   LsIcon: typeof LsIcon;
@@ -467,6 +594,35 @@ export declare const components: {
   LsSplitter: typeof LsSplitter;
   LsColorPicker: typeof LsColorPicker;
 };
+
+declare module "vue" {
+  export interface GlobalComponents {
+    LsBtn: typeof LsBtn;
+    LsBtnGroup: typeof LsBtnGroup;
+    LsBtnDropdown: typeof LsBtnDropdown;
+    LsInput: typeof LsInput;
+    LsField: typeof LsField;
+    LsRadio: typeof LsRadio;
+    LsCheckbox: typeof LsCheckbox;
+    LsTabs: typeof LsTabs;
+    LsTab: typeof LsTab;
+    LsDropdown: typeof LsDropdown;
+    LsDatePicker: typeof LsDatePicker;
+    LsDialog: typeof LsDialog;
+    LsTooltip: typeof LsTooltip;
+    LsIcon: typeof LsIcon;
+    LsMenu: typeof LsMenu;
+    LsMenuGroup: typeof LsMenuGroup;
+    LsMenuItem: typeof LsMenuItem;
+    LsCard: typeof LsCard;
+    LsTable: typeof LsTable;
+    LsSlider: typeof LsSlider;
+    LsProgress: typeof LsProgress;
+    LsExpand: typeof LsExpand;
+    LsSplitter: typeof LsSplitter;
+    LsColorPicker: typeof LsColorPicker;
+  }
+}
 
 export declare const LapstyleVue: {
   install(app: App): void;

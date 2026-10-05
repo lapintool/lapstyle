@@ -1,5 +1,5 @@
 <script setup>
-import { computed, onMounted, onUnmounted, ref, watch } from "vue";
+import { computed, onMounted, onBeforeUnmount, ref, watch } from "vue";
 import { destroy, enhance, setSliderValue } from "../lapstyle.js";
 import { classList } from "./classNames.js";
 
@@ -66,7 +66,7 @@ onMounted(() => {
   root.value.addEventListener("ls-slider:change", onChange);
 });
 
-onUnmounted(() => {
+onBeforeUnmount(() => {
   if (!(root.value instanceof HTMLElement)) return;
   root.value.removeEventListener("ls-slider:input", onInput);
   root.value.removeEventListener("ls-slider:change", onChange);

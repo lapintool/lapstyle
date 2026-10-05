@@ -1,5 +1,30 @@
 # Changelog
 
+## Unreleased
+
+## 0.5.4-alpha
+
+### Added
+
+- `LsDatePicker` with date, date-time and time modes, Chinese/English labels, adaptive popup placement, outside-click dismissal and compact calendar/time columns.
+- Editable dropdowns support free text and option selection through `v-model`, alongside split, borderless, no-arrow and optional filled-triangle styles.
+- Independent numeric-input spinner hover highlights, including slider-generated input fields.
+- Public npm package distribution under the `alpha` tag.
+
+### Changed
+
+- Dropdown triggers use chevrons by default. Tooltip transitions combine fading and directional movement, including automatic placement.
+- Generated component documentation and declarations describe the new modes and styles.
+
+### Fixed
+
+- Vue wrappers destroy enhanced DOM before unmounting; shared dialog, dropdown, menu, and window geometry listeners are released when the last instance is destroyed.
+- `LsDialog` action payloads expose the cancelable event and `preventDefault()`. Closing via `v-model` also emits `close`.
+- Dropdown triggers support disabled/enabled and simple/split layout changes. Disabled tabs cannot be selected or closed.
+- Dropdown, menu, and tab values retain their numeric type and distinguish numbers from numeric strings.
+- The named `Lapstyle` runtime export matches its declaration. Generated Vue declarations include typed events, slots, and global components.
+- Version checks work without an unrelated scaffold checkout; explicit scaffold integration remains available through `LAPSTYLE_SCAFFOLD_ROOT`.
+
 ## 0.5.3-alpha
 
 ### Added

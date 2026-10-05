@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, onUnmounted, ref, watch } from "vue";
+import { onMounted, onBeforeUnmount, ref, watch } from "vue";
 import { destroy, enhance, setDialogOpen } from "../lapstyle.js";
 
 const open = defineModel({ type: Boolean, default: false });
@@ -21,15 +21,21 @@ let syncing = false;
 
 function applyOpen(next) {
   if (!(root.value instanceof HTMLElement)) return;
+  const wasOpen = !root.value.hidden;
   syncing = true;
   setDialogOpen(root.value, next);
+  if (wasOpen && !next) emit("close");
   queueMicrotask(() => {
     syncing = false;
   });
 }
 
 function onAction(ev) {
-  emit("action", ev.detail);
+  emit("action", {
+    ...ev.detail,
+    event: ev,
+    preventDefault: () => ev.preventDefault(),
+  });
 }
 
 function onHiddenChange() {
@@ -52,7 +58,7 @@ onMounted(() => {
   root.value.addEventListener("ls-dialog:action", onAction);
 });
 
-onUnmounted(() => {
+onBeforeUnmount(() => {
   mo?.disconnect();
   mo = null;
   if (root.value instanceof HTMLElement) {

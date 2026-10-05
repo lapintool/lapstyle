@@ -85,6 +85,13 @@ export function registerWindowGeom(cb) {
   ensureWindowGeomListeners();
   return () => {
     windowGeomCallbacks.delete(cb);
+    if (windowGeomBound && windowGeomCallbacks.size === 0) {
+      window.removeEventListener("resize", onWindowGeomEvent);
+      window.removeEventListener("scroll", onWindowGeomEvent, true);
+      if (windowGeomRaf) cancelAnimationFrame(windowGeomRaf);
+      windowGeomRaf = 0;
+      windowGeomBound = false;
+    }
   };
 }
 
@@ -154,6 +161,17 @@ export function tipClipRect(host) {
 
 /** Shared by expand panel and menu rail aperture animations. */
 export const EXPAND_EASING = "cubic-bezier(0.165, 0.84, 0.44, 1)";
+
+/** Animate an aperture with the same timing for expand panels and anchored popovers. */
+export function animateExpandFrames(element, keyframes, durationMs = parseExpandDurationMs(element)) {
+  if (typeof element.animate !== "function") return null;
+  const reduced = typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+  return element.animate(keyframes, {
+    duration: reduced ? 0 : durationMs,
+    easing: EXPAND_EASING,
+    fill: "none",
+  });
+}
 
 export function parseExpandDurationMs(root) {
   const raw = (root.getAttribute("data-duration") || "").trim();

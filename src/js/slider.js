@@ -6,6 +6,7 @@ import {
   sameNumber,
   trackListener,
 } from "./util.js";
+import { destroyInput, initInput } from "./input.js";
 
 const sliderState = new WeakMap();
 
@@ -458,6 +459,8 @@ export function initSlider(root) {
     const input = dom.input;
     if (!input || boundInput === input) return;
     boundInput = input;
+    initInput(input);
+    cleanups.push(() => destroyInput(input));
     trackListener(cleanups, input, "input", onFieldInput);
     trackListener(cleanups, input, "blur", onFieldBlur);
     trackListener(cleanups, input, "keydown", onFieldKeyDown);

@@ -35,7 +35,7 @@ Import: `import { LsDialog } from "lapstyle/vue"` (or `app.use(LapstyleVue)`).
 | Name | Payload | Description |
 | --- | --- | --- |
 | `update:modelValue` | `boolean` | Open / close |
-| `action` | `{ button, dialog }` | Before close from #actions; preventDefault() to keep open |
+| `action` | `{ button, dialog, event, preventDefault }` | Before close from #actions; payload.preventDefault() or payload.event.preventDefault() keeps open |
 | `close` | — | After the dialog becomes hidden |
 
 ### Slots
@@ -48,7 +48,7 @@ Import: `import { LsDialog } from "lapstyle/vue"` (or `app.use(LapstyleVue)`).
 
 ### Pitfalls
 
-- Validate on OK: @action — if the OK button is invalid, call event.preventDefault().
+- Validate on OK: @action receives { button, dialog, event, preventDefault }; call payload.preventDefault() to keep the dialog open.
 
 ## CSS root
 

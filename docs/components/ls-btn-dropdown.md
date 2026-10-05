@@ -21,7 +21,10 @@ Import: `import { LsBtnDropdown } from "lapstyle/vue"` (or `app.use(LapstyleVue)
 | `variant` | `"" \| "fill" \| "push" \| "flat" \| "ghost" \| "outline"` | `""` | fill \| push \| flat \| ghost \| outline (empty = outline) |
 | `size` | `"" \| "sm" \| "md" \| "lg"` | `""` | sm \| md \| lg (empty = md) |
 | `dense` | `boolean` | `false` | Compact padding |
-| `label` | `string` | `"Dropdown"` | Trigger text when #label is empty |
+| `label` | `string` | `""` | Optional trigger text when #label is empty |
+| `arrow` | `"chevron" \| "triangle"` | `"chevron"` | Down chevron or filled triangle |
+| `borderless` | `boolean` | `false` | Remove the trigger's outer border |
+| `noArrow` | `boolean` | `false` | Hide the dropdown icon; can combine with borderless |
 | `disabled` | `boolean` | `false` | Disabled state |
 
 ### Events

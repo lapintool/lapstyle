@@ -12,7 +12,7 @@ import {
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const pkg = JSON.parse(fs.readFileSync(path.join(root, "package.json"), "utf8"));
-const installCmd = `pnpm add github:lapintool/lapstyle#v${pkg.version}`;
+const installCmd = `pnpm add lapstyle@${pkg.version}`;
 const docsDir = path.join(root, "docs");
 const componentsDir = path.join(docsDir, "components");
 
@@ -101,6 +101,8 @@ ${installCmd}
 \`\`\`
 
 Peer: \`vue\` \`^3.4\` (required only when using \`lapstyle/vue\`).
+
+GitHub alternative: \`pnpm add github:lapintool/lapstyle#v${pkg.version}\`.
 
 ## Setup
 
@@ -263,6 +265,7 @@ function llmsTxt(indexLines) {
 > Desktop Vue UI kit. Use Ls* / ls-* components (v-model, events, slots). CSS tokens are the look layer.
 
 Install: \`${installCmd}\`
+GitHub alternative: \`pnpm add github:lapintool/lapstyle#v${pkg.version}\`.
 Setup: \`app.use(LapstyleVue)\` and \`import "lapstyle/index.css"\`.
 Theme: \`<html data-theme="dark|light|mint|sky|pink|brown|amber">\`.
 Scale: \`<html data-ls-scale="sm|md|lg|xl">\` (root font 14/16/18/20px; omit = md).
@@ -286,8 +289,16 @@ function dtsType(type) {
 
 function dtsPayload(payload) {
   const text = payload.trim();
-  if (text.startsWith("{")) return "Record<string, unknown>";
-  if (text === "MouseEvent") return "MouseEvent";
+  const objects = {
+    "{ value, label, item }": "{ value: string | number; label: string; item: HTMLElement; menu?: HTMLElement }",
+    "{ value, tab, index }": "{ value: string | number; tab: HTMLElement; index: number }",
+    "{ value, tab, index, event }": "{ value: string | number; tab: HTMLElement; index: number; event: CustomEvent }",
+    "{ button, dialog, event, preventDefault }": "{ button: HTMLElement; dialog: HTMLElement; event: CustomEvent; preventDefault: () => void }",
+  };
+  if (text.startsWith("{")) {
+    if (!objects[text]) throw new Error(`Missing event payload type: ${text}`);
+    return objects[text];
+  }
   return text;
 }
 
@@ -314,12 +325,15 @@ function renderIndexDts() {
 ${spec.events.map((e) => `  ${emitSig(e)};`).join("\n")}
 };`
       : `export type ${emitsName} = Record<string, never>;`;
+    const emitOptions = spec.events.map((event) =>
+      `  ${JSON.stringify(event.name)}: (${event.payload ? `value: ${dtsPayload(event.payload)}` : ""}) => void;`,
+    ).join("\n");
 
     const slotLines = spec.slots
       .map((s) => {
         const key = s.name.includes("/") ? `"${s.name.split("/")[0].trim()}"` : s.name === "default" ? "default" : s.name;
         const ident = /^[A-Za-z_]\w*$/.test(key) ? key : JSON.stringify(key);
-        return `  ${ident}?: () => unknown;`;
+        return `  ${ident}?: () => VNodeChild;`;
       })
       .join("\n");
     return `export interface ${propsName} {
@@ -329,19 +343,31 @@ ${propLines || "  [key: string]: unknown;"}
 ${emitsType}
 
 export interface ${slotsName} {
-${slotLines || "  default?: () => unknown;"}
+${slotLines}
 }
 
-export declare const ${name}: DefineComponent<${propsName}>;
+type ${name}EventMap = {\n${emitOptions}\n};
+export declare const ${name}: LapstyleComponent<${propsName}, ${name}EventMap, ${slotsName}>;
 `;
   });
 
-  return `import type { App, Component, DefineComponent } from "vue";
+  return `import type { App, Component, ComponentOptionsMixin, DefineComponent, EmitsOptions, EmitsToProps, PublicProps, SlotsType, VNodeChild } from "vue";
+
+type LapstyleComponent<Props, Events extends EmitsOptions, Slots extends Record<string, any>> = DefineComponent<
+  Props, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin,
+  Events, string, PublicProps, Props & EmitsToProps<Events>, {}, SlotsType<Slots>
+>;
 
 ${blocks.join("\n")}
 export declare const components: {
   ${COMPONENT_ORDER.map((n) => `${n}: typeof ${n};`).join("\n  ")}
 };
+
+declare module "vue" {
+  export interface GlobalComponents {
+    ${COMPONENT_ORDER.map((n) => `${n}: typeof ${n};`).join("\n    ")}
+  }
+}
 
 export declare const LapstyleVue: {
   install(app: App): void;

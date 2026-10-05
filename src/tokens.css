@@ -81,6 +81,8 @@
   /* Tooltip / icon defaults (overridable) */
   --ls-tooltip-delay: 0.28s;
   --ls-tooltip-offset: 0.5rem;
+  --ls-tooltip-motion-distance: 15px;
+  --ls-tooltip-motion-duration: 0.3s;
   --ls-icon-grad: 0;
   --ls-icon-opsz: 24;
   --ls-icon-wght: 400;

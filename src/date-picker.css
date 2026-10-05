@@ -1,0 +1,221 @@
+.ls-date-picker,
+.ls-date-picker__panel {
+  --ls-date-picker-font: var(--ls-size-md-font);
+  --ls-date-picker-control: var(--ls-size-md-control);
+  --ls-date-picker-calendar-width: 16rem;
+  --ls-date-picker-time-column-width: 2.5rem;
+  color: var(--ls-text);
+  font-size: var(--ls-date-picker-font);
+}
+
+.ls-date-picker {
+  position: relative;
+  display: inline-block;
+  min-width: 0;
+  width: min(100%, 20rem);
+}
+
+.ls-date-picker.sm {
+  --ls-date-picker-font: var(--ls-size-sm-font);
+  --ls-date-picker-control: var(--ls-size-sm-control);
+}
+
+.ls-date-picker.lg {
+  --ls-date-picker-font: var(--ls-size-lg-font);
+  --ls-date-picker-control: var(--ls-size-lg-control);
+}
+
+.ls-date-picker__control {
+  position: relative;
+  width: 100%;
+}
+
+.ls-date-picker__input {
+  width: 100%;
+  padding-right: calc(var(--ls-date-picker-control) + 0.5rem);
+  font-variant-numeric: tabular-nums;
+}
+
+.ls-date-picker__trigger.ls-btn {
+  position: absolute;
+  z-index: 1;
+  inset: 0 0 0 auto;
+  width: var(--ls-date-picker-control);
+  height: 100%;
+  min-height: 0;
+  padding: 0;
+  border-radius: 0 var(--ls-input-radius, 0.286em) var(--ls-input-radius, 0.286em) 0;
+}
+
+.ls-date-picker__trigger svg {
+  display: block;
+  width: 1.1em;
+  height: 1.1em;
+}
+
+.ls-date-picker__panel {
+  position: fixed;
+  z-index: calc(var(--ls-z-menu, 40) + 1);
+  box-sizing: border-box;
+  width: calc(var(--ls-date-picker-calendar-width) + 1.5rem + 2px);
+  max-width: calc(100vw - 16px);
+  overflow: auto;
+  overscroll-behavior: contain;
+  padding: 0.75rem;
+  border: 1px solid var(--ls-border);
+  border-radius: var(--ls-dialog-radius);
+  background: var(--ls-bg-elevated);
+  box-shadow: 0 0.4rem 1rem color-mix(in srgb, #000 22%, transparent);
+}
+
+.ls-date-picker__panel[data-mode="datetime"] {
+  width: calc(var(--ls-date-picker-calendar-width) + 2 * var(--ls-date-picker-time-column-width) + 2.75rem + 3px);
+}
+
+.ls-date-picker__panel[data-mode="time"] {
+  width: calc(2 * var(--ls-date-picker-time-column-width) + 4rem);
+}
+
+.ls-date-picker__body {
+  display: grid;
+  grid-template-columns: minmax(0, var(--ls-date-picker-calendar-width));
+  min-width: 0;
+}
+
+.ls-date-picker__panel[data-mode="datetime"] .ls-date-picker__body {
+  grid-template-columns: minmax(0, var(--ls-date-picker-calendar-width)) auto;
+  gap: 0.5rem;
+}
+
+.ls-date-picker__calendar {
+  min-width: 0;
+}
+
+.ls-date-picker__month {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.4rem;
+}
+
+.ls-date-picker__month strong {
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.ls-date-picker__month-nav {
+  display: flex;
+  align-items: center;
+  gap: 0.1rem;
+}
+
+.ls-date-picker__month-nav svg {
+  display: block;
+  width: 1rem;
+  height: 1rem;
+}
+
+.ls-date-picker__weekdays,
+.ls-date-picker__days {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 0.12rem;
+  align-items: center;
+  text-align: center;
+}
+
+.ls-date-picker__weekdays {
+  margin-bottom: 0.2rem;
+  color: var(--ls-text-dim);
+  font-size: 0.82em;
+  line-height: 1.6rem;
+}
+
+.ls-date-picker__day.ls-btn {
+  width: 100%;
+  min-width: 0;
+  padding-inline: 0;
+  border-radius: 0.3rem;
+  font-weight: 400;
+  text-transform: none;
+  font-variant-numeric: tabular-nums;
+}
+
+.ls-date-picker__time {
+  display: flex;
+  align-self: stretch;
+  align-items: stretch;
+  justify-content: center;
+  gap: 0.25rem;
+  height: 14rem;
+  min-height: 0;
+}
+
+.ls-date-picker__panel[data-mode="datetime"] .ls-date-picker__time {
+  contain: size;
+  height: auto;
+  padding-left: 0.5rem;
+  border-left: 1px solid var(--ls-border);
+}
+
+.ls-date-picker__time-col {
+  box-sizing: border-box;
+  display: flex;
+  flex: 0 0 var(--ls-date-picker-time-column-width);
+  flex-direction: column;
+  align-items: stretch;
+  width: var(--ls-date-picker-time-column-width);
+  min-width: var(--ls-date-picker-time-column-width);
+  height: 100%;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+}
+
+.ls-date-picker__time-option.ls-btn {
+  flex: 0 0 auto;
+  width: 100%;
+  min-width: 0;
+  padding-inline: 0;
+  border-radius: 0.3rem;
+  font-weight: 400;
+  font-variant-numeric: tabular-nums;
+}
+
+.ls-date-picker__footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-top: 0.6rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--ls-border);
+}
+
+.ls-date-picker__shortcuts,
+.ls-date-picker__actions {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.ls-date-picker__panel[data-mode="time"] .ls-date-picker__body {
+  grid-template-columns: auto;
+}
+
+.ls-date-picker__panel[data-mode="time"] .ls-date-picker__footer {
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.ls-date-picker__panel[data-mode="time"] .ls-date-picker__shortcuts,
+.ls-date-picker__panel[data-mode="time"] .ls-date-picker__actions {
+  justify-content: space-between;
+}
+
+.ls-date-picker.is-disabled {
+  opacity: 0.55;
+}

@@ -4,6 +4,7 @@ const dropdownState = new WeakMap();
 
 let docBound = false;
 let docCleanups = [];
+let activeDropdowns = 0;
 
 function isDropdownHost(el) {
   return (
@@ -20,22 +21,23 @@ function dropdownMenu(host) {
 function dropdownTriggers(host) {
   if (host.classList.contains("ls-dropdown")) {
     return [...host.querySelectorAll(":scope > .trigger")].filter(
-      (el) => el instanceof HTMLElement && !el.disabled,
+      (el) => el instanceof HTMLElement,
     );
   }
   if (host.classList.contains("split")) {
     return [...host.querySelectorAll(":scope > .arrow-btn")].filter(
-      (el) => el instanceof HTMLElement && !el.disabled,
+      (el) => el instanceof HTMLElement,
     );
   }
   return [...host.querySelectorAll(":scope > button")].filter(
-    (el) => el instanceof HTMLElement && !el.disabled && !el.closest(".ls-menu"),
+    (el) => el instanceof HTMLElement && !el.closest(".ls-menu"),
   );
 }
 
 function setTriggerExpanded(host, open) {
   for (const btn of dropdownTriggers(host)) {
     btn.setAttribute("aria-expanded", open ? "true" : "false");
+    btn.querySelector("input")?.setAttribute("aria-expanded", open ? "true" : "false");
   }
 }
 
@@ -43,6 +45,11 @@ function syncSelectLabel(host, label) {
   if (!host.classList.contains("ls-dropdown")) return;
   const trigger = host.querySelector(":scope > .trigger");
   if (!(trigger instanceof HTMLElement)) return;
+  const editor = trigger.querySelector("input");
+  if (editor) {
+    editor.value = label;
+    return;
+  }
   const text = trigger.querySelector(":scope > span:not(.caret)");
   if (text) text.textContent = label;
   else {
@@ -109,10 +116,11 @@ function isLeafMenuItem(item) {
 
 export function initDropdown(host) {
   if (!isDropdownHost(host) || dropdownState.has(host)) return;
-  ensureDocBinding();
 
   const menu = dropdownMenu(host);
   if (!menu) return;
+  ensureDocBinding();
+  activeDropdowns++;
 
   if (!menu.hasAttribute("hidden") && menu.hidden !== true) {
     // keep authored open state
@@ -123,8 +131,14 @@ export function initDropdown(host) {
   }
 
   const onTriggerClick = (event) => {
-    const btn = event.currentTarget;
-    if (!(btn instanceof HTMLElement)) return;
+    const target = event.target;
+    if (!(target instanceof Element)) return;
+    const btn = dropdownTriggers(host).find((trigger) => trigger.contains(target));
+    if (!btn || btn.disabled || btn.getAttribute("aria-disabled") === "true") return;
+    if (target.matches("input.editor")) {
+      setDropdownOpen(host, true);
+      return;
+    }
     event.preventDefault();
     event.stopPropagation();
     const willOpen = menu.hidden;
@@ -147,15 +161,33 @@ export function initDropdown(host) {
   };
 
   const cleanups = [];
-  for (const btn of dropdownTriggers(host)) {
-    trackListener(cleanups, btn, "click", onTriggerClick);
-  }
+  const onEditorKeydown = (event) => {
+    if (event.isComposing) return;
+    if (!event.target?.matches?.(".trigger > input.editor") || event.target.disabled) return;
+    if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+      event.preventDefault();
+      setDropdownOpen(host, true);
+      const items = [...menu.querySelectorAll(":scope > .item:not(:disabled):not([aria-disabled='true'])")];
+      (event.key === "ArrowUp" ? items.at(-1) : items[0])?.focus();
+    } else if (event.key === "Enter") {
+      event.preventDefault();
+      setDropdownOpen(host, false);
+    }
+  };
+  // Delegate so disabled/enabled and split/simple changes do not require rebinding.
+  trackListener(cleanups, host, "click", onTriggerClick);
+  trackListener(cleanups, host, "keydown", onEditorKeydown);
   trackListener(cleanups, menu, "ls-menu:select", onMenuSelect);
 
   dropdownState.set(host, {
     destroy() {
       cleanups.forEach((remove) => remove());
       dropdownState.delete(host);
+      if (--activeDropdowns === 0) {
+        docCleanups.forEach((remove) => remove());
+        docCleanups = [];
+        docBound = false;
+      }
     },
   });
 }

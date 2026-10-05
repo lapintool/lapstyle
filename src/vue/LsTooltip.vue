@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, onUnmounted, ref } from "vue";
+import { computed, onBeforeUnmount, onMounted, ref, watch } from "vue";
 import { destroy, enhance } from "../lapstyle.js";
 
 const props = defineProps({
@@ -8,12 +8,22 @@ const props = defineProps({
 });
 
 const root = ref(null);
+const fixedPlacement = computed(() =>
+  ["top", "bottom", "left", "right"].includes(props.placement) ? props.placement : "",
+);
+
+watch(fixedPlacement, () => {
+  if (root.value) {
+    destroy(root.value);
+    enhance(root.value);
+  }
+}, { flush: "post" });
 
 onMounted(() => {
   if (root.value) enhance(root.value);
 });
 
-onUnmounted(() => {
+onBeforeUnmount(() => {
   if (root.value) destroy(root.value);
 });
 </script>
@@ -22,7 +32,7 @@ onUnmounted(() => {
   <span
     ref="root"
     class="ls-tooltip"
-    :data-placement="placement || undefined"
+    :class="fixedPlacement"
   >
     <slot>{{ text }}</slot>
   </span>

@@ -3,6 +3,7 @@ import LsBtnDropdown from "./LsBtnDropdown.vue";
 import LsCard from "./LsCard.vue";
 import LsCheckbox from "./LsCheckbox.vue";
 import LsColorPicker from "./LsColorPicker.vue";
+import LsDatePicker from "./LsDatePicker.vue";
 import LsDialog from "./LsDialog.vue";
 import LsDropdown from "./LsDropdown.vue";
 import LsExpand from "./LsExpand.vue";
@@ -28,6 +29,7 @@ export {
   LsCard,
   LsCheckbox,
   LsColorPicker,
+  LsDatePicker,
   LsDialog,
   LsDropdown,
   LsExpand,
@@ -55,6 +57,7 @@ export const components = {
   LsCard,
   LsCheckbox,
   LsColorPicker,
+  LsDatePicker,
   LsDialog,
   LsDropdown,
   LsExpand,

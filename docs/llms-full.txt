@@ -9,10 +9,12 @@ Do **not** start from class HTML + `enhance()` unless the app has no Vue.
 ## Install
 
 ```bash
-pnpm add github:lapintool/lapstyle#v0.5.2-alpha
+pnpm add lapstyle@0.5.4-alpha
 ```
 
 Peer: `vue` `^3.4` (required only when using `lapstyle/vue`).
+
+GitHub alternative: `pnpm add github:lapintool/lapstyle#v0.5.4-alpha`.
 
 ## Setup
 
@@ -231,7 +233,10 @@ Import: `import { LsBtnDropdown } from "lapstyle/vue"` (or `app.use(LapstyleVue)
 | `variant` | `"" \| "fill" \| "push" \| "flat" \| "ghost" \| "outline"` | `""` | fill \| push \| flat \| ghost \| outline (empty = outline) |
 | `size` | `"" \| "sm" \| "md" \| "lg"` | `""` | sm \| md \| lg (empty = md) |
 | `dense` | `boolean` | `false` | Compact padding |
-| `label` | `string` | `"Dropdown"` | Trigger text when #label is empty |
+| `label` | `string` | `""` | Optional trigger text when #label is empty |
+| `arrow` | `"chevron" \| "triangle"` | `"chevron"` | Down chevron or filled triangle |
+| `borderless` | `boolean` | `false` | Remove the trigger's outer border |
+| `noArrow` | `boolean` | `false` | Hide the dropdown icon; can combine with borderless |
 | `disabled` | `boolean` | `false` | Disabled state |
 
 ### Events
@@ -536,8 +541,13 @@ Import: `import { LsDropdown } from "lapstyle/vue"` (or `app.use(LapstyleVue)`).
 | Name | Type | Default | Description |
 | --- | --- | --- | --- |
 | `modelValue` | `string \| number \| null` | — | Selected value (v-model) |
-| `options` | `Array<string \| { value?: unknown, label?: unknown }> \| null` | `null` | Data-driven items; omit when using the default slot |
+| `options` | `Array<string \| number \| { value?: string \| number, label?: string \| number }> \| null` | `null` | Data-driven items; omit when using the default slot |
 | `placeholder` | `string` | `"Select"` | Trigger text when empty |
+| `editable` | `boolean` | `false` | Use an input as the trigger: select an option or enter any text. Typed values are strings; selected values keep their original type. |
+| `arrow` | `"chevron" \| "triangle"` | `"chevron"` | Dropdown icon: chevron or filled triangle |
+| `borderless` | `boolean` | `false` | Transparent trigger without a border |
+| `noArrow` | `boolean` | `false` | Hide the dropdown icon; can combine with borderless |
+| `split` | `boolean` | `false` | Separate the selection text and arrow with a full-height divider |
 | `disabled` | `boolean` | `false` | Disabled |
 | `size` | `"" \| "sm" \| "md" \| "lg"` | `""` | sm \| md \| lg (empty = md) |
 | `dense` | `boolean` | `false` | Compact |
@@ -548,7 +558,7 @@ Import: `import { LsDropdown } from "lapstyle/vue"` (or `app.use(LapstyleVue)`).
 
 | Name | Payload | Description |
 | --- | --- | --- |
-| `update:modelValue` | `string \| number \| null` | Selection changed |
+| `update:modelValue` | `string \| number \| null` | Selection or editable text changed |
 | `select` | `{ value, label, item }` | Leaf item selected |
 
 ### Slots
@@ -560,12 +570,64 @@ Import: `import { LsDropdown } from "lapstyle/vue"` (or `app.use(LapstyleVue)`).
 ### Pitfalls
 
 - Custom menu: omit options and put <button type="button" class="item" data-value="…"> in the default slot.
+- Editable: <ls-dropdown v-model="value" :options="options" editable />. ArrowDown/ArrowUp open the menu; Enter commits text and closes it; Escape closes it. Combine with split, borderless or no-arrow.
 
 ## CSS root
 
 `.ls-dropdown` — look layer. Prefer the Vue tag in apps.
 
 If this page is not enough, read `src/vue/LsDropdown.vue` next. Do not copy class-only demo HTML unless you are on the framework-free path (`docs/enhance.md`).
+
+---
+
+# LsDatePicker (`ls-date-picker`)
+
+Date and time picker with date, date-time, and time-only modes.
+
+Import: `import { LsDatePicker } from "lapstyle/vue"` (or `app.use(LapstyleVue)`).
+
+## Minimal usage
+
+```vue
+<ls-date-picker v-model="date" mode="date" />
+<ls-date-picker v-model="dateTime" mode="datetime" />
+<ls-date-picker v-model="time" mode="time" />
+```
+
+### Props
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `modelValue` | `string` | `""` | v-model; YYYY-MM-DD, YYYY-MM-DD HH:mm, or HH:mm by mode |
+| `mode` | `"date" \| "datetime" \| "time"` | `"date"` | Date only, date and time, or time only |
+| `locale` | `string` | `"zh-CN"` | Calendar locale and Chinese/English control labels; bind it to the application's active language |
+| `size` | `"" \| "sm" \| "md" \| "lg"` | `""` | sm \| md \| lg (empty = md) |
+| `dense` | `boolean` | `false` | Compact input |
+| `disabled` | `boolean` | `false` | Disabled |
+| `readonly` | `boolean` | `false` | Prevent typing; picker remains available |
+| `placeholder` | `string` | `""` | Override the mode-specific placeholder |
+| `clearable` | `boolean` | `true` | Show the Clear shortcut |
+
+### Events
+
+| Name | Payload | Description |
+| --- | --- | --- |
+| `update:modelValue` | `string` | v-model value |
+| `change` | `string` | Committed or cleared value |
+| `open` | — | Picker panel opened |
+| `close` | — | Picker panel closed |
+
+### Pitfalls
+
+- Date mode emits YYYY-MM-DD; datetime mode emits YYYY-MM-DD HH:mm; time mode emits HH:mm. Values use local wall time and do not include a timezone.
+- Selection is a draft until OK; Cancel and outside click discard the draft.
+- The body-mounted popover flips above or below and aligns to the available viewport space. Opening and closing use a short opacity fade; --ls-date-picker-duration defaults to 160ms.
+
+## CSS root
+
+`.ls-date-picker` — look layer. Prefer the Vue tag in apps.
+
+If this page is not enough, read `src/vue/LsDatePicker.vue` next. Do not copy class-only demo HTML unless you are on the framework-free path (`docs/enhance.md`).
 
 ---
 
@@ -606,7 +668,7 @@ Import: `import { LsDialog } from "lapstyle/vue"` (or `app.use(LapstyleVue)`).
 | Name | Payload | Description |
 | --- | --- | --- |
 | `update:modelValue` | `boolean` | Open / close |
-| `action` | `{ button, dialog }` | Before close from #actions; preventDefault() to keep open |
+| `action` | `{ button, dialog, event, preventDefault }` | Before close from #actions; payload.preventDefault() or payload.event.preventDefault() keeps open |
 | `close` | — | After the dialog becomes hidden |
 
 ### Slots
@@ -619,7 +681,7 @@ Import: `import { LsDialog } from "lapstyle/vue"` (or `app.use(LapstyleVue)`).
 
 ### Pitfalls
 
-- Validate on OK: @action — if the OK button is invalid, call event.preventDefault().
+- Validate on OK: @action receives { button, dialog, event, preventDefault }; call payload.preventDefault() to keep the dialog open.
 
 ## CSS root
 

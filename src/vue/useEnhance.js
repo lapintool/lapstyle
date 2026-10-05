@@ -1,4 +1,4 @@
-import { onMounted, onUnmounted, ref, shallowRef } from "vue";
+import { onMounted, onBeforeUnmount, ref, shallowRef } from "vue";
 import { destroy, enhance } from "../lapstyle.js";
 
 /**
@@ -16,7 +16,7 @@ export function useEnhance() {
     bound.value = el;
   });
 
-  onUnmounted(() => {
+  onBeforeUnmount(() => {
     const el = bound.value;
     if (el instanceof HTMLElement) destroy(el);
     bound.value = null;

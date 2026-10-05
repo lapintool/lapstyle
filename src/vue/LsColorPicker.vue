@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, onUnmounted, ref, watch } from "vue";
+import { onMounted, onBeforeUnmount, ref, watch } from "vue";
 import { destroy, enhance, setPickerValue } from "../lapstyle.js";
 
 const model = defineModel({ type: String, default: "#248df4" });
@@ -38,7 +38,7 @@ onMounted(() => {
   root.value.addEventListener("ls-color-picker:change", onChange);
 });
 
-onUnmounted(() => {
+onBeforeUnmount(() => {
   if (!(root.value instanceof HTMLElement)) return;
   root.value.removeEventListener("ls-color-picker:input", onInput);
   root.value.removeEventListener("ls-color-picker:change", onChange);

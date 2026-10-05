@@ -10,6 +10,12 @@ const TIP_SHOWN_TRANSFORM = {
   left: "translate(0, -50%)",
   right: "translate(0, -50%)",
 };
+const TIP_HIDDEN_TRANSFORM = {
+  top: "translateX(-50%) translateY(var(--ls-tooltip-motion-distance))",
+  bottom: "translateX(-50%) translateY(calc(-1 * var(--ls-tooltip-motion-distance)))",
+  left: "translate(var(--ls-tooltip-motion-distance), -50%)",
+  right: "translate(calc(-1 * var(--ls-tooltip-motion-distance)), -50%)",
+};
 
 function tipHasFixedSide(tip) {
   return TIP_SIDES.some((side) => tip.classList.contains(side));
@@ -38,9 +44,11 @@ function tipPrepareMeasure(tip, side) {
 function tipClearMeasure(tip) {
   tip.style.removeProperty("opacity");
   tip.style.removeProperty("visibility");
-  tip.style.removeProperty("transition");
   tip.style.removeProperty("pointer-events");
   tip.style.removeProperty("transform");
+  // Restore transitions last. Otherwise clearing the inline measurement
+  // transform starts an unwanted transition back to the hidden offset.
+  tip.style.removeProperty("transition");
 }
 
 function placeTooltip(tip, host) {
@@ -61,6 +69,11 @@ function placeTooltip(tip, host) {
     if (overflow === 0) break;
   }
   tip.setAttribute("data-ls-placement", chosen);
+  // Restore the hidden transform while transitions are still disabled. If we
+  // clear the temporary shown transform first, the browser starts a hidden
+  // transition back to the offset; enabling the shown state then cancels it.
+  tip.style.setProperty("transform", TIP_HIDDEN_TRANSFORM[chosen]);
+  void tip.offsetWidth;
   tipClearMeasure(tip);
 }
 
@@ -69,23 +82,45 @@ export function initTooltip(tip) {
   const host = tip.parentElement;
   if (!(host instanceof HTMLElement)) return;
 
-  if (tipHasFixedSide(tip)) {
-    tipState.set(tip, {
-      destroy() {
-        tipState.delete(tip);
-      },
+  let placementFrame;
+  const triggerIsActive = () => host.matches(":hover, :focus-visible");
+  const scheduleShow = () => {
+    if (!triggerIsActive()) return;
+    if (placementFrame !== undefined) return;
+    placementFrame = requestAnimationFrame(() => {
+      placementFrame = undefined;
+      if (!triggerIsActive()) return;
+      placeTooltip(tip, host);
+      // Measurement temporarily changes visibility and transform. Flush the
+      // restored hidden state before enabling the shown class so both opacity
+      // and the positional transition get a real starting frame.
+      void tip.offsetWidth;
+      tip.classList.add("ls-tooltip--shown");
     });
-    return;
-  }
-
-  const onEnter = () => placeTooltip(tip, host);
+  };
+  const syncVisibility = () => {
+    if (triggerIsActive()) {
+      scheduleShow();
+      return;
+    }
+    if (placementFrame !== undefined) {
+      cancelAnimationFrame(placementFrame);
+      placementFrame = undefined;
+    }
+    tip.classList.remove("ls-tooltip--shown");
+  };
   const cleanups = [];
-  trackListener(cleanups, host, "pointerenter", onEnter);
-  trackListener(cleanups, host, "focusin", onEnter);
+  trackListener(cleanups, host, "pointerenter", scheduleShow);
+  trackListener(cleanups, host, "pointerleave", syncVisibility);
+  trackListener(cleanups, host, "focusin", scheduleShow);
+  trackListener(cleanups, host, "focusout", syncVisibility);
+  scheduleShow();
 
   tipState.set(tip, {
     destroy() {
+      if (placementFrame !== undefined) cancelAnimationFrame(placementFrame);
       cleanups.forEach((remove) => remove());
+      tip.classList.remove("ls-tooltip--shown");
       tip.removeAttribute("data-ls-placement");
       tipClearMeasure(tip);
       tipState.delete(tip);

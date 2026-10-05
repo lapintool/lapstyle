@@ -1,6 +1,6 @@
 {
   "name": "lapstyle",
-  "version": "0.5.3-alpha",
+  "version": "0.5.4-alpha",
   "description": "A desktop Vue UI kit with Lapstyle look: Ls* components (v-model / events / slots), CSS tokens, and optional enhance() for framework-free pages.",
   "license": "MIT",
   "type": "module",
@@ -67,6 +67,8 @@
   },
   "homepage": "https://github.com/lapintool/lapstyle#readme",
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "registry": "https://registry.npmjs.org/",
+    "tag": "alpha"
   }
 }

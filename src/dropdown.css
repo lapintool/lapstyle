@@ -77,14 +77,131 @@
 
 .ls-dropdown .caret {
   flex: 0 0 auto;
-  width: 0;
-  height: 0;
-  border-left: 4px solid transparent;
-  border-right: 4px solid transparent;
-  border-top: 5px solid var(--ls-text-dim);
-  transition: transform var(--ls-duration) var(--ls-ease-out);
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1em;
+  height: 1em;
+  color: var(--ls-text-dim);
 }
 
-.ls-dropdown .trigger[aria-expanded="true"] .caret {
+.ls-dropdown .caret::before {
+  content: "";
+  width: 0.45em;
+  height: 0.45em;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: translateY(-0.12em) rotate(45deg);
+  transition: transform var(--ls-hover);
+}
+
+.ls-dropdown .caret.triangle::before {
+  width: 0;
+  height: 0;
+  border: 0;
+  border-left: 0.3em solid transparent;
+  border-right: 0.3em solid transparent;
+  border-top: 0.35em solid currentColor;
+  transform: none;
+}
+
+.ls-dropdown .trigger[aria-expanded="true"] .caret::before {
+  transform: translateY(0.12em) rotate(225deg);
+}
+
+.ls-dropdown .trigger[aria-expanded="true"] .caret.triangle::before {
   transform: rotate(180deg);
+}
+
+.ls-dropdown.split .trigger {
+  padding-inline-end: 0;
+  align-items: stretch;
+}
+
+.ls-dropdown.split .trigger > :first-child {
+  align-self: center;
+}
+
+.ls-dropdown.split .caret {
+  width: var(--ls-control-height);
+  height: auto;
+  min-height: calc(var(--ls-control-height) - 2px);
+  border-inline-start: 1px solid var(--ls-border);
+}
+
+.ls-dropdown.split.dense .caret {
+  width: calc(var(--ls-control-height) - var(--ls-dense-shrink));
+  min-height: calc(var(--ls-control-height) - var(--ls-dense-shrink) - 2px);
+}
+
+.ls-dropdown.borderless .trigger {
+  border-color: transparent;
+  background: transparent;
+}
+
+.ls-dropdown.borderless .trigger:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--ls-text) 8%, transparent);
+}
+
+.ls-dropdown.borderless .trigger:focus-visible {
+  outline: 2px solid var(--ls-input-focus);
+  outline-offset: 2px;
+}
+
+.ls-dropdown.no-arrow .caret {
+  display: none;
+}
+
+.ls-dropdown.no-arrow .trigger {
+  justify-content: center;
+  gap: 0;
+  padding-inline: 0.75em;
+}
+
+.ls-dropdown.no-arrow.dense .trigger {
+  padding-inline: 0.55em;
+}
+
+.ls-dropdown.editable .trigger {
+  cursor: text;
+}
+
+.ls-dropdown.editable .editor {
+  box-sizing: border-box;
+  flex: 1 1 0;
+  width: 8rem;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  line-height: inherit;
+}
+
+.ls-dropdown.editable .editor::placeholder {
+  color: var(--ls-text-dim);
+}
+
+.ls-dropdown.editable .trigger:focus-within {
+  border-color: var(--ls-accent-hover);
+}
+
+.ls-dropdown.editable button.caret {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  font: inherit;
+  cursor: pointer;
+}
+
+.ls-dropdown.editable.split button.caret {
+  border-inline-start: 1px solid var(--ls-border);
+}
+
+.ls-dropdown.editable.is-disabled .trigger {
+  opacity: 0.45;
+  pointer-events: none;
 }

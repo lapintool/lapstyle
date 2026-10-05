@@ -5,6 +5,7 @@ const dialogState = new WeakMap();
 
 let openBound = false;
 let openCleanups = [];
+let activeDialogs = 0;
 
 export function initDialogDrag(panel) {
   if (dragState.has(panel)) return;
@@ -189,7 +190,6 @@ function ensureDialogOpenBinding() {
 
 export function initDialog(dialog) {
   if (!(dialog instanceof HTMLElement) || !dialog.classList.contains("ls-dialog")) return;
-  ensureDialogOpenBinding();
 
   const existing = dialogState.get(dialog);
   if (existing?.bound) {
@@ -198,6 +198,8 @@ export function initDialog(dialog) {
     });
     return;
   }
+  ensureDialogOpenBinding();
+  activeDialogs++;
 
   dialog.querySelectorAll(":scope > .panel.draggable").forEach((panel) => {
     if (panel instanceof HTMLElement) initDialogDrag(panel);
@@ -210,6 +212,11 @@ export function initDialog(dialog) {
         if (panel instanceof HTMLElement) destroyDialogDrag(panel);
       });
       dialogState.delete(dialog);
+      if (--activeDialogs === 0) {
+        openCleanups.forEach((remove) => remove());
+        openCleanups = [];
+        openBound = false;
+      }
     },
   });
 }

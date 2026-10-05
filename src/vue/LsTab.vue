@@ -10,7 +10,7 @@ const props = defineProps({
 
 const tabs = inject("lsTabs", null);
 
-const active = computed(() => String(tabs?.model?.value ?? "") === String(props.value));
+const active = computed(() => tabs?.model?.value === props.value);
 const tag = computed(() => (props.closable ? "div" : "button"));
 </script>
 
@@ -22,6 +22,7 @@ const tag = computed(() => (props.closable ? "div" : "button"));
     role="tab"
     :aria-selected="active ? 'true' : 'false'"
     :data-tab="String(value)"
+    :data-ls-value-type="typeof value"
     :type="tag === 'button' ? 'button' : undefined"
     :disabled="tag === 'button' ? disabled : undefined"
     :aria-disabled="tag !== 'button' && disabled ? 'true' : undefined"
@@ -32,6 +33,7 @@ const tag = computed(() => (props.closable ? "div" : "button"));
       v-if="closable"
       type="button"
       class="close"
+      :disabled="disabled"
       aria-label="Close tab"
     >
       <span class="ls-icon sm close" aria-hidden="true"></span>

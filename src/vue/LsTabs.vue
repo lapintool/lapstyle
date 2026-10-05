@@ -1,6 +1,7 @@
 <script setup>
-import { computed, onMounted, onUnmounted, provide, ref, watch } from "vue";
+import { computed, onMounted, onBeforeUnmount, provide, ref, watch } from "vue";
 import { destroy, enhance } from "../lapstyle.js";
+import { readOptionValue } from "./value.js";
 
 const model = defineModel({ type: [String, Number], default: null });
 
@@ -30,7 +31,7 @@ const hostClass = computed(() => ({
 
 function onChange(ev) {
   const tab = ev.detail?.tab;
-  const value = tab?.getAttribute?.("data-tab");
+  const value = readOptionValue(tab, tab?.getAttribute?.("data-tab"));
   if (value != null) {
     model.value = value;
     emit("change", { value, tab, index: ev.detail?.index });
@@ -39,7 +40,7 @@ function onChange(ev) {
 
 function onClose(ev) {
   const tab = ev.detail?.tab;
-  const value = tab?.getAttribute?.("data-tab");
+  const value = readOptionValue(tab, tab?.getAttribute?.("data-tab"));
   emit("close", { value, tab, index: ev.detail?.index, event: ev });
 }
 
@@ -50,7 +51,7 @@ onMounted(() => {
   root.value.addEventListener("ls-tabs:close", onClose);
 });
 
-onUnmounted(() => {
+onBeforeUnmount(() => {
   if (!(root.value instanceof HTMLElement)) return;
   root.value.removeEventListener("ls-tabs:change", onChange);
   root.value.removeEventListener("ls-tabs:close", onClose);
@@ -61,7 +62,9 @@ watch(
   model,
   (next) => {
     if (!(root.value instanceof HTMLElement) || next == null) return;
-    const tab = root.value.querySelector(`.bar > .tab[data-tab="${CSS.escape(String(next))}"]`);
+    const tab = [...root.value.querySelectorAll(":scope > .bar > .tab")].find(
+      (item) => readOptionValue(item, item.getAttribute("data-tab")) === next,
+    );
     if (tab instanceof HTMLElement && !tab.classList.contains("is-active")) {
       tab.click();
     }

@@ -1,7 +1,8 @@
 <script setup>
-import { computed, onMounted, onUnmounted, ref } from "vue";
-import { destroy, enhance } from "../lapstyle.js";
+import { computed, onMounted, onBeforeUnmount, ref, watch } from "vue";
+import { destroy, enhance, setDropdownOpen } from "../lapstyle.js";
 import { classList } from "./classNames.js";
+import { readOptionValue } from "./value.js";
 
 const props = defineProps({
   split: { type: Boolean, default: false },
@@ -9,7 +10,10 @@ const props = defineProps({
   variant: { type: String, default: "" },
   size: { type: String, default: "" },
   dense: { type: Boolean, default: false },
-  label: { type: String, default: "Dropdown" },
+  label: { type: String, default: "" },
+  arrow: { type: String, default: "chevron" },
+  borderless: { type: Boolean, default: false },
+  noArrow: { type: Boolean, default: false },
   disabled: { type: Boolean, default: false },
 });
 
@@ -22,8 +26,11 @@ const hostClass = computed(() =>
     simple: !props.split,
     split: props.split,
     "ls-btn-group": props.split,
+    "arrow-triangle": props.arrow === "triangle",
     [props.size]: !!props.size,
     dense: props.dense,
+    borderless: props.borderless,
+    "no-arrow": props.noArrow,
   }),
 );
 
@@ -34,14 +41,18 @@ const btnClass = computed(() =>
 );
 
 function onSelect(ev) {
-  emit("select", ev.detail);
+  emit("select", { ...ev.detail, value: readOptionValue(ev.detail?.item, ev.detail?.value) });
 }
+
+watch(() => props.disabled, (disabled) => {
+  if (disabled && root.value) setDropdownOpen(root.value, false);
+});
 
 onMounted(() => {
   if (root.value) enhance(root.value);
 });
 
-onUnmounted(() => {
+onBeforeUnmount(() => {
   if (root.value) destroy(root.value);
 });
 </script>
@@ -69,7 +80,7 @@ onUnmounted(() => {
         :disabled="disabled"
         aria-label="Open menu"
       >
-        <i class="arrow" aria-hidden="true"></i>
+        <i v-if="!noArrow" class="arrow" :class="props.arrow === 'triangle' ? 'triangle' : 'chevron'" aria-hidden="true"></i>
       </button>
     </template>
     <button
@@ -77,10 +88,11 @@ onUnmounted(() => {
       type="button"
       :class="btnClass"
       aria-expanded="false"
+      :aria-label="label || 'Open menu'"
       :disabled="disabled"
     >
       <slot name="label">{{ label }}</slot>
-      <i class="arrow" aria-hidden="true"></i>
+      <i v-if="!noArrow" class="arrow" :class="props.arrow === 'triangle' ? 'triangle' : 'chevron'" aria-hidden="true"></i>
     </button>
     <nav class="ls-card ls-menu end ls-scroll" hidden>
       <slot />

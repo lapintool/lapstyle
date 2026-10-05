@@ -7,14 +7,30 @@
 .ls-btn-dropdown .arrow {
   display: block;
   flex: 0 0 auto;
-  width: 1.715em;
-  height: 1.715em;
-  background-color: currentColor;
-  clip-path: polygon(29.17% 41.67%, 70.83% 41.67%, 50% 62.5%);
+  width: 0.55em;
+  height: 0.55em;
+  margin: 0 0.22em 0.15em 0.12em;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: rotate(45deg);
   transition: transform var(--ls-hover);
 }
 
-.ls-btn-dropdown.is-open .arrow {
+.ls-btn-dropdown .arrow.triangle {
+  width: 1.715em;
+  height: 1.715em;
+  margin: 0;
+  border: 0;
+  background-color: currentColor;
+  clip-path: polygon(29.17% 41.67%, 70.83% 41.67%, 50% 62.5%);
+  transform: none;
+}
+
+.ls-btn-dropdown.is-open .arrow:not(.triangle) {
+  transform: translateY(0.15em) rotate(225deg);
+}
+
+.ls-btn-dropdown.is-open .arrow.triangle {
   transform: rotate(180deg);
 }
 
@@ -52,4 +68,21 @@
 .ls-btn-dropdown.split > .ls-btn + .arrow-btn.ls-btn.fill::before,
 .ls-btn-dropdown.split > .ls-btn + .arrow-btn.ls-btn.push:not(.outline)::before {
   border-left: 1px solid color-mix(in srgb, var(--ls-btn-on) 32%, var(--ls-btn-fill));
+}
+
+.ls-btn-dropdown.borderless > .ls-btn::before {
+  border-color: transparent;
+}
+
+.ls-btn-dropdown.no-arrow .arrow {
+  display: none;
+}
+
+.ls-btn-dropdown.simple.no-arrow > .ls-btn {
+  gap: var(--ls-btn-gap);
+  padding-inline: 1em;
+}
+
+.ls-btn-dropdown.split.no-arrow .arrow-btn {
+  min-width: var(--ls-btn-min-height, var(--ls-control-height));
 }

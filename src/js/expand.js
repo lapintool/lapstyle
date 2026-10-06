@@ -141,7 +141,15 @@ function applyExpandDurationVar(root) {
 }
 
 function expandTokenPx(root, name, fallback) {
-  const v = parseFloat(getComputedStyle(root).getPropertyValue(name));
+  const style = getComputedStyle(root);
+  const raw = style.getPropertyValue(name).trim();
+  const match = /^(\d+(?:\.\d+)?)(px|rem|em)?$/i.exec(raw);
+  if (!match) return fallback;
+  const unit = match[2]?.toLowerCase();
+  const fontSize = unit === "rem"
+    ? parseFloat(getComputedStyle(root.ownerDocument.documentElement).fontSize)
+    : unit === "em" ? parseFloat(style.fontSize) : 1;
+  const v = Number(match[1]) * fontSize;
   return Number.isFinite(v) && v > 0 ? v : fallback;
 }
 

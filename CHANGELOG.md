@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Fixed
+
+- Expand panel dimensions resolve `rem` and `em` tokens to pixels before animation; collapsed buttons remain visible and default open sizes follow the type scale.
+
 ## 0.5.4-alpha
 
 ### Added

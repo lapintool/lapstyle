@@ -2,6 +2,15 @@
 
 ## Unreleased
 
+## 0.5.5-alpha
+
+### Added
+
+- `LsNotify` displays viewport notifications at the top (default), bottom, sides, corners or center, with timers, persistent display, standard close buttons, hover/focus pause and shared position stacks.
+- Notification types color the text; optional `html` messages and Vue content slots support custom layouts.
+- Notifications queue by show time, merge repeated content with a count, expose `show()`/`close()`, and use a top-right close button with slower default transitions.
+- Notifications accept leading icon names and custom icon slots; the four semantic demo styles use the matching built-in icons.
+
 ### Fixed
 
 - Expand panel dimensions resolve `rem` and `em` tokens to pixels before animation; collapsed buttons remain visible and default open sizes follow the type scale.

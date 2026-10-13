@@ -7,12 +7,12 @@ Do **not** start from class HTML + `enhance()` unless the app has no Vue.
 ## Install
 
 ```bash
-pnpm add lapstyle@0.5.4-alpha
+pnpm add lapstyle@0.5.5-alpha
 ```
 
 Peer: `vue` `^3.4` (required only when using `lapstyle/vue`).
 
-GitHub alternative: `pnpm add github:lapintool/lapstyle#v0.5.4-alpha`.
+GitHub alternative: `pnpm add github:lapintool/lapstyle#v0.5.5-alpha`.
 
 ## Setup
 

@@ -77,6 +77,7 @@
   --ls-z-menu: 40;
   --ls-z-tooltip: 60;
   --ls-z-dialog: 70;
+  --ls-z-notify: 80;
 
   /* Tooltip / icon defaults (overridable) */
   --ls-tooltip-delay: 0.28s;

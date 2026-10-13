@@ -1,9 +1,48 @@
 import type { App, Component, ComponentOptionsMixin, DefineComponent, EmitsOptions, EmitsToProps, PublicProps, SlotsType, VNodeChild } from "vue";
 
-type LapstyleComponent<Props, Events extends EmitsOptions, Slots extends Record<string, any>> = DefineComponent<
-  Props, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin,
+type LapstyleComponent<Props, Events extends EmitsOptions, Slots extends Record<string, any>, Bindings = {}> = DefineComponent<
+  Props, Bindings, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin,
   Events, string, PublicProps, Props & EmitsToProps<Events>, {}, SlotsType<Slots>
 >;
+
+export interface LsNotifyHandle {
+  show(): void;
+  close(): void;
+}
+
+export interface LsNotifyProps {
+  modelValue?: boolean;
+  message?: string;
+  icon?: string;
+  html?: boolean;
+  caption?: string;
+  position?: "top" | "bottom" | "left" | "right" | "top-left" | "top-right" | "bottom-left" | "bottom-right" | "center";
+  timeout?: number;
+  closable?: boolean;
+  closeLabel?: string;
+  type?: "info" | "success" | "warning" | "error";
+  pauseOnHover?: boolean;
+  group?: boolean | string;
+}
+
+export type LsNotifyEmits = {
+  (e: "update:modelValue", value: boolean): void;
+  (e: "show"): void;
+  (e: "close", value: "close" | "timeout" | "model"): void;
+};
+
+export interface LsNotifySlots {
+  default?: () => VNodeChild;
+  icon?: () => VNodeChild;
+  actions?: (props: { close: () => void }) => VNodeChild;
+}
+
+type LsNotifyEventMap = {
+  "update:modelValue": (value: boolean) => void;
+  "show": () => void;
+  "close": (value: "close" | "timeout" | "model") => void;
+};
+export declare const LsNotify: LapstyleComponent<LsNotifyProps, LsNotifyEventMap, LsNotifySlots, LsNotifyHandle>;
 
 export interface LsBtnProps {
   color?: "" | "blue" | "cyan" | "magenta" | "green" | "red" | "yellow" | "dark" | "gray" | "white" | "black";
@@ -569,6 +608,7 @@ type LsColorPickerEventMap = {
 export declare const LsColorPicker: LapstyleComponent<LsColorPickerProps, LsColorPickerEventMap, LsColorPickerSlots>;
 
 export declare const components: {
+  LsNotify: typeof LsNotify;
   LsBtn: typeof LsBtn;
   LsBtnGroup: typeof LsBtnGroup;
   LsBtnDropdown: typeof LsBtnDropdown;
@@ -597,6 +637,7 @@ export declare const components: {
 
 declare module "vue" {
   export interface GlobalComponents {
+    LsNotify: typeof LsNotify;
     LsBtn: typeof LsBtn;
     LsBtnGroup: typeof LsBtnGroup;
     LsBtnDropdown: typeof LsBtnDropdown;

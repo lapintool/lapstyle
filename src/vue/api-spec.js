@@ -32,6 +32,42 @@ const VARIANT_TYPE = '"" | "fill" | "push" | "flat" | "ghost" | "outline"';
 
 /** @type {Record<string, VueComponentSpec>} */
 export const vueComponents = {
+  LsNotify: {
+    name: "LsNotify", tag: "ls-notify", page: "notify",
+    summary: "Viewport notification with timed or persistent display, a close button and shared position stacks.",
+    cssRoot: ".ls-notify",
+    minimal: `<ls-btn @click="open = true">Show message</ls-btn>
+<ls-notify v-model="open" message="Changes saved" :timeout="3000" />`,
+    props: [
+      { name: "modelValue", type: "boolean", default: "false", desc: "Visibility (v-model)" },
+      { name: "message", type: "string", default: '""', desc: "Message text; default slot overrides it" },
+      { name: "icon", type: "string", default: '""', desc: "Leading LsIcon name, e.g. info, success, warning, error or close. Empty hides it; the icon slot overrides this prop." },
+      { name: "html", type: "boolean", default: "false", desc: "Render message as HTML. Only pass trusted or sanitized HTML; the default slot still takes precedence. Caption remains plain text." },
+      { name: "caption", type: "string", default: '""', desc: "Secondary text" },
+      { name: "position", type: '"top" | "bottom" | "left" | "right" | "top-left" | "top-right" | "bottom-left" | "bottom-right" | "center"', default: '"top"', desc: "Viewport position; invalid values fall back to top" },
+      { name: "timeout", type: "number", default: "3000", desc: "Milliseconds until dismissal; 0 or negative keeps the notification open" },
+      { name: "closable", type: "boolean", default: "true", desc: "Show the standard LsBtn close button" },
+      { name: "closeLabel", type: "string", default: '"Close"', desc: "Accessible close-button label; bind to the application language" },
+      { name: "type", type: '"info" | "success" | "warning" | "error"', default: '"info"', desc: "Message text color; error uses role=alert, others role=status" },
+      { name: "pauseOnHover", type: "boolean", default: "true", desc: "Pause remaining timeout while hovered; keyboard focus always pauses it" },
+      { name: "group", type: "boolean | string", default: "true", desc: "Merge identical message/caption/HTML at the same position, regardless of type. false disables merging; a string provides an explicit group key. Slots only merge with an explicit key." },
+    ],
+    events: [
+      { name: "update:modelValue", payload: "boolean", desc: "Visibility changed" },
+      { name: "show", desc: "Notification opened" },
+      { name: "close", payload: '"close" | "timeout" | "model"', desc: "Dismissal reason; model means the parent closed it" },
+    ],
+    slots: [{ name: "default", desc: "Custom message" }, { name: "icon", desc: "Custom SVG or icon component, wrapped in LsIcon; overrides icon" }, { name: "actions", desc: "Custom action buttons; slot exposes close()" }],
+    patterns: [
+      "Set timeout=0 for persistent messages and v-model=false to dismiss programmatically.",
+      "Notifications teleport to body and stack at the same position. They use document-root theme tokens and do not block the page or steal focus.",
+      "Import lapstyle/index.css once. Messages render as plain text by default; use html=true for HTML strings. Use the default slot for Vue components, bindings and event handlers.",
+      "Messages stack in show order at every position. Repeated groups keep their original position and display a count. Closing a group dismisses all its members; a repeated message restarts the visible member's timeout.",
+      "A template ref exposes show() and close(). Calling show() again while open increments its repeat count and restarts the timer. Assigning v-model=true to an already-open component does not trigger another show.",
+      "The close button is at the top-right. Override --ls-notify-duration on the notification to customize the default 400ms fade/slide animation.",
+      "Icons are optional and inherit the notification text color. For example: type=success icon=success. Custom icon fonts or SVGs can go in the icon slot.",
+    ],
+  },
   LsBtn: {
     name: "LsBtn",
     tag: "ls-btn",
@@ -703,6 +739,7 @@ ${vueComponents.LsBtnDropdown.minimal}`,
   "date-picker": { id: "date-picker", title: "Date picker", components: ["LsDatePicker"] },
   dialog: { id: "dialog", title: "Dialog", components: ["LsDialog"] },
   tooltip: { id: "tooltip", title: "Tooltip", components: ["LsTooltip"] },
+  notify: { id: "notify", title: "Notification", components: ["LsNotify"] },
   icon: { id: "icon", title: "Icon", components: ["LsIcon"] },
   menu: {
     id: "menu",
@@ -720,6 +757,7 @@ ${vueComponents.LsBtnDropdown.minimal}`,
 };
 
 export const COMPONENT_ORDER = [
+  "LsNotify",
   "LsBtn",
   "LsBtnGroup",
   "LsBtnDropdown",

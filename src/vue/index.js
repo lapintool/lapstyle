@@ -22,6 +22,7 @@ import LsTab from "./LsTab.vue";
 import LsTable from "./LsTable.vue";
 import LsTabs from "./LsTabs.vue";
 import LsTooltip from "./LsTooltip.vue";
+import LsNotify from "./LsNotify.vue";
 
 export {
   LsBtn,
@@ -48,6 +49,7 @@ export {
   LsTable,
   LsTabs,
   LsTooltip,
+  LsNotify,
 };
 
 /** All Ls* components for app.use(LapstyleVue) */
@@ -76,6 +78,7 @@ export const components = {
   LsTable,
   LsTabs,
   LsTooltip,
+  LsNotify,
 };
 
 /**

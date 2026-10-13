@@ -2,7 +2,7 @@
 
 A desktop **Vue UI kit** with a defined Lapstyle look. Use `Ls*` components (`v-model` / events / slots). CSS tokens and class conventions remain the look layer; `enhance()` is for framework-free pages.
 
-Current version **0.5.4-alpha**. License: MIT. Repository: https://github.com/lapintool/lapstyle
+Current version **0.5.5-alpha**. License: MIT. Repository: https://github.com/lapintool/lapstyle
 
 English is the default language for docs and the official demo.
 
@@ -38,7 +38,7 @@ Or with pnpm:
 pnpm add lapstyle
 ```
 
-The current npm release is **0.5.4-alpha**. To follow the alpha release channel, use `npm install lapstyle@alpha`; to pin this release, use `npm install lapstyle@0.5.4-alpha`.
+The current npm release is **0.5.5-alpha**. To follow the alpha release channel, use `npm install lapstyle@alpha`; to pin this release, use `npm install lapstyle@0.5.5-alpha`.
 
 ### Vue (recommended)
 
@@ -98,7 +98,7 @@ npm create https://github.com/lapintool/lapstyle my-app
 pnpm dlx https://github.com/lapintool/create-lapstyle my-app
 ```
 
-The app opens on a button page with a sidebar. `src/main.ts` imports `lapstyle/index.css` and registers `LapstyleVue`. The shell uses `<ls-menu>` / `<ls-btn-dropdown>`. To install this version directly from GitHub: `pnpm add github:lapintool/lapstyle#v0.5.4-alpha`.
+The app opens on a button page with a sidebar. `src/main.ts` imports `lapstyle/index.css` and registers `LapstyleVue`. The shell uses `<ls-menu>` / `<ls-btn-dropdown>`. To install this version directly from GitHub: `pnpm add github:lapintool/lapstyle#v0.5.5-alpha`.
 
 Add an empty page, then paste an example into it:
 

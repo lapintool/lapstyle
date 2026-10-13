@@ -333,7 +333,9 @@ ${spec.events.map((e) => `  ${emitSig(e)};`).join("\n")}
       .map((s) => {
         const key = s.name.includes("/") ? `"${s.name.split("/")[0].trim()}"` : s.name === "default" ? "default" : s.name;
         const ident = /^[A-Za-z_]\w*$/.test(key) ? key : JSON.stringify(key);
-        return `  ${ident}?: () => VNodeChild;`;
+        return name === "LsNotify" && s.name === "actions"
+          ? `  ${ident}?: (props: { close: () => void }) => VNodeChild;`
+          : `  ${ident}?: () => VNodeChild;`;
       })
       .join("\n");
     return `export interface ${propsName} {
@@ -347,16 +349,21 @@ ${slotLines}
 }
 
 type ${name}EventMap = {\n${emitOptions}\n};
-export declare const ${name}: LapstyleComponent<${propsName}, ${name}EventMap, ${slotsName}>;
+export declare const ${name}: LapstyleComponent<${propsName}, ${name}EventMap, ${slotsName}${name === "LsNotify" ? ", LsNotifyHandle" : ""}>;
 `;
   });
 
   return `import type { App, Component, ComponentOptionsMixin, DefineComponent, EmitsOptions, EmitsToProps, PublicProps, SlotsType, VNodeChild } from "vue";
 
-type LapstyleComponent<Props, Events extends EmitsOptions, Slots extends Record<string, any>> = DefineComponent<
-  Props, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin,
+type LapstyleComponent<Props, Events extends EmitsOptions, Slots extends Record<string, any>, Bindings = {}> = DefineComponent<
+  Props, Bindings, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin,
   Events, string, PublicProps, Props & EmitsToProps<Events>, {}, SlotsType<Slots>
 >;
+
+export interface LsNotifyHandle {
+  show(): void;
+  close(): void;
+}
 
 ${blocks.join("\n")}
 export declare const components: {

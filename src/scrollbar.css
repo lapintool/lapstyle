@@ -51,3 +51,65 @@
     var(--ls-scrollbar-thumb-rgb) / calc(var(--ls-scrollbar-thumb-hover-alpha) * var(--scrollbar-fade))
   );
 }
+
+/* The viewport keeps native scrolling. Only its controls are drawn over content. */
+.ls-scroll:has(> .ls-scroll__viewport) {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1fr);
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.ls-scroll__viewport {
+  min-width: 0;
+  min-height: 0;
+  overflow: auto;
+}
+
+.ls-scroll__content { display: flow-root; min-height: 100%; }
+
+.ls-scroll[data-ls-overlay-ready] > .ls-scroll__viewport {
+  scrollbar-width: none;
+  scrollbar-gutter: auto;
+}
+.ls-scroll[data-ls-overlay-ready] > .ls-scroll__viewport::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+.ls-scroll__track {
+  position: absolute;
+  z-index: 1;
+  opacity: 0;
+  transition: opacity var(--ls-scrollbar-fade-duration) var(--ls-ease-out);
+  touch-action: none;
+  user-select: none;
+}
+.ls-scroll__track[hidden] { display: none; }
+.ls-scroll__track--y { top: 2px; bottom: var(--ls-scroll-cross, 2px); right: 0; width: 12px; }
+.ls-scroll__track--x { left: 2px; right: var(--ls-scroll-cross, 2px); bottom: 0; height: 12px; }
+.ls-scroll__thumb {
+  position: absolute;
+  border-radius: 99px;
+  background: rgb(var(--ls-scrollbar-thumb-rgb) / var(--ls-scrollbar-overlay-alpha, 0.35));
+  transition: background-color var(--ls-scrollbar-fade-duration) var(--ls-ease-out);
+}
+.ls-scroll__track--y > .ls-scroll__thumb { right: 2px; width: var(--ls-scrollbar-size); }
+.ls-scroll__track--x > .ls-scroll__thumb { bottom: 2px; height: var(--ls-scrollbar-size); }
+.ls-scroll.overlay:is(:hover, :focus-within, .is-scrolling, .is-dragging) > .ls-scroll__track { opacity: 1; }
+.ls-scroll__track:hover > .ls-scroll__thumb,
+.ls-scroll__track:focus-visible > .ls-scroll__thumb,
+.ls-scroll.is-dragging > .ls-scroll__track > .ls-scroll__thumb {
+  background: rgb(var(--ls-scrollbar-thumb-rgb) / var(--ls-scrollbar-overlay-hover-alpha, 0.55));
+}
+.ls-scroll__track:focus-visible { outline: 1px solid currentColor; outline-offset: -1px; border-radius: 99px; }
+@media (prefers-reduced-motion: reduce) {
+  .ls-scroll__track, .ls-scroll__thumb { transition: none; }
+}
+@media (forced-colors: active) {
+  .ls-scroll__thumb { background: CanvasText; forced-color-adjust: none; }
+}

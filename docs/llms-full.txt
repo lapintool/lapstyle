@@ -120,6 +120,56 @@ Do not invent Quasar / other-library token names. Customize via `--ls-*` in `src
 
 ---
 
+# LsScroll (`ls-scroll`)
+
+Scroll container with native scrollbars by default and optional translucent overlay controls that never reserve content space.
+
+Import: `import { LsScroll } from "lapstyle/vue"` (or `app.use(LapstyleVue)`).
+
+## Minimal usage
+
+```vue
+<ls-scroll overlay style="height: 180px; width: 320px; max-width: 100%">
+  <p v-for="n in 20" :key="n">Scrollable line {{ n }}</p>
+</ls-scroll>
+```
+
+### Props
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `overlay` | `boolean` | `false` | Float translucent scrollbars over the content without changing viewport width or height |
+| `verticalLabel` | `string` | `"Scroll vertically"` | Accessible vertical scrollbar label; bind to the application language |
+| `horizontalLabel` | `string` | `"Scroll horizontally"` | Accessible horizontal scrollbar label; bind to the application language |
+
+### Events
+
+| Name | Payload | Description |
+| --- | --- | --- |
+| `scroll` | `Event` | Native viewport scroll event; event.target is the scrolling viewport |
+
+### Slots
+
+| Name | Description |
+| --- | --- |
+| `default` | Scrollable content |
+
+### Pitfalls
+
+- Set height or max-height on the component to constrain vertical scrolling. Content stays mounted when overlay changes.
+- Overlay controls support dragging, track clicks, wheel, Arrow keys, PageUp/PageDown and Home/End. The native viewport preserves touch scrolling and keyboard scrolling.
+- A template ref exposes viewport (HTMLElement) for scrollTop, scrollLeft, scrollTo() and scrollIntoView(), and refresh() for manual geometry updates. Resizes and content changes update automatically.
+- Use --ls-scrollbar-size, --ls-scrollbar-overlay-alpha (0.35), --ls-scrollbar-overlay-hover-alpha (0.55), and --ls-scrollbar-fade-duration to customize the controls. Add padding inside the slot if content should avoid the overlaid thumb.
+- The existing CSS-only .ls-scroll class retains native scrollbars. Framework-free overlay markup needs a viewport/content wrapper and enhance(); see docs/components/scrollbar.md.
+
+## CSS root
+
+`.ls-scroll` — look layer. Prefer the Vue tag in apps.
+
+If this page is not enough, read `src/vue/LsScroll.vue` next. Do not copy class-only demo HTML unless you are on the framework-free path (`docs/enhance.md`).
+
+---
+
 # LsNotify (`ls-notify`)
 
 Viewport notification with timed or persistent display, a close button and shared position stacks.
@@ -1275,7 +1325,7 @@ If this page is not enough, read `src/vue/LsColorPicker.vue` next. Do not copy c
 
 # Scrollbar (`.ls-scroll`)
 
-CSS-only. There is **no** `LsScroll` / `<ls-scroll>` component.
+The existing `.ls-scroll` class uses native thin scrollbars. Vue apps can also use `LsScroll`; enable its optional `overlay` prop to float translucent controls above the content without reserving any layout space.
 
 ```html
 <div class="ls-scroll" style="max-height: 160px">
@@ -1286,6 +1336,30 @@ CSS-only. There is **no** `LsScroll` / `<ls-scroll>` component.
 Class: `.ls-scroll` — thin scrollbar, fades in on hover.
 
 In Vue, put `class="ls-scroll"` on any overflowing host (including `ls-menu` / dropdown menus, which already include it where needed).
+
+## Overlay mode
+
+```vue
+<ls-scroll overlay style="height: 180px; max-width: 100%">
+  <p v-for="n in 20" :key="n">Line {{ n }}</p>
+</ls-scroll>
+```
+
+Import `LsScroll` from `lapstyle/vue` or register `LapstyleVue`. See [LsScroll](ls-scroll.md) for props and events. It supports both axes, drag, track clicks, wheel, touch and keyboard scrolling. Content size changes are observed automatically; switching overlay does not remount content. The component ref exposes `viewport` and `refresh()`.
+
+For framework-free pages, call `enhance()` with this markup:
+
+```html
+<div class="ls-scroll overlay" style="height: 180px">
+  <div class="ls-scroll__viewport ls-scroll" tabindex="0">
+    <div class="ls-scroll__content">…overflowing content…</div>
+  </div>
+</div>
+```
+
+Controls use absolute positioning outside the native viewport. If JavaScript is unavailable, native scrollbars remain usable. Existing class-only containers remain unchanged. For external scroll listeners or programmatic scrolling, target `.ls-scroll__viewport`, not the wrapper. Release observers and listeners with `destroy(root)` before removing framework-free markup.
+
+Opacity tokens: `--ls-scrollbar-overlay-alpha: 0.35` and `--ls-scrollbar-overlay-hover-alpha: 0.55`. Thickness and fading reuse `--ls-scrollbar-size` and `--ls-scrollbar-fade-duration`. Overlay controls cover the content edge; add padding inside the slot if needed.
 
 ---
 
@@ -1315,6 +1389,6 @@ Without a bundler:
 
 Markup is CSS classes (`.ls-btn`, `.ls-dialog`, …), not `<ls-*>` tags. Interactive widgets listen for custom events such as `ls-dialog:action`, `ls-menu:select`, `ls-tabs:change`, `ls-slider:change`.
 
-Scrollbar: add `class="ls-scroll"` to an overflowing container. There is no `LsScroll` component.
+Scrollbar: `class="ls-scroll"` keeps native scrollbars. For optional overlay controls, use the wrapper markup in `docs/components/scrollbar.md` and call `enhance()`. Vue apps can use `LsScroll`.
 
 If you need a Vue example, leave this file and read `docs/components/*.md`.

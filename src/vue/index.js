@@ -23,8 +23,10 @@ import LsTable from "./LsTable.vue";
 import LsTabs from "./LsTabs.vue";
 import LsTooltip from "./LsTooltip.vue";
 import LsNotify from "./LsNotify.vue";
+import LsScroll from "./LsScroll.vue";
 
 export {
+  LsScroll,
   LsBtn,
   LsBtnDropdown,
   LsCard,
@@ -54,6 +56,7 @@ export {
 
 /** All Ls* components for app.use(LapstyleVue) */
 export const components = {
+  LsScroll,
   LsBtn,
   LsBtnDropdown,
   LsCard,

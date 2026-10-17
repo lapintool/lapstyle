@@ -1,5 +1,8 @@
 export function enhance(root?: ParentNode | Document): void;
 export function destroy(root?: ParentNode | Document): void;
+export function initScroll(root: HTMLElement): void;
+export function destroyScroll(root: HTMLElement): void;
+export function refreshScroll(root: HTMLElement): void;
 export function setPickerValue(
   picker: HTMLElement,
   hex: string,
@@ -72,6 +75,9 @@ export function warnExpandIssues(el: Element, issues: string[]): void;
 export function initMenu(root: HTMLElement): void;
 export function destroyMenu(root: HTMLElement): void;
 export const Lapstyle: {
+  initScroll: typeof initScroll;
+  destroyScroll: typeof destroyScroll;
+  refreshScroll: typeof refreshScroll;
   enhance: typeof enhance;
   destroy: typeof destroy;
   setPickerValue: typeof setPickerValue;

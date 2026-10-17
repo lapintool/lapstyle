@@ -37,6 +37,7 @@ import { destroySlider, initSlider, setSliderValue } from "./js/slider.js";
 import { destroySplitter, initSplitter, setSplitterSize } from "./js/splitter.js";
 import { destroyTabs, initTabs } from "./js/tabs.js";
 import { destroyTooltip, initTooltip } from "./js/tooltip.js";
+import { destroyScroll, initScroll, refreshScroll } from "./js/scroll.js";
 
 function forEachMatch(root, selector, fn) {
   if (root instanceof Element && typeof root.matches === "function" && root.matches(selector)) {
@@ -48,6 +49,7 @@ function forEachMatch(root, selector, fn) {
 }
 
 export function enhance(root = document) {
+  forEachMatch(root, ".ls-scroll", initScroll);
   forEachMatch(root, ".ls-input", initInput);
   forEachMatch(root, ".ls-color-picker", initColorPicker);
   forEachMatch(root, ".ls-dialog", initDialog);
@@ -63,6 +65,7 @@ export function enhance(root = document) {
 }
 
 export function destroy(root = document) {
+  forEachMatch(root, ".ls-scroll", destroyScroll);
   forEachMatch(root, ".ls-input", destroyInput);
   forEachMatch(root, ".ls-color-picker", destroyColorPicker);
   forEachMatch(root, ".ls-dialog", destroyDialog);
@@ -78,6 +81,7 @@ export function destroy(root = document) {
 }
 
 const Lapstyle = {
+  initScroll, destroyScroll, refreshScroll,
   enhance,
   destroy,
   setPickerValue,
@@ -116,6 +120,7 @@ const Lapstyle = {
 };
 
 export {
+  initScroll, destroyScroll, refreshScroll,
   Lapstyle,
   setPickerValue,
   initColorPicker,

@@ -24,6 +24,6 @@ Without a bundler:
 
 Markup is CSS classes (`.ls-btn`, `.ls-dialog`, …), not `<ls-*>` tags. Interactive widgets listen for custom events such as `ls-dialog:action`, `ls-menu:select`, `ls-tabs:change`, `ls-slider:change`.
 
-Scrollbar: add `class="ls-scroll"` to an overflowing container. There is no `LsScroll` component.
+Scrollbar: `class="ls-scroll"` keeps native scrollbars. For optional overlay controls, use the wrapper markup in `docs/components/scrollbar.md` and call `enhance()`. Vue apps can use `LsScroll`.
 
 If you need a Vue example, leave this file and read `docs/components/*.md`.

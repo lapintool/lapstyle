@@ -32,6 +32,28 @@ const VARIANT_TYPE = '"" | "fill" | "push" | "flat" | "ghost" | "outline"';
 
 /** @type {Record<string, VueComponentSpec>} */
 export const vueComponents = {
+  LsScroll: {
+    name: "LsScroll", tag: "ls-scroll", page: "scrollbar",
+    summary: "Scroll container with native scrollbars by default and optional translucent overlay controls that never reserve content space.",
+    cssRoot: ".ls-scroll",
+    minimal: `<ls-scroll overlay style="height: 180px; width: 320px; max-width: 100%">
+  <p v-for="n in 20" :key="n">Scrollable line {{ n }}</p>
+</ls-scroll>`,
+    props: [
+      { name: "overlay", type: "boolean", default: "false", desc: "Float translucent scrollbars over the content without changing viewport width or height" },
+      { name: "verticalLabel", type: "string", default: '"Scroll vertically"', desc: "Accessible vertical scrollbar label; bind to the application language" },
+      { name: "horizontalLabel", type: "string", default: '"Scroll horizontally"', desc: "Accessible horizontal scrollbar label; bind to the application language" },
+    ],
+    events: [{ name: "scroll", payload: "Event", desc: "Native viewport scroll event; event.target is the scrolling viewport" }],
+    slots: [{ name: "default", desc: "Scrollable content" }],
+    patterns: [
+      "Set height or max-height on the component to constrain vertical scrolling. Content stays mounted when overlay changes.",
+      "Overlay controls support dragging, track clicks, wheel, Arrow keys, PageUp/PageDown and Home/End. The native viewport preserves touch scrolling and keyboard scrolling.",
+      "A template ref exposes viewport (HTMLElement) for scrollTop, scrollLeft, scrollTo() and scrollIntoView(), and refresh() for manual geometry updates. Resizes and content changes update automatically.",
+      "Use --ls-scrollbar-size, --ls-scrollbar-overlay-alpha (0.35), --ls-scrollbar-overlay-hover-alpha (0.55), and --ls-scrollbar-fade-duration to customize the controls. Add padding inside the slot if content should avoid the overlaid thumb.",
+      "The existing CSS-only .ls-scroll class retains native scrollbars. Framework-free overlay markup needs a viewport/content wrapper and enhance(); see docs/components/scrollbar.md.",
+    ],
+  },
   LsNotify: {
     name: "LsNotify", tag: "ls-notify", page: "notify",
     summary: "Viewport notification with timed or persistent display, a close button and shared position stacks.",
@@ -749,6 +771,7 @@ ${vueComponents.LsBtnDropdown.minimal}`,
   },
   card: { id: "card", title: "Card", components: ["LsCard"] },
   table: { id: "table", title: "Table", components: ["LsTable"] },
+  scrollbar: { id: "scrollbar", title: "Scrollbar", components: ["LsScroll"] },
   slider: { id: "slider", title: "Slider", components: ["LsSlider"] },
   progress: { id: "progress", title: "Progress", components: ["LsProgress"] },
   expand: { id: "expand", title: "Expand", components: ["LsExpand"] },
@@ -757,6 +780,7 @@ ${vueComponents.LsBtnDropdown.minimal}`,
 };
 
 export const COMPONENT_ORDER = [
+  "LsScroll",
   "LsNotify",
   "LsBtn",
   "LsBtnGroup",

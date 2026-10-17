@@ -19,7 +19,7 @@
   overflow: auto;
 }
 
-/* 无 handle 时的静态分隔线（有 handle 后由 handle 自身的边线替代） */
+/* 未增强时保留静态分隔线；增强后使用透明拖动热区。 */
 .ls-splitter:not(:has(> .handle)) > .pane + .pane {
   border-top: 0;
   border-left: 1px solid var(--ls-border);
@@ -34,14 +34,13 @@
   flex: 0 0 0.375rem;
   position: relative;
   box-sizing: border-box;
-  background: var(--ls-border);
-  transition: background-color var(--ls-hover);
+  background: transparent;
   touch-action: none;
   --ls-splitter-cursor-col: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cg fill='%23111' stroke='%23fff' stroke-width='2' stroke-linejoin='round' paint-order='stroke'%3E%3Crect x='14.2' y='5' width='3.6' height='22' rx='1'/%3E%3Cpath d='M2.2 16 10 10.6v10.8z'/%3E%3Cpath d='M29.8 16 22 10.6v10.8z'/%3E%3C/g%3E%3C/svg%3E") 16 16, col-resize;
   --ls-splitter-cursor-row: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cg fill='%23111' stroke='%23fff' stroke-width='2' stroke-linejoin='round' paint-order='stroke'%3E%3Crect x='5' y='14.2' width='22' height='3.6' rx='1'/%3E%3Cpath d='M16 2.2 10.6 10h10.8z'/%3E%3Cpath d='M16 29.8 10.6 22h10.8z'/%3E%3C/g%3E%3C/svg%3E") 16 16, row-resize;
 }
 
-/* 上下留出“抓手”热区，实际可视线只有 1px */
+/* 热区始终透明，只在中间显示短抓手。 */
 .ls-splitter:not(.vertical) > .handle {
   width: 0.375rem;
   cursor: var(--ls-splitter-cursor-col);
@@ -74,12 +73,6 @@
   transform: translate(-50%, -50%);
 }
 
-.ls-splitter .handle:hover,
-.ls-splitter .handle:focus-visible,
-.ls-splitter .handle.is-dragging {
-  background: color-mix(in srgb, var(--ls-accent) 45%, var(--ls-border));
-}
-
 .ls-splitter .handle:hover::after,
 .ls-splitter .handle:focus-visible::after,
 .ls-splitter .handle.is-dragging::after {
@@ -87,6 +80,10 @@
 }
 
 .ls-splitter .handle:focus-visible {
+  outline: none;
+}
+
+.ls-splitter .handle:focus-visible::after {
   outline: 2px solid var(--ls-input-focus);
-  outline-offset: -2px;
+  outline-offset: 2px;
 }

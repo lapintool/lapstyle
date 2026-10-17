@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+### Changed
+
+- Splitter handles stay transparent during hover and drag; only the centered short grip appears, including the keyboard focus indicator.
+
+### Added
+
+- `LsScroll` provides optional translucent overlay scrollbars without reserving content space, with drag/track/keyboard controls and automatic size updates. Existing CSS-only `.ls-scroll` behavior stays available.
+
 ## 0.5.5-alpha
 
 ### Added

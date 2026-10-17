@@ -10,6 +10,30 @@ export interface LsNotifyHandle {
   close(): void;
 }
 
+export interface LsScrollHandle {
+  viewport: HTMLElement | null;
+  refresh(): void;
+}
+
+export interface LsScrollProps {
+  overlay?: boolean;
+  verticalLabel?: string;
+  horizontalLabel?: string;
+}
+
+export type LsScrollEmits = {
+  (e: "scroll", value: Event): void;
+};
+
+export interface LsScrollSlots {
+  default?: () => VNodeChild;
+}
+
+type LsScrollEventMap = {
+  "scroll": (value: Event) => void;
+};
+export declare const LsScroll: LapstyleComponent<LsScrollProps, LsScrollEventMap, LsScrollSlots, LsScrollHandle>;
+
 export interface LsNotifyProps {
   modelValue?: boolean;
   message?: string;
@@ -608,6 +632,7 @@ type LsColorPickerEventMap = {
 export declare const LsColorPicker: LapstyleComponent<LsColorPickerProps, LsColorPickerEventMap, LsColorPickerSlots>;
 
 export declare const components: {
+  LsScroll: typeof LsScroll;
   LsNotify: typeof LsNotify;
   LsBtn: typeof LsBtn;
   LsBtnGroup: typeof LsBtnGroup;
@@ -637,6 +662,7 @@ export declare const components: {
 
 declare module "vue" {
   export interface GlobalComponents {
+    LsScroll: typeof LsScroll;
     LsNotify: typeof LsNotify;
     LsBtn: typeof LsBtn;
     LsBtnGroup: typeof LsBtnGroup;
